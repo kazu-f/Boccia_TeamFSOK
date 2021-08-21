@@ -27,8 +27,8 @@ public class TouchPosExample : MonoBehaviour
 
         m_Text.text += "\nDelta Position : " + delPos;
 
-        posInScreen.x = (touchPos.x - Screen.width / 2) / Screen.width;
-        posInScreen.y = (touchPos.y - Screen.height / 2) / Screen.height;
+        posInScreen.x = touchPos.x / Screen.width;
+        posInScreen.y = touchPos.y / Screen.height;
         //posInScreen.x = (touchPos.x - Screen.width / 2) / Screen.width * canvasRect.sizeDelta.x;
         //posInScreen.y = (touchPos.y - Screen.height / 2) / Screen.height * canvasRect.sizeDelta.y;
         //RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, touchPos, canvas.worldCamera, out posInScreen);

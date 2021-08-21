@@ -379,7 +379,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Text: {fileID: 1675469633}
-  canvas: {fileID: 2047465410}
   canvasRect: {fileID: 2047465411}
   touchManager: {fileID: 983169036}
 --- !u!114 &1675469633
@@ -707,8 +706,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 668717317917439851, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 1976326972}
+    - target: {fileID: 668717317917439851, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
+      propertyPath: touchManager
+      value: 
+      objectReference: {fileID: 983169036}
     - target: {fileID: 1081671311465322976, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: TouchManager
+      value: 
+      objectReference: {fileID: 983169036}
+    - target: {fileID: 1081671311465322976, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
+      propertyPath: touchManager
       value: 
       objectReference: {fileID: 983169036}
     - target: {fileID: 1146237444483529488, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
@@ -735,5 +746,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8436614249491497031, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
+      propertyPath: touchManager
+      value: 
+      objectReference: {fileID: 983169036}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}

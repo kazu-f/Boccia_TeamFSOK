@@ -6,8 +6,10 @@ public class TouchManager : MonoBehaviour
 {
     bool m_isTouch = false;      //タッチしているか？
     Vector2 m_touchPos = new Vector2(0, 0);          //座標。
+    Vector2 m_touchPosInScreen = new Vector2(0, 0);          //スクリーン上での座標。
     Vector2 m_oldPos = new Vector2(0, 0);          //前フレームの座標。
     Vector2 m_deltaPos = new Vector2(0, 0);         //前フレーム座標からの差分。
+    Vector2 m_deltaPosInScreen = new Vector2(0, 0);         //スクリーン上での前フレーム座標からの差分。
     TouchPhase m_touchPhase = TouchPhase.Began;     //状態。
 
     /// <summary>
@@ -55,6 +57,12 @@ public class TouchManager : MonoBehaviour
             {
                 m_deltaPos = m_touchPos - m_oldPos;
                 m_oldPos = m_touchPos;
+                //スクリーン上での位置。
+                this.m_touchPosInScreen.x = m_touchPos.x / Screen.width;
+                this.m_touchPosInScreen.y = m_touchPos.y / Screen.height;
+                //スクリーン上での1フレームでの移動量。
+                this.m_deltaPosInScreen.x = m_deltaPos.x / Screen.width;
+                this.m_deltaPosInScreen.y = m_deltaPos.y / Screen.height;
             }
             else
             {
@@ -68,26 +76,47 @@ public class TouchManager : MonoBehaviour
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);
-                this.m_touchPos = touch.position;
-                this.m_deltaPos = touch.deltaPosition;
-                this.m_touchPhase = touch.phase;
-                this.m_isTouch = true;
+                this.m_touchPos = touch.position;   //タッチ座標。
+                //スクリーン上での位置。
+                this.m_touchPosInScreen.x = touch.position.x / Screen.width;
+                this.m_touchPosInScreen.y = touch.position.y / Screen.height;
+                this.m_deltaPos = touch.deltaPosition;  //1フレームでの移動量。
+                //スクリーン上での1フレームでの移動量。
+                this.m_deltaPosInScreen.x = touch.deltaPosition.x / Screen.width;
+                this.m_deltaPosInScreen.y = touch.deltaPosition.y / Screen.height;
+                this.m_touchPhase = touch.phase;    //タッチ状態。
+                this.m_isTouch = true;              //タッチしている。
             }
         }
     }
     /// <summary>
-    /// タッチした座標を取得。
+    /// タッチしている座標を取得。
     /// </summary>
     public Vector2 GetTouchPos ()
     {
         return m_touchPos;
     }
     /// <summary>
+    /// タッチしているスクリーン上の座標を取得。
+    /// </summary>
+    public Vector2 GetTouchPosInScreen()
+    {
+        return m_touchPosInScreen;
+    }
+
+    /// <summary>
     /// 前フレーム座標との差分。
     /// </summary>
     public Vector2 GetDeltaPos()
     {
         return m_deltaPos;
+    }
+    /// <summary>
+    /// 前フレーム座標とのスクリーン上での差分。
+    /// </summary>
+    public Vector2 GetDeltaPosInScreen()
+    {
+        return m_deltaPosInScreen;
     }
 
     /// <summary>
