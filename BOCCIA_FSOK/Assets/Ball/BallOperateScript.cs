@@ -11,6 +11,7 @@ public class BallOperateScript : MonoBehaviour
     {
         //コンポーネントを取得
         m_rigidbody = GetComponent<Rigidbody>();
+        AddSpeed(new Vector3(0.0f, 0.0f, 10.0f));
     }
 
     // Update is called once per frame
