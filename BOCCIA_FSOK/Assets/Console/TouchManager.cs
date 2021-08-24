@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TouchManager : MonoBehaviour
 {
+    public Canvas canvas;
+    RectTransform canvasRect;
     bool m_isTouch = false;      //タッチしているか？
     Vector2 m_touchPos = new Vector2(0, 0);          //座標。
     Vector2 m_touchPosInScreen = new Vector2(0, 0);          //スクリーン上での座標。
@@ -12,6 +15,11 @@ public class TouchManager : MonoBehaviour
     Vector2 m_deltaPosInScreen = new Vector2(0, 0);         //スクリーン上での前フレーム座標からの差分。
     TouchPhase m_touchPhase = TouchPhase.Began;     //状態。
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        canvasRect = canvas.GetComponent<RectTransform>();
+    }
     /// <summary>
     /// 更新処理。
     /// </summary>
@@ -24,6 +32,7 @@ public class TouchManager : MonoBehaviour
         {
             // 座標取得
             this.m_touchPos = Input.mousePosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
 
             // 押した瞬間
             if (Input.GetMouseButtonDown(0))
@@ -58,8 +67,8 @@ public class TouchManager : MonoBehaviour
                 m_deltaPos = m_touchPos - m_oldPos;
                 m_oldPos = m_touchPos;
                 //スクリーン上での位置。
-                this.m_touchPosInScreen.x = m_touchPos.x / Screen.width;
-                this.m_touchPosInScreen.y = m_touchPos.y / Screen.height;
+                this.m_touchPosInScreen.x = m_touchPos.x / Screen.width + 0.5f;
+                this.m_touchPosInScreen.y = m_touchPos.y / Screen.height + 0.5f;
                 //スクリーン上での1フレームでの移動量。
                 this.m_deltaPosInScreen.x = m_deltaPos.x / Screen.width;
                 this.m_deltaPosInScreen.y = m_deltaPos.y / Screen.height;
@@ -77,6 +86,7 @@ public class TouchManager : MonoBehaviour
             {
                 Touch touch = Input.GetTouch(0);
                 this.m_touchPos = touch.position;   //タッチ座標。
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
                 //スクリーン上での位置。
                 this.m_touchPosInScreen.x = touch.position.x / Screen.width;
                 this.m_touchPosInScreen.y = touch.position.y / Screen.height;

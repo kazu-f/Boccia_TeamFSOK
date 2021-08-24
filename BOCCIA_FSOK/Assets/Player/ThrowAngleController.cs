@@ -21,12 +21,7 @@ public class ThrowAngleController : MonoBehaviour
     {
         if(touchManager.IsTouch())
         {
-            if(touchManager.GetPhase() == TouchPhase.Began)
-            {
-                newCamAngle = camera.transform.localEulerAngles;
-                newPlayerAngle = bocciaPlayer.transform.localEulerAngles;
-            }
-            else if(touchManager.GetPhase() == TouchPhase.Moved)
+            if(touchManager.GetPhase() == TouchPhase.Moved)
             {
                 var rotVec = touchManager.GetDeltaPosInScreen();
                 newCamAngle.y += angleSpeed * rotVec.x;
@@ -36,5 +31,17 @@ public class ThrowAngleController : MonoBehaviour
                 bocciaPlayer.transform.localEulerAngles = newPlayerAngle;
             }
         }
+    }
+
+    public void ThrowAngleEnable()
+    {
+        this.enabled = true;
+        newCamAngle = camera.transform.localEulerAngles;
+        newPlayerAngle = bocciaPlayer.transform.localEulerAngles;
+    }
+
+    public void ThrowAngleDisable()
+    {
+        this.enabled = false;
     }
 }
