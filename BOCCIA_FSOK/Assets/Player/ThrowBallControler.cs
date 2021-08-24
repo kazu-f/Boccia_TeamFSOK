@@ -19,6 +19,7 @@ namespace BocciaPlayer
         Vector2 endToStart = new Vector2(0.0f, 0.0f);       //開始座標から引き切った座標までのベクトル。
         Vector2 touchPosInScreen = new Vector2(0.0f, 0.0f); //現在のタッチしている座標(スクリーン座標系？)
         float throwPow = 0.0f;
+        const float FLICK_POWER = 0.005f;     //フリック判定用の定数。
 
         // Start is called before the first frame update
         void Start()
@@ -46,7 +47,7 @@ namespace BocciaPlayer
                 {
                     var deltaMoveVec = touchManager.GetDeltaPosInScreen();
                     //上方向にフリックしていなければ。
-                    if (deltaMoveVec.y < 0.05f
+                    if (deltaMoveVec.y < FLICK_POWER
                         && touchPosInScreen.y < touchStartPos.y)
                     {
                         //移動した後の座標。
