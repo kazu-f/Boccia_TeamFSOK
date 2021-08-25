@@ -20,6 +20,7 @@ namespace BocciaPlayer
         Vector2 touchPosInScreen = new Vector2(0.0f, 0.0f); //現在のタッチしている座標(スクリーン座標系？)
         float throwPow = 0.0f;
         const float FLICK_POWER = 0.005f;     //フリック判定用の定数。
+        const float MAX_THROW_POW = 300.0f;
 
         // Start is called before the first frame update
         void Start()
@@ -54,6 +55,7 @@ namespace BocciaPlayer
                         touchEndPos = touchPosInScreen;
                         endToStart = touchStartPos - touchEndPos;
                         throwPow = endToStart.y / gaugeSize.y;
+                        throwPow = Mathf.Min(1.0f, Mathf.Max(throwPow, 0.0f));
                     }
                 }
                 else if (touchManager.GetPhase() == TouchPhase.Ended)
@@ -61,15 +63,14 @@ namespace BocciaPlayer
                     if (touchStartPos.y < touchPosInScreen.y
                         && endToStart.y > 0.01f)
                     {
-                        throwPow = endToStart.y / gaugeSize.y;
                         var ballPos = this.transform.position;
-                        ballPos.y = 2.0f * touchStartPos.y;
+                        ballPos.y *= touchStartPos.y;
                         var obj = Instantiate(ball, ballPos, this.transform.rotation);
                         Rigidbody ballRB = obj.GetComponent<Rigidbody>();
 
                         Vector3 vec = bocciaPlayer.transform.forward;       //プレイヤーの前方向を取る。
-                        vec.x *= 200.0f * Mathf.Min(1.0f, Mathf.Max(throwPow, 0.1f));
-                        vec.z *= 200.0f * Mathf.Min(1.0f, Mathf.Max(throwPow, 0.1f));
+                        vec.x *= MAX_THROW_POW * throwPow;
+                        vec.z *= MAX_THROW_POW * throwPow;
                         vec.y = 10.0f;
 
                         ballRB.AddForce(vec);
