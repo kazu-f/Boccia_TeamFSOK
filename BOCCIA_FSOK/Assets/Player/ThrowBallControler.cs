@@ -10,7 +10,8 @@ namespace BocciaPlayer
         public TouchManager touchManager;
         public GameObject bocciaPlayer;
         public GameObject ball;
-        public GameObject ThrowGauge;
+        public GameObject throwGauge;
+        public RectTransform canvasRect;
         RectTransform gaugeTransform;
         Material gaugeImageMat;
         Vector2 gaugeSize;
@@ -26,12 +27,14 @@ namespace BocciaPlayer
         void Start()
         {
             //マテリアルの取得。。
-            var image = ThrowGauge.GetComponent<Image>();
+            var image = throwGauge.GetComponent<Image>();
             gaugeImageMat = image.material;
 
-            gaugeTransform = ThrowGauge.GetComponent<RectTransform>();
-            gaugeSize.x = gaugeTransform.rect.width * gaugeTransform.localScale.x / Screen.width;
-            gaugeSize.y = gaugeTransform.rect.height * gaugeTransform.localScale.y / Screen.height;
+            gaugeTransform = throwGauge.GetComponent<RectTransform>();
+            gaugeSize.x = gaugeTransform.rect.width * gaugeTransform.localScale.x / canvasRect.sizeDelta.x;
+            gaugeSize.y = gaugeTransform.rect.height * gaugeTransform.localScale.y / canvasRect.sizeDelta.y;
+
+            throwGauge.SetActive(false);
         }
 
         // Update is called once per frame
@@ -39,6 +42,7 @@ namespace BocciaPlayer
         {
             if (touchManager.IsTouch())
             {
+                throwGauge.SetActive(true);
                 if (touchManager.GetPhase() != TouchPhase.Stationary)
                 {
                     touchPosInScreen = touchManager.GetTouchPosInScreen();
@@ -77,6 +81,10 @@ namespace BocciaPlayer
                     }
                 }
                 gaugeImageMat.SetFloat("_ThrowPow", throwPow);
+            }
+            else
+            {
+                throwGauge.SetActive(false);
             }
         }
 

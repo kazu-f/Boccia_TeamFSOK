@@ -67,8 +67,10 @@ public class TouchManager : MonoBehaviour
                 m_deltaPos = m_touchPos - m_oldPos;
                 m_oldPos = m_touchPos;
                 //スクリーン上での位置。
-                this.m_touchPosInScreen.x = m_touchPos.x / Screen.width + 0.5f;
-                this.m_touchPosInScreen.y = m_touchPos.y / Screen.height + 0.5f;
+                //this.m_touchPosInScreen.x = m_touchPos.x / Screen.width + 0.5f;
+                //this.m_touchPosInScreen.y = m_touchPos.y / Screen.height + 0.5f;
+                this.m_touchPosInScreen.x = m_touchPos.x / canvasRect.sizeDelta.x + 0.5f;
+                this.m_touchPosInScreen.y = m_touchPos.y / canvasRect.sizeDelta.y + 0.5f;
                 //スクリーン上での1フレームでの移動量。
                 this.m_deltaPosInScreen.x = m_deltaPos.x / Screen.width;
                 this.m_deltaPosInScreen.y = m_deltaPos.y / Screen.height;
