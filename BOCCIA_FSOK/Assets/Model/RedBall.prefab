@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4569668526166853846}
   - component: {fileID: 4569668526166853847}
   - component: {fileID: -1520784602434882583}
+  - component: {fileID: -3709627144031105444}
   m_Layer: 0
   m_Name: RedBall
   m_TagString: Ball
@@ -139,3 +140,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Team: 0
+--- !u!114 &-3709627144031105444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4569668526166853805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 986ce9575f2ac2b40b58dd0535572c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BorderSpeed: 0.005
