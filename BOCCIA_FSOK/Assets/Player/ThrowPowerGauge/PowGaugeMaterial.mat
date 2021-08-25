@@ -80,11 +80,7 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-<<<<<<< HEAD
-    - _ThrowPow: 0.41447365
-=======
-    - _ThrowPow: 1.2662846
->>>>>>> 390b5604fb364b0b3917978b13da56b0fbc9760b
+    - _ThrowPow: 0
     - _UVSec: 0
     - _UseUIAlphaClip: 0
     - _ZWrite: 1
