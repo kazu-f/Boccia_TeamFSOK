@@ -11,8 +11,8 @@ public class BallOperateScript : MonoBehaviour
     void Start()
     {
         m_StateScript = GetComponent<BallStateScript>();
-        //コンポーネントを取得
-        m_rigidbody = m_StateScript.GetRigidbody();
+        //RigidBodyを取得
+        m_rigidbody = GetComponent<Rigidbody>();
         AddForce(new Vector3(0.0f, 0.0f, 10.0f));
     }
 

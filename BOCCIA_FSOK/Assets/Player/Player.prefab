@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 668717317917439851}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,6 +63,8 @@ MonoBehaviour:
   touchManager: {fileID: 0}
   bocciaPlayer: {fileID: 6392140987457742130}
   ball: {fileID: 4512499951828782130, guid: 9bbb1a773a5712f43afd9b77875dc8b6, type: 3}
+  throwGauge: {fileID: 0}
+  canvasRect: {fileID: 0}
 --- !u!114 &668717317917439851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +78,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchManager: {fileID: 0}
-  camera: {fileID: 0}
+  playerCamera: {fileID: 0}
   bocciaPlayer: {fileID: 6392140987457742130}
   angleSpeed: 90

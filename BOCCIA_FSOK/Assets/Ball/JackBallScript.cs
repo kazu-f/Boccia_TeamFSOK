@@ -22,6 +22,8 @@ public class JackBallScript : MonoBehaviour
     void Start()
     {
         m_BallStateScript = GetComponent<BallStateScript>();
+        //RigidBodyを取得
+        m_rigidbody = GetComponent<Rigidbody>();
 
     }
 
@@ -30,7 +32,6 @@ public class JackBallScript : MonoBehaviour
     {
         //各種状態を取得
         m_state = m_BallStateScript.GetState();
-        m_rigidbody = m_BallStateScript.GetRigidbody();
         m_moveSpeed = m_BallStateScript.GetMoveSpeed();
 
         //オブジェクトのtransformを取得
