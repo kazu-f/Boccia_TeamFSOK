@@ -5,7 +5,7 @@ using UnityEngine;
 public class ThrowAngleController : MonoBehaviour
 {
     public TouchManager touchManager;
-    public Camera camera;
+    public GameObject camera;
     public GameObject bocciaPlayer;
     public float angleSpeed = 20.0f;
     private Vector3 newCamAngle = new Vector3(0, 0, 0);
