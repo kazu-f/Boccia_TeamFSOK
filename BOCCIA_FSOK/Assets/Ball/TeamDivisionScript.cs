@@ -23,4 +23,9 @@ public class TeamDivisionScript : MonoBehaviour
     {
         
     }
+
+    public Team GetTeam()
+    {
+        return m_Team;
+    }
 }

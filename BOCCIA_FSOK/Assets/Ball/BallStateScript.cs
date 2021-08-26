@@ -51,11 +51,6 @@ public class BallStateScript : MonoBehaviour
         return m_state;
     }
     
-    public Rigidbody GetRigidbody()
-    {
-        return m_rigidbody;
-    }
-
     public Vector3 GetMoveSpeed()
     {
         return m_moveSpeed;
