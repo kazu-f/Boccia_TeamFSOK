@@ -757,6 +757,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1976326970}
     - target: {fileID: 668717317917439851, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1976326970}
+    - target: {fileID: 668717317917439851, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: touchManager
       value: 
       objectReference: {fileID: 983169036}

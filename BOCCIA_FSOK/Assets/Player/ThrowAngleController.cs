@@ -2,46 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowAngleController : MonoBehaviour
+namespace BocciaPlayer
 {
-    public TouchManager touchManager;
-    public GameObject camera;
-    public GameObject bocciaPlayer;
-    public float angleSpeed = 20.0f;
-    private Vector3 newCamAngle = new Vector3(0, 0, 0);
-    private Vector3 newPlayerAngle = new Vector3(0, 0, 0);
-    // Start is called before the first frame update
-    void Start()
+    public class ThrowAngleController : MonoBehaviour
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(touchManager.IsTouch())
+        public TouchManager touchManager;
+        public GameObject playerCamera;
+        public GameObject bocciaPlayer;
+        public float angleSpeed = 20.0f;
+        private Vector3 m_newCamAngle = new Vector3(0, 0, 0);
+        private Vector3 m_newPlayerAngle = new Vector3(0, 0, 0);
+        // Start is called before the first frame update
+        void Start()
         {
-            if(touchManager.GetPhase() == TouchPhase.Moved)
-            {
-                var rotVec = touchManager.GetDeltaPosInScreen();
-                newCamAngle.y += angleSpeed * rotVec.x;
-                newPlayerAngle.y += angleSpeed * rotVec.x;
 
-                camera.transform.localEulerAngles = newCamAngle;
-                bocciaPlayer.transform.localEulerAngles = newPlayerAngle;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (touchManager.IsTouch())
+            {
+                if (touchManager.GetPhase() == TouchPhase.Moved)
+                {
+                    var rotVec = touchManager.GetDeltaPosInScreen();
+                    m_newCamAngle.y += angleSpeed * rotVec.x;
+                    m_newPlayerAngle.y += angleSpeed * rotVec.x;
+
+                    playerCamera.transform.localEulerAngles = m_newCamAngle;
+                    bocciaPlayer.transform.localEulerAngles = m_newPlayerAngle;
+                }
             }
         }
-    }
 
-    public void ThrowAngleEnable()
-    {
-        this.enabled = true;
-        newCamAngle = camera.transform.localEulerAngles;
-        newPlayerAngle = bocciaPlayer.transform.localEulerAngles;
-    }
+        public void ThrowAngleEnable()
+        {
+            this.enabled = true;
+            m_newCamAngle = playerCamera.transform.localEulerAngles;
+            m_newPlayerAngle = bocciaPlayer.transform.localEulerAngles;
+        }
 
-    public void ThrowAngleDisable()
-    {
-        this.enabled = false;
+        public void ThrowAngleDisable()
+        {
+            this.enabled = false;
+        }
     }
 }
