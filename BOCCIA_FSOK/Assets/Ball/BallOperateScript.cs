@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class BallOperateScript : MonoBehaviour
 {
+    private BallStateScript m_StateScript;
     private Rigidbody m_rigidbody;
 
     // Start is called before the first frame update
     void Start()
     {
+        m_StateScript = GetComponent<BallStateScript>();
         //コンポーネントを取得
-        m_rigidbody = GetComponent<Rigidbody>();
+        m_rigidbody = m_StateScript.GetRigidbody();
         AddForce(new Vector3(0.0f, 0.0f, 10.0f));
     }
 

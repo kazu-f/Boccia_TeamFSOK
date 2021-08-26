@@ -22,6 +22,7 @@ public class JackBallScript : MonoBehaviour
     void Start()
     {
         m_BallStateScript = GetComponent<BallStateScript>();
+
     }
 
     // Update is called once per frame
@@ -49,7 +50,7 @@ public class JackBallScript : MonoBehaviour
 
                 break;
 
-            case BallState.End:
+            case BallState.Stop:
                 //エリア外にいるとき
                 if (m_InArea == false)
                 {
@@ -61,7 +62,6 @@ public class JackBallScript : MonoBehaviour
                 //速度を0にセット
                 m_rigidbody.velocity = Vector3.zero;
 
-                CalcScore();
                 break;
         }
 
