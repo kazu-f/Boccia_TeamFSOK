@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BallFlowScript : MonoBehaviour
 {
+    //シーン上にジャックボールがあるかどうか
     private bool m_IsPreparedJack = false;
     private GameObject m_Jack = null;
     private BallStateScript m_JackState;
