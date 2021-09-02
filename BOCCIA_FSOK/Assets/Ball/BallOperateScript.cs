@@ -6,6 +6,7 @@ public class BallOperateScript : MonoBehaviour
 {
     private BallStateScript m_StateScript;
     private Rigidbody m_rigidbody;
+    private bool m_IsCalculated = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,13 @@ public class BallOperateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(m_IsCalculated == false)
+        {
+            if(m_StateScript.GetState() == BallState.Stop)
+            {
 
+            }
+        }
     }
 
     /// <summary>
