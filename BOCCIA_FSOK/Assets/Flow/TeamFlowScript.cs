@@ -21,6 +21,7 @@ public class TeamFlowScript : MonoBehaviour
         {
             //ジャックボールを投げるとき
             case Team.Jack:
+                Debug.Log("初めにジャックボールを投げます");
                 if(m_BallFlow.IsPreparedJack())
                 {
                     //ジャックボールが準備されたら次は赤チームが投げる
@@ -29,13 +30,15 @@ public class TeamFlowScript : MonoBehaviour
                 break;
 
             case Team.Red:
+                Debug.Log("次に赤チームが投げます");
                 break;
 
             case Team.Blue:
+                Debug.Log("次に青チームが投げます");
                 break;
 
             default:
-                Debug.Log("エラー：次に投げるチームが決まっていません");
+                Debug.Log("<color=red>エラー：次に投げるチームが決まっていません</color>");
                 break;
         }
     }
