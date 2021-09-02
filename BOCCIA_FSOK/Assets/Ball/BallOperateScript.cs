@@ -17,17 +17,17 @@ public class BallOperateScript : MonoBehaviour
         if(m_Flow == null)
         {
             //インスタンスが作成されていないとき
-            Debug.Log("<color=red>エラー：GameFlowのインスタンスが作成されていません。</color>");
+            Debug.LogError("エラー：GameFlowのインスタンスが作成されていません。");
         }
         else
         {
             //次に投げるチームを決めるコンポーネントを取得
-            m_Flow.GetComponent<TeamFlowScript>();
-        }
-        if(m_Flow == null)
-        {
-            //TeamFlowScriptコンポーネントが取得できなかったとき
-            Debug.Log("<color=red>エラー：TeamFlowScriptコンポーネントの取得に失敗しました。</color>");
+            m_TeamFlow = m_Flow.GetComponent<TeamFlowScript>();
+            if (m_TeamFlow == null)
+            {
+                //TeamFlowScriptコンポーネントが取得できなかったとき
+                Debug.LogError("エラー：TeamFlowScriptコンポーネントの取得に失敗しました。");
+            }
         }
 
         //ボールの状態を操作するスクリプトを取得
@@ -35,15 +35,17 @@ public class BallOperateScript : MonoBehaviour
         if(m_StateScript == null)
         {
             //BallStateScriptコンポーネントが取得できなかったとき
-            Debug.Log("<color=red>エラー：BallStateScriptコンポーネントの取得に失敗しました。</color>");
+            Debug.LogError("エラー：BallStateScriptコンポーネントの取得に失敗しました。");
         }
         //RigidBodyを取得
         m_rigidbody = GetComponent<Rigidbody>();
         if(m_rigidbody == null)
         {
             //Rigidbodyコンポーネントが取得できなかったとき
-            Debug.Log("<color=red>エラー：Rigidbodyコンポーネントの取得に失敗しました。</color>");
+            Debug.LogError("エラー：Rigidbodyコンポーネントの取得に失敗しました。");
         }
+
+        AddForce(Vector3.zero);
     }
 
     // Update is called once per frame
@@ -53,7 +55,7 @@ public class BallOperateScript : MonoBehaviour
         {
             if(m_StateScript.GetState() == BallState.Stop)
             {
-
+                m_IsCalculated = m_TeamFlow.CalucNextTeam();
             }
         }
     }

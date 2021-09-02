@@ -7,7 +7,7 @@ public class BallFlowScript : MonoBehaviour
     //シーン上にジャックボールがあるかどうか
     private bool m_IsPreparedJack = false;
     private GameObject m_Jack = null;
-    private BallStateScript m_JackState;
+    private BallStateScript m_JackState = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,14 +29,6 @@ public class BallFlowScript : MonoBehaviour
                 m_IsPreparedJack = true;
             }
         }
-        //else
-        //{
-        //    //ジャックボールが停止しているとき
-        //    if (m_JackState.GetState() == BallState.Stop)
-        //    {
-
-        //    }
-        //}
     }
 
     //シーン上にジャックボールがあるかどうか
