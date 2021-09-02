@@ -18,12 +18,30 @@ public class JackBallScript : MonoBehaviour
     private Rigidbody m_rigidbody;
     private Vector3 m_moveSpeed;
     private BallStateScript m_BallStateScript;
+    private GameObject m_GameFlow = null;
+    private TeamFlowScript m_TeamFlow = null;
     // Start is called before the first frame update
     void Start()
     {
         m_BallStateScript = GetComponent<BallStateScript>();
         //RigidBodyを取得
         m_rigidbody = GetComponent<Rigidbody>();
+        m_GameFlow = GameObject.Find("GameFlow");
+        if(m_GameFlow == null)
+        {
+            //インスタンスが作成されていないとき
+            Debug.LogError("エラー：GameFlowのインスタンスが作成されていません。");
+        }
+        else
+        {
+            //TeamFlowScriptコンポーネントを取得
+            m_TeamFlow = m_GameFlow.GetComponent<TeamFlowScript>();
+            if (m_TeamFlow == null)
+            {
+                //TeamFlowScriptコンポーネントが取得できなかったとき
+                Debug.LogError("エラー：TeamFlowScriptコンポーネントの取得に失敗しました。");
+            }
+        }
 
     }
 
@@ -40,6 +58,9 @@ public class JackBallScript : MonoBehaviour
         //transformから座標を取得
         m_pos = myTrans.position;
 
+        //ジャックボールの状態をTeamFlowに保存
+        m_TeamFlow.SetJackState(m_state);
+
         switch (m_state)
         {
             case BallState.Move:
@@ -48,7 +69,6 @@ public class JackBallScript : MonoBehaviour
                     //範囲外のため急激に止める
                     m_rigidbody.velocity += m_moveSpeed * -0.5f * Time.deltaTime;
                 }
-
                 break;
 
             case BallState.Stop:
@@ -62,6 +82,9 @@ public class JackBallScript : MonoBehaviour
                 }
                 //速度を0にセット
                 m_rigidbody.velocity = Vector3.zero;
+
+                //TeamFlowにジャックボールの位置を保存
+                m_TeamFlow.SetJackPos(m_pos);
 
                 break;
         }
