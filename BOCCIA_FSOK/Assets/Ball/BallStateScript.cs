@@ -14,13 +14,11 @@ public class BallStateScript : MonoBehaviour
     private Rigidbody m_rigidbody;
     public float m_BorderSpeed = 0.005f;        //~‚Ü‚Á‚Ä‚¢‚é‚©‚ÌŠî€‚Æ‚È‚é‘¬“x
     private Vector3 m_moveSpeed = Vector3.zero;     //ˆÚ“®‘¬“x
-
     // Start is called before the first frame update
     void Start()
     {
         //RigidBody‚ğæ“¾
         m_rigidbody = GetComponent<Rigidbody>();
-
     }
 
     // Update is called once per frame
@@ -55,5 +53,6 @@ public class BallStateScript : MonoBehaviour
     {
         return m_moveSpeed;
     }
+
 
 }

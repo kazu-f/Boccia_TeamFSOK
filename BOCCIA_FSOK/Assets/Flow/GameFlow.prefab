@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2855252362594092682}
   - component: {fileID: 2855252362594092683}
   - component: {fileID: -5376873143402091734}
+  - component: {fileID: 6728985110788585793}
   m_Layer: 0
   m_Name: GameFlow
   m_TagString: Untagged
@@ -56,4 +57,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 671a5540383451042ad9babe12b60ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_team: 3
+  m_NextTeam: 3
+--- !u!114 &6728985110788585793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2855252362594092684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b59102645adc0f4c9c90609f7d59055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
