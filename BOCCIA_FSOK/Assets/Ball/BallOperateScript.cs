@@ -45,7 +45,8 @@ public class BallOperateScript : MonoBehaviour
             Debug.LogError("エラー：Rigidbodyコンポーネントの取得に失敗しました。");
         }
 
-        AddForce(Vector3.zero);
+        //AddForce(Vector3.zero);
+        m_TeamFlow.DecreaseBalls();
     }
 
     // Update is called once per frame

@@ -9,11 +9,16 @@ public class TeamFlowScript : MonoBehaviour
     private GameObject m_Jack = null;
     private BallState m_JackState = BallState.Num;
     private Vector3 m_JackPos = Vector3.zero;
+    private Vector2Int m_RemainBalls = Vector2Int.one;
+    private int m_Remain = 6;
+    private GameFlowScript m_GameFlowScript = null;
     // Start is called before the first frame update
     void Start()
     {
         m_NextTeam = Team.Jack;
         m_BallFlow = GetComponent<BallFlowScript>();
+        m_RemainBalls *= m_Remain;
+        m_GameFlowScript = GetComponent<GameFlowScript>();
     }
 
     // Update is called once per frame
@@ -51,7 +56,7 @@ public class TeamFlowScript : MonoBehaviour
                 break;
 
             case Team.Num:
-                Debug.Log("ボールが動いているのでまだ投げれません");
+                Debug.Log("次にボールを投げるチームが決まっていません");
                 break;
         }
     }
@@ -111,6 +116,22 @@ public class TeamFlowScript : MonoBehaviour
             m_NextTeam = Team.Red;
         }
 
+        if(m_RemainBalls.x == 0 && m_RemainBalls.y == 0)
+        {
+            //両方投げ終わっているのでゲームエンド
+            m_GameFlowScript.GameEnd();
+        }
+        else if(m_RemainBalls.x == 0)
+        {
+            //赤チームが投げ終わっているので次は青チーム
+            m_NextTeam = Team.Blue;
+        }
+        else if(m_RemainBalls.y == 0)
+        {
+            //青チームが投げ終わっているので次は赤チーム
+            m_NextTeam = Team.Red;
+        }
+
         return true;
     }
 
@@ -132,4 +153,25 @@ public class TeamFlowScript : MonoBehaviour
         m_JackPos = pos;
     }
 
+    /// <summary>
+    /// 残りの球数を減らす
+    /// </summary>
+    public void DecreaseBalls()
+    {
+        switch (m_NextTeam)
+        {
+            case Team.Red:
+                //次のチームが赤の場合xを減らす
+                m_RemainBalls.x--;
+                break;
+
+            case Team.Blue:
+                //次のチームが青の場合yを減らす
+                m_RemainBalls.y--;
+                break;
+
+            default:
+                break;
+        }
+    }
 }
