@@ -17,6 +17,9 @@ public class GameFlowScript : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// ゲーム終了のフラグを立てる
+    /// </summary>
     public void GameEnd()
     {
         m_IsEnd = true;

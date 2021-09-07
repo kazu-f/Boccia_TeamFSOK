@@ -45,7 +45,7 @@ public class BallOperateScript : MonoBehaviour
             Debug.LogError("エラー：Rigidbodyコンポーネントの取得に失敗しました。");
         }
 
-        //AddForce(Vector3.zero);
+        //AddForce(new Vector3(10.0f,0.0f,0.0f));
         m_TeamFlow.DecreaseBalls();
     }
 
@@ -69,5 +69,6 @@ public class BallOperateScript : MonoBehaviour
     {
         //速度を加算
         m_rigidbody.AddForce(speed);
+        m_TeamFlow.SetMove();
     }
 }

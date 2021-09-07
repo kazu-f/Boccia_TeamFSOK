@@ -12,6 +12,8 @@ public class TeamFlowScript : MonoBehaviour
     private Vector2Int m_RemainBalls = Vector2Int.one;
     private int m_Remain = 6;
     private GameFlowScript m_GameFlowScript = null;
+    private bool m_IsMoving = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +26,12 @@ public class TeamFlowScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(m_IsMoving == true)
+        {
+            Debug.Log("ボールが動いています");
+            return;
+        }
+
         //次に投げるチームによって処理を変える
         switch(m_NextTeam)
         {
@@ -91,6 +99,7 @@ public class TeamFlowScript : MonoBehaviour
             }
         }
         //全ての球が止まっていたので計算を続ける
+        m_IsMoving = false;
         int NearestBallNum = 0;
         float NearestDist = 10000;
         for(int ballnum = 0; ballnum < m_balls.Length;ballnum++)
@@ -173,5 +182,22 @@ public class TeamFlowScript : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// ボールが動いているかを取得
+    /// </summary>
+    /// <returns></returns>
+    public bool GetIsMoving()
+    {
+        return m_IsMoving;
+    }
+
+    /// <summary>
+    /// ボールが動いているフラグを立てる
+    /// </summary>
+    public void SetMove()
+    {
+        m_IsMoving = true;
     }
 }
