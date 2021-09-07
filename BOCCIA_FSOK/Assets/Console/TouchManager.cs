@@ -84,14 +84,14 @@ public class TouchManager : MonoBehaviour
         }
         else
         {
-            if (Input.touchCount > 0)
+            if (Input.touchCount == 1)
             {
                 Touch touch = Input.GetTouch(0);
                 this.m_touchPos = touch.position;   //タッチ座標。
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
                 //スクリーン上での位置。
-                this.m_touchPosInScreen.x = touch.position.x / Screen.width;
-                this.m_touchPosInScreen.y = touch.position.y / Screen.height;
+                this.m_touchPosInScreen.x = m_touchPos.x / canvasRect.sizeDelta.x + 0.5f;
+                this.m_touchPosInScreen.y = m_touchPos.y / canvasRect.sizeDelta.y + 0.5f;
                 this.m_deltaPos = touch.deltaPosition;  //1フレームでの移動量。
                 //スクリーン上での1フレームでの移動量。
                 this.m_deltaPosInScreen.x = touch.deltaPosition.x / Screen.width;
