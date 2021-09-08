@@ -14,7 +14,10 @@ public class GameFlowScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CalcScore();
+        if (m_IsEnd)
+        {
+            CalcScore();
+        }
     }
 
     /// <summary>
