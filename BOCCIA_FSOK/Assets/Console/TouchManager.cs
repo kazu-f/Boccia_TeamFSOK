@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TouchManager : MonoBehaviour
 {
     public Canvas canvas;
     RectTransform canvasRect;
-    bool m_isTouch = false;      //タッチしているか？
     Vector2 m_touchPos = new Vector2(0, 0);          //座標。
     Vector2 m_touchPosInScreen = new Vector2(0, 0);          //スクリーン上での座標。
     Vector2 m_oldPos = new Vector2(0, 0);          //前フレームの座標。
     Vector2 m_deltaPos = new Vector2(0, 0);         //前フレーム座標からの差分。
     Vector2 m_deltaPosInScreen = new Vector2(0, 0);         //スクリーン上での前フレーム座標からの差分。
     TouchPhase m_touchPhase = TouchPhase.Began;     //状態。
+    bool m_isTouch = false;      //タッチしているか？
+    bool m_isOnUI = false;       //UIを触っているか？
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,11 @@ public class TouchManager : MonoBehaviour
     public void Update()
     {
         this.m_isTouch = false;
+        if(IsOnUI())
+        {
+            //UIを触っている。
+            m_isOnUI = true;
+        }
 
         // エディタ
         if (Application.isEditor)
@@ -62,7 +69,7 @@ public class TouchManager : MonoBehaviour
                 }
             }
 
-            if (this.m_isTouch)
+            if (this.m_isTouch && !m_isOnUI)
             {
                 m_deltaPos = m_touchPos - m_oldPos;
                 m_oldPos = m_touchPos;
@@ -80,25 +87,36 @@ public class TouchManager : MonoBehaviour
                 m_touchPos = m_oldPos;
             }
 
-            // 端末
         }
         else
         {
+            // 端末
             if (Input.touchCount == 1)
             {
                 Touch touch = Input.GetTouch(0);
-                this.m_touchPos = touch.position;   //タッチ座標。
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
-                //スクリーン上での位置。
-                this.m_touchPosInScreen.x = m_touchPos.x / canvasRect.sizeDelta.x + 0.5f;
-                this.m_touchPosInScreen.y = m_touchPos.y / canvasRect.sizeDelta.y + 0.5f;
-                this.m_deltaPos = touch.deltaPosition;  //1フレームでの移動量。
-                //スクリーン上での1フレームでの移動量。
-                this.m_deltaPosInScreen.x = touch.deltaPosition.x / Screen.width;
-                this.m_deltaPosInScreen.y = touch.deltaPosition.y / Screen.height;
                 this.m_touchPhase = touch.phase;    //タッチ状態。
-                this.m_isTouch = true;              //タッチしている。
+                {
+                    this.m_touchPos = touch.position;   //タッチ座標。
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
+                    //スクリーン上での位置。
+                    this.m_touchPosInScreen.x = m_touchPos.x / canvasRect.sizeDelta.x + 0.5f;
+                    this.m_touchPosInScreen.y = m_touchPos.y / canvasRect.sizeDelta.y + 0.5f;
+                    this.m_deltaPos = touch.deltaPosition;  //1フレームでの移動量。
+                                                            //スクリーン上での1フレームでの移動量。
+                    this.m_deltaPosInScreen.x = touch.deltaPosition.x / Screen.width;
+                    this.m_deltaPosInScreen.y = touch.deltaPosition.y / Screen.height;
+                    this.m_isTouch = true;              //タッチしている。
+                }
             }
+            else
+            {
+                m_touchPhase = TouchPhase.Ended;
+            }
+        }
+        //タッチが終わればUIを触っていないことになる。
+        if(m_touchPhase == TouchPhase.Ended)
+        {
+            m_isOnUI = false;
         }
     }
     /// <summary>
@@ -145,5 +163,18 @@ public class TouchManager : MonoBehaviour
     public bool IsTouch()
     {
         return m_isTouch;
+    }
+
+    public static bool IsOnUI()
+    {
+        PointerEventData pointer = new PointerEventData(EventSystem.current);
+#if UNITY_EDITOR
+        pointer.position = Input.mousePosition;
+#else
+        pointer.position = Input.GetTouch(0).position;
+#endif
+        List<RaycastResult> result = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointer, result);
+        return result.Count > 0;
     }
 }
