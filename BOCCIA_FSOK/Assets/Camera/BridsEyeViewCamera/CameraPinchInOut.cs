@@ -28,8 +28,6 @@ public class CameraPinchInOut : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //m_time += Time.deltaTime;
-        //camera.orthographicSize = Mathf.Abs(Mathf.Sin(m_time) * maxOrthographicSize);
         TouchPinchInOut();
     }
 
@@ -38,8 +36,6 @@ public class CameraPinchInOut : MonoBehaviour
         //2点タッチの時のみ処理を行う。
         if (Input.touchCount == 2)
         {
-            //oldSize = m_orthographicSize;
-
             // タッチしている２点を取得
             Touch touch1 = Input.GetTouch(0);
             Touch touch2 = Input.GetTouch(1);
@@ -80,10 +76,5 @@ public class CameraPinchInOut : MonoBehaviour
     {
         //線形補間でサイズを決める。
         camera.orthographicSize = Mathf.Lerp(maxOrthographicSize, minOrthographicSize, scale); 
-    }
-
-    void CameraMove()
-    {
-
     }
 }

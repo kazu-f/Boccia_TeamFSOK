@@ -113,6 +113,10 @@ public class TouchManager : MonoBehaviour
                 m_touchPhase = TouchPhase.Ended;
             }
         }
+        if(m_isOnUI)
+        {
+            m_isTouch = false;
+        }
         //タッチが終わればUIを触っていないことになる。
         if(m_touchPhase == TouchPhase.Ended)
         {

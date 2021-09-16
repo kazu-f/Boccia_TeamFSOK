@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwitchActive : MonoBehaviour
 {
-    public bool m_isActive = true;
+    public bool m_isActive{ get; set; } = true;
     // Start is called before the first frame update
     void Start()
     {

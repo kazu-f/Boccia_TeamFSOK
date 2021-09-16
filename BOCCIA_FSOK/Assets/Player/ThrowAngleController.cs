@@ -46,5 +46,13 @@ namespace BocciaPlayer
         {
             this.enabled = false;
         }
+
+        //このプレイヤーの位置に座標を合わせる。
+        public void ChangeCamPos()
+        {
+            playerCamera.transform.position = this.transform.position;
+            playerCamera.transform.eulerAngles = Vector3.zero;
+            this.transform.eulerAngles = Vector3.zero;
+        }
     }
 }
