@@ -27,12 +27,12 @@ public class TouchManager : MonoBehaviour
     /// </summary>
     public void Update()
     {
-        this.m_isTouch = false;
-        if(IsOnUI())
+        if(IsOnUI() && !m_isTouch)
         {
             //UIを触っている。
             m_isOnUI = true;
         }
+        this.m_isTouch = false;
 
         // エディタ
         if (Application.isEditor)
