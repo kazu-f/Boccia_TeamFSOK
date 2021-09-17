@@ -41,7 +41,7 @@ public class TeamFlowScript : MonoBehaviour
                 if (m_BallFlow.IsPreparedJack())
                 {
                     //ジャックボールを取得
-                    m_Jack = GameObject.Find("JackBall");
+                    m_Jack = GameObject.FindGameObjectWithTag("Jack");
                     if (m_Jack == null)
                     {
                         //インスタンスの取得に失敗したとき

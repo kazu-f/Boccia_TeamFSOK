@@ -101,7 +101,6 @@ namespace BocciaPlayer
         {
             var ballPos = this.transform.position;
             ballPos.y *= m_touchStartPos.y;
-            //var obj = Instantiate(ball, ballPos, this.transform.rotation);
 
             //現在投げるボールを取得する。
             var obj = ballHolder.GetCurrentBall();
@@ -111,13 +110,13 @@ namespace BocciaPlayer
             obj.transform.rotation = this.transform.rotation;
 
             //ボールに投げる力を加える。
-            Rigidbody ballRB = obj.GetComponent<Rigidbody>();
+            var ballOperate = obj.GetComponent<BallOperateScript>();
             Vector3 vec = bocciaPlayer.transform.forward;       //プレイヤーの前方向を取る。
             vec.x *= MAX_THROW_POW * m_throwPow;
             vec.z *= MAX_THROW_POW * m_throwPow;
             vec.y = 10.0f;
 
-            ballRB.AddForce(vec);
+            ballOperate.AddForce(vec);
 
             m_isThrowing = true;
 

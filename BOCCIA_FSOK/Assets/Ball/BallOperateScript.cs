@@ -65,7 +65,7 @@ public class BallOperateScript : MonoBehaviour
     /// リジッドボディに速度を加算
     /// </summary>
     /// <param name="speed">加算する速度</param>
-    void AddForce(Vector3 speed)
+    public void AddForce(Vector3 speed)
     {
         //速度を加算
         m_rigidbody.AddForce(speed);

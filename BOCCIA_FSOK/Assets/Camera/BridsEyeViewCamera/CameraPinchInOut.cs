@@ -15,7 +15,6 @@ public class CameraPinchInOut : MonoBehaviour
     float currentScale = 0.5f;
     float scale = 0.0f;
 
-    float m_time = 0.0f;
     // Start is called before the first frame update
     void Start()
     {

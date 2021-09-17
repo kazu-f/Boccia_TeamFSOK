@@ -74,4 +74,9 @@ public class CameraMove2D : MonoBehaviour
 
         camera.transform.position = position;
     }
+
+    public bool IsMoved()
+    {
+        return isMove;
+    }
 }
