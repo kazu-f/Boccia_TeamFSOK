@@ -23,8 +23,6 @@ namespace BocciaPlayer
             {
                 //ボールを生成。
                 teamBalls[i] = Instantiate(ballObj);
-                //親をこのオブジェクトに設定する。
-                teamBalls[i].transform.parent = this.gameObject.transform;
                 //まだ投げないため有効フラグを消す。
                 teamBalls[i].SetActive(false);
             }

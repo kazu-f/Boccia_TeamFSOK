@@ -242,6 +242,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2017810018}
+        m_TargetAssemblyTypeName: ActiveTeamController, Assembly-CSharp
+        m_MethodName: SwichActiveThrow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &137283088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,7 +305,7 @@ GameObject:
   - component: {fileID: 185048260}
   m_Layer: 5
   m_Name: Handle
-  m_TagString: Untagged
+  m_TagString: uGUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -464,7 +476,7 @@ GameObject:
   - component: {fileID: 568296228}
   m_Layer: 5
   m_Name: Fill Area
-  m_TagString: Untagged
+  m_TagString: uGUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -502,7 +514,7 @@ GameObject:
   - component: {fileID: 632526191}
   m_Layer: 5
   m_Name: Background
-  m_TagString: Untagged
+  m_TagString: uGUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -575,7 +587,7 @@ GameObject:
   - component: {fileID: 660710104}
   m_Layer: 5
   m_Name: Handle Slide Area
-  m_TagString: Untagged
+  m_TagString: uGUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1053,7 +1065,7 @@ GameObject:
   - component: {fileID: 1663408631}
   m_Layer: 5
   m_Name: Fill
-  m_TagString: Untagged
+  m_TagString: uGUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1205,7 +1217,19 @@ MonoBehaviour:
   m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2129186694}
+        m_TargetAssemblyTypeName: CameraPinchInOut, Assembly-CSharp
+        m_MethodName: SliderPinchInOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1682582091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1218,7 +1242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0e39868fcaf4b448175c17d170bf59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_isActive: 1
+  m_isActive: 0
 --- !u!1 &1793699768 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6392140987457742130, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
@@ -1642,7 +1666,7 @@ GameObject:
   - component: {fileID: 2112305671}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
+  m_TagString: uGUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1708,3 +1732,14 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2112305669}
   m_CullTransparentMesh: 1
+--- !u!114 &2129186694 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2573021026033543460, guid: aece206e88d6b104ca006510022428e3, type: 3}
+  m_PrefabInstance: {fileID: 872615295}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9b42029a25e184eb2aa24d6cf1da34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

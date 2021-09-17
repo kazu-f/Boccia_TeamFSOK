@@ -25,15 +25,14 @@ namespace BocciaPlayer
         //定数。
         const float FLICK_POWER = 0.005f;       //フリック判定用の定数。
         const float MAX_THROW_POW = 300.0f;
-
-        // Start is called before the first frame update
-        void Start()
+        //インスタンス生成時に呼ばれる。
+        private void Awake()
         {
             //投げゲージ作成。
             throwGauge = Instantiate(throwGaugePrefab);
             //ゲージの親をキャンバスにする。
             var canvas = touchManager.GetCanvas();
-            throwGauge.transform.parent = canvas.transform;
+            throwGauge.transform.SetParent(canvas.transform);
 
             //マテリアルの取得。。
             var image = throwGauge.GetComponent<Image>();
@@ -45,6 +44,11 @@ namespace BocciaPlayer
             m_gaugeSize.y = m_gaugeTransform.rect.height * m_gaugeTransform.localScale.y / canvasRect.sizeDelta.y;
 
             throwGauge.SetActive(false);
+            
+        }
+        // Start is called before the first frame update
+        void Start()
+        {
         }
 
         // Update is called once per frame

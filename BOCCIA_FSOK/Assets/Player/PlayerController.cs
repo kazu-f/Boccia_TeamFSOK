@@ -13,12 +13,17 @@ namespace BocciaPlayer
 
         public bool isThrowBallNone { get; set; } = false;   //ボールを投げ切ったかどうかのフラグ。trueで投げ切った。
 
-        // Start is called before the first frame update
-        void Start()
+        private void Awake()
         {
             //タッチ情報を持つインスタンスを渡す。
             throwBallControler.SetTouchManager(touchManager);
             throwAngleController.SetTouchManager(touchManager);
+            throwBallControler.ThrowBallDisable();
+            throwAngleController.ThrowAngleDisable();
+        }
+        // Start is called before the first frame update
+        void Start()
+        {
         }
 
         // Update is called once per frame
@@ -47,10 +52,14 @@ namespace BocciaPlayer
             }
         }
 
-        public void SwitchPlayer()
+        public void SwitchPlayer(bool isEnable)
         {
-            //プレイヤーが切り替わる時にカメラの位置を合わせる。
-            throwAngleController.ChangeCamPos();
+            if(isEnable == true && this.enabled != isEnable)
+            {
+                //プレイヤーが切り替わる時にカメラの位置を合わせる。
+                throwAngleController.ChangeCamPos();
+            }
+            this.enabled = isEnable;
         }
 
         /// <summary>

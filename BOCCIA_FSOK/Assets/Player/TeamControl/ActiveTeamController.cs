@@ -54,16 +54,16 @@ public class ActiveTeamController : MonoBehaviour
 
                 break;
             case ThrowTeamState.throwFirstBall:
-                if (TeamFlow.CalucNextTeam())
+                if (!TeamFlow.GetIsMoving())
                 {
                     throwState = ThrowTeamState.throwAnyBall;
                 }
 
                 break;
             case ThrowTeamState.throwAnyBall:
-                if (TeamFlow.CalucNextTeam())
+                if (!TeamFlow.GetIsMoving())
                 {
-                    currentTeam = TeamFlow.m_NextTeam;
+                    currentTeam = TeamFlow.GetNowTeam();
                     ChangeActivePlayer();
                 }
 
@@ -106,28 +106,40 @@ public class ActiveTeamController : MonoBehaviour
         if (currentTeam == Team.Red)
         {
             RedTeamPlayer.SetActive(true);
-            RedPlayerCon.enabled = true;
+            RedPlayerCon.SwitchPlayer(true);
             BlueTeamPlayer.SetActive(false);
-            BluePlayerCon.enabled = false;
-            RedPlayerCon.SwitchPlayer();
+            BluePlayerCon.SwitchPlayer(false);
         }
-        else
+        else if (currentTeam == Team.Blue)
         {
             RedTeamPlayer.SetActive(false);
-            RedPlayerCon.enabled = false;
+            RedPlayerCon.SwitchPlayer(false);
             BlueTeamPlayer.SetActive(true);
-            BluePlayerCon.enabled = true;
-            BluePlayerCon.SwitchPlayer();
+            BluePlayerCon.SwitchPlayer(true);
         }
     }
     /// <summary>
     /// プレイヤーを止める。
     /// </summary>
-    public void StopThrow()
+    void StopThrow()
     {
         RedTeamPlayer.SetActive(false);
         RedPlayerCon.enabled = false;
         BlueTeamPlayer.SetActive(false);
         BluePlayerCon.enabled = false;
+    }
+
+    public void SwichActiveThrow()
+    {
+        if (this.gameObject.activeSelf)
+        {
+            StopThrow();
+            this.gameObject.SetActive(false);
+        }
+        else
+        {
+            ChangeActivePlayer();
+            this.gameObject.SetActive(true);
+        }
     }
 }
