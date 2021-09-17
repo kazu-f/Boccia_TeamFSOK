@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwitchActive : MonoBehaviour
 {
-    public bool m_isActive{ get; set; } = true;
+    public bool m_isActive = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,5 +24,10 @@ public class SwitchActive : MonoBehaviour
     {
         m_isActive = true ^ m_isActive;
         this.gameObject.SetActive(m_isActive);
+    }
+    //アクティブかどうか？
+    public bool IsActive()
+    {
+        return m_isActive;
     }
 }

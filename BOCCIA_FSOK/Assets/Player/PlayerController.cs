@@ -11,11 +11,14 @@ namespace BocciaPlayer
         public ThrowAngleController throwAngleController;
         private Vector2 m_touchStartPos = new Vector2(0.0f,0.0f);     //触り始めた座標。
 
+        public bool isThrowBallNone { get; set; } = false;   //ボールを投げ切ったかどうかのフラグ。trueで投げ切った。
+
         // Start is called before the first frame update
         void Start()
         {
-            throwBallControler.enabled = false;
-            throwAngleController.enabled = false;
+            //タッチ情報を持つインスタンスを渡す。
+            throwBallControler.SetTouchManager(touchManager);
+            throwAngleController.SetTouchManager(touchManager);
         }
 
         // Update is called once per frame
@@ -43,6 +46,13 @@ namespace BocciaPlayer
                 throwAngleController.ThrowAngleDisable();
             }
         }
+
+        public void SwitchPlayer()
+        {
+            //プレイヤーが切り替わる時にカメラの位置を合わせる。
+            throwAngleController.ChangeCamPos();
+        }
+
         /// <summary>
         /// ボールを投げたか？
         /// </summary>

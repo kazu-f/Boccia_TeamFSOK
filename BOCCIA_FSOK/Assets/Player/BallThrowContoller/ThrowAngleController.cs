@@ -6,7 +6,7 @@ namespace BocciaPlayer
 {
     public class ThrowAngleController : MonoBehaviour
     {
-        public TouchManager touchManager;
+        TouchManager touchManager;
         public GameObject playerCamera;
         public GameObject bocciaPlayer;
         public float angleSpeed = 20.0f;
@@ -53,6 +53,12 @@ namespace BocciaPlayer
             playerCamera.transform.position = this.transform.position;
             playerCamera.transform.eulerAngles = Vector3.zero;
             this.transform.eulerAngles = Vector3.zero;
+        }
+
+        //タッチマネージャーを取得。
+        public void SetTouchManager(TouchManager manager)
+        {
+            touchManager = manager;
         }
     }
 }

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ball
   - Jack
+  - uGUI
+  - GameFlow
   layers:
   - Default
   - TransparentFX

@@ -1,5 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1678605948417429217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1416949284696655754}
+  - component: {fileID: 8747469215499163124}
+  m_Layer: 0
+  m_Name: BallHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1416949284696655754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678605948417429217}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1146237444483529488}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8747469215499163124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678605948417429217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0794f0de9cc751d4eb6c3adf645553af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballObj: {fileID: 0}
+  jackBallObj: {fileID: 698151124280047581, guid: 1db618dfba427644e87299e3c1e419c3, type: 3}
+  ballCount: 6
 --- !u!1 &6392140987457742130
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,9 +55,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1146237444483529488}
-  - component: {fileID: 1081671311465322976}
-  - component: {fileID: 8436614249491497031}
-  - component: {fileID: 668717317917439851}
+  - component: {fileID: 6822392042498549539}
   - component: {fileID: 3399806723601023566}
   m_Layer: 0
   m_Name: Player
@@ -30,11 +74,13 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 917696486980109764}
+  - {fileID: 1416949284696655754}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1081671311465322976
+--- !u!114 &6822392042498549539
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,41 +93,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchManager: {fileID: 0}
-  throwBallControler: {fileID: 8436614249491497031}
-  throwAngleController: {fileID: 668717317917439851}
---- !u!114 &8436614249491497031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6392140987457742130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54a1f39ecd2c96343be2806dac283ef3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  touchManager: {fileID: 0}
-  bocciaPlayer: {fileID: 6392140987457742130}
-  ball: {fileID: 0}
-  throwGauge: {fileID: 0}
-  canvasRect: {fileID: 0}
---- !u!114 &668717317917439851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6392140987457742130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97da6f3033f9fd4429d2d8afbad0de26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  touchManager: {fileID: 0}
-  playerCamera: {fileID: 0}
-  bocciaPlayer: {fileID: 6392140987457742130}
-  angleSpeed: 90
+  throwBallControler: {fileID: 6164697163421562104}
+  throwAngleController: {fileID: 1378115186210021929}
 --- !u!114 &3399806723601023566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,3 +107,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0e39868fcaf4b448175c17d170bf59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_isActive: 1
+--- !u!1 &8048619873008285623
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 917696486980109764}
+  - component: {fileID: 6164697163421562104}
+  - component: {fileID: 1378115186210021929}
+  m_Layer: 0
+  m_Name: BallThrowController
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &917696486980109764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8048619873008285623}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1146237444483529488}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6164697163421562104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8048619873008285623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a1f39ecd2c96343be2806dac283ef3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballHolder: {fileID: 8747469215499163124}
+  bocciaPlayer: {fileID: 6392140987457742130}
+  throwGaugePrefab: {fileID: 5080713704806043709, guid: dda662f78e2581f4b983b4c9f2e200da, type: 3}
+--- !u!114 &1378115186210021929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8048619873008285623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97da6f3033f9fd4429d2d8afbad0de26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
+  bocciaPlayer: {fileID: 6392140987457742130}
+  angleSpeed: 90
