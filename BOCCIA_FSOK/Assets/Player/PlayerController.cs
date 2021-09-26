@@ -6,7 +6,7 @@ namespace BocciaPlayer
 {
     public class PlayerController : MonoBehaviour
     {
-        public TouchManager touchManager;
+        private TouchManager touchManager;
         public ThrowBallControler throwBallControler;
         public ThrowAngleController throwAngleController;
         private Vector2 m_touchStartPos = new Vector2(0.0f,0.0f);     //触り始めた座標。
@@ -15,6 +15,7 @@ namespace BocciaPlayer
 
         private void Awake()
         {
+            touchManager = TouchManager.GetInstance();
             //タッチ情報を持つインスタンスを渡す。
             throwBallControler.SetTouchManager(touchManager);
             throwAngleController.SetTouchManager(touchManager);

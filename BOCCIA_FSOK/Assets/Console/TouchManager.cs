@@ -17,6 +17,34 @@ public class TouchManager : MonoBehaviour
     bool m_isTouch = false;      //タッチしているか？
     bool m_isOnUI = false;       //UIを触っているか？
 
+    private static TouchManager instance = null;        //インスタンス変数。
+    public static TouchManager GetInstance()
+    {
+        if(instance == null)
+        {
+            Debug.LogError("TouchManagerが生成されていない。");
+        }
+        return instance;
+    }
+
+    private void Awake()
+    {
+        // もしインスタンスが存在するなら、自らを破棄する
+        if (instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        // 破棄時に、登録した実体の解除を行う
+        if (this == instance) instance = null;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,83 +63,78 @@ public class TouchManager : MonoBehaviour
         this.m_isTouch = false;
 
         // エディタ
-        if (Application.isEditor)
+#if UNITY_EDITOR
+        // 座標取得
+        this.m_touchPos = Input.mousePosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
+
+        // 押した瞬間
+        if (Input.GetMouseButtonDown(0))
         {
-            // 座標取得
-            this.m_touchPos = Input.mousePosition;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
-
-            // 押した瞬間
-            if (Input.GetMouseButtonDown(0))
+            this.m_isTouch = true;
+            this.m_touchPhase = TouchPhase.Began;
+        }
+        // 離した瞬間
+        else if (Input.GetMouseButtonUp(0))
+        {
+            this.m_isTouch = true;
+            this.m_touchPhase = TouchPhase.Ended;
+        }
+        // 押しっぱなし
+        else if (Input.GetMouseButton(0))
+        {
+            this.m_isTouch = true;
+            if (m_oldPos == m_touchPos)
             {
-                this.m_isTouch = true;
-                this.m_touchPhase = TouchPhase.Began;
-            }
-
-            // 離した瞬間
-            else if (Input.GetMouseButtonUp(0))
-            {
-                this.m_isTouch = true;
-                this.m_touchPhase = TouchPhase.Ended;
-            }
-
-            // 押しっぱなし
-            else if (Input.GetMouseButton(0))
-            {
-                this.m_isTouch = true;
-                if(m_oldPos == m_touchPos)
-                {
-                    this.m_touchPhase = TouchPhase.Stationary;
-                }
-                else
-                {
-                    this.m_touchPhase = TouchPhase.Moved;
-                }
-            }
-
-            if (this.m_isTouch && !m_isOnUI)
-            {
-                m_deltaPos = m_touchPos - m_oldPos;
-                m_oldPos = m_touchPos;
-                //スクリーン上での位置。
-                this.m_touchPosInScreen.x = m_touchPos.x / canvasRect.sizeDelta.x + 0.5f;
-                this.m_touchPosInScreen.y = m_touchPos.y / canvasRect.sizeDelta.y + 0.5f;
-                //スクリーン上での1フレームでの移動量。
-                this.m_deltaPosInScreen.x = m_deltaPos.x / Screen.width;
-                this.m_deltaPosInScreen.y = m_deltaPos.y / Screen.height;
+                this.m_touchPhase = TouchPhase.Stationary;
             }
             else
             {
-                m_touchPos = m_oldPos;
+                this.m_touchPhase = TouchPhase.Moved;
             }
+        }
 
+        if (this.m_isTouch && !m_isOnUI)
+        {
+            m_deltaPos = m_touchPos - m_oldPos;
+            m_oldPos = m_touchPos;
+            //スクリーン上での位置。
+            this.m_touchPosInScreen.x = m_touchPos.x / canvasRect.sizeDelta.x + 0.5f;
+            this.m_touchPosInScreen.y = m_touchPos.y / canvasRect.sizeDelta.y + 0.5f;
+            //スクリーン上での1フレームでの移動量。
+            this.m_deltaPosInScreen.x = m_deltaPos.x / Screen.width;
+            this.m_deltaPosInScreen.y = m_deltaPos.y / Screen.height;
         }
         else
         {
-            // 端末
-            if (Input.touchCount == 1)
+            m_touchPos = m_oldPos;
+        }
+#else
+
+        // 端末
+        if (Input.touchCount == 1 && !m_isOnUI)
+        {
+            Touch touch = Input.GetTouch(0);
+            this.m_touchPhase = touch.phase;    //タッチ状態。
             {
-                Touch touch = Input.GetTouch(0);
-                this.m_touchPhase = touch.phase;    //タッチ状態。
-                {
-                    this.m_touchPos = touch.position;   //タッチ座標。
-                    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
-                    //スクリーン上での位置。
-                    this.m_touchPosInScreen.x = m_touchPos.x / canvasRect.sizeDelta.x + 0.5f;
-                    this.m_touchPosInScreen.y = m_touchPos.y / canvasRect.sizeDelta.y + 0.5f;
-                    this.m_deltaPos = touch.deltaPosition;  //1フレームでの移動量。
-                                                            //スクリーン上での1フレームでの移動量。
-                    this.m_deltaPosInScreen.x = touch.deltaPosition.x / Screen.width;
-                    this.m_deltaPosInScreen.y = touch.deltaPosition.y / Screen.height;
-                    this.m_isTouch = true;              //タッチしている。
-                }
-            }
-            else
-            {
-                m_touchPhase = TouchPhase.Ended;
+                this.m_touchPos = touch.position;   //タッチ座標。
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
+                //スクリーン上での位置。
+                this.m_touchPosInScreen.x = m_touchPos.x / canvasRect.sizeDelta.x + 0.5f;
+                this.m_touchPosInScreen.y = m_touchPos.y / canvasRect.sizeDelta.y + 0.5f;
+                this.m_deltaPos = touch.deltaPosition;  //1フレームでの移動量。
+                                                        //スクリーン上での1フレームでの移動量。
+                this.m_deltaPosInScreen.x = touch.deltaPosition.x / Screen.width;
+                this.m_deltaPosInScreen.y = touch.deltaPosition.y / Screen.height;
+                this.m_isTouch = true;              //タッチしている。
             }
         }
-        if(m_isOnUI)
+        else
+        {
+            m_touchPhase = TouchPhase.Ended;
+        }
+#endif
+        if (m_isOnUI)
         {
             m_isTouch = false;
         }
