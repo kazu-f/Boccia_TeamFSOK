@@ -9,6 +9,7 @@ public class BallOperateScript : MonoBehaviour
     private bool m_IsCalculated = false;
     private GameObject m_Flow = null;       //ゲームの流れ全体をコントロールするオブジェクト
     private TeamFlowScript m_TeamFlow = null;
+    private bool IsThrow = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,7 +53,7 @@ public class BallOperateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(m_IsCalculated == false)
+        if(m_IsCalculated == false && IsThrow == true)
         {
             if(m_StateScript.GetState() == BallState.Stop)
             {
@@ -70,5 +71,6 @@ public class BallOperateScript : MonoBehaviour
         //速度を加算
         m_rigidbody.AddForce(speed);
         m_TeamFlow.SetMove();
+        IsThrow = true;
     }
 }

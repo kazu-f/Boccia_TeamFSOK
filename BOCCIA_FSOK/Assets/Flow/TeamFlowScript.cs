@@ -89,7 +89,13 @@ public class TeamFlowScript : MonoBehaviour
         //ballというタグのついたゲームオブジェクトを配列に入れる
         GameObject[] m_balls;
         m_balls = GameObject.FindGameObjectsWithTag("Ball");
-        for(int ballnum = 0; ballnum < m_balls.Length; ballnum++)
+        if (m_balls.Length == 0)
+        {
+            m_NextTeam = Team.Red;
+            return true;
+        }
+
+        for (int ballnum = 0; ballnum < m_balls.Length; ballnum++)
         {
             if(m_balls[ballnum].GetComponent<BallStateScript>().GetState() != BallState.Stop)
             {
