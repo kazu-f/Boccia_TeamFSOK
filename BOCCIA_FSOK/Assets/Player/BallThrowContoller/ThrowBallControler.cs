@@ -28,6 +28,7 @@ namespace BocciaPlayer
         //インスタンス生成時に呼ばれる。
         private void Awake()
         {
+            touchManager = TouchManager.GetInstance();
             //投げゲージ作成。
             throwGauge = Instantiate(throwGaugePrefab);
             //ゲージの親をキャンバスにする。
@@ -91,6 +92,7 @@ namespace BocciaPlayer
                     {
                         m_isThrowing = false;
                     }
+                    throwGauge.SetActive(false);
                 }
                 m_gaugeImageMat.SetFloat("_ThrowPow", m_throwPow);
             }
@@ -146,11 +148,6 @@ namespace BocciaPlayer
         public bool IsThrowing()
         {
             return m_isThrowing;
-        }
-        //タッチマネージャーを取得。
-        public void SetTouchManager(TouchManager manager)
-        {
-            touchManager = manager;
         }
     }
 }

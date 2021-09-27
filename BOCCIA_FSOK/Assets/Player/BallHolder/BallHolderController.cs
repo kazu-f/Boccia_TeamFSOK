@@ -13,9 +13,8 @@ namespace BocciaPlayer
         int currentBallNo = 0;          //現在使うボールの番号。
         GameObject gameFlowObj;         //ゲームフローオブジェクト取得。
         BallFlowScript ballFlow;        //ボールフロー。
-        
-        // Start is called before the first frame update
-        void Start()
+
+        private void Awake()
         {
             //ボールの配列確保。
             teamBalls = new GameObject[ballCount];
@@ -29,6 +28,11 @@ namespace BocciaPlayer
 
             gameFlowObj = GameObject.FindGameObjectWithTag("GameFlow");
             ballFlow = gameFlowObj.GetComponent<BallFlowScript>();
+        }
+
+        // Start is called before the first frame update
+        void Start()
+        {
         }
 
         // Update is called once per frame

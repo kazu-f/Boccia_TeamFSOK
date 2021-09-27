@@ -16,11 +16,10 @@ namespace BocciaPlayer
         private void Awake()
         {
             touchManager = TouchManager.GetInstance();
-            //タッチ情報を持つインスタンスを渡す。
-            throwBallControler.SetTouchManager(touchManager);
-            throwAngleController.SetTouchManager(touchManager);
             throwBallControler.ThrowBallDisable();
             throwAngleController.ThrowAngleDisable();
+            this.gameObject.SetActive(false);
+            this.enabled = false;
         }
         // Start is called before the first frame update
         void Start()
