@@ -14,13 +14,17 @@ public class TeamFlowScript : MonoBehaviour
     private GameFlowScript m_GameFlowScript = null;
     private bool m_IsMoving = false;
 
+    private void Awake()
+    {
+        m_BallFlow = GetComponent<BallFlowScript>();
+        m_GameFlowScript = GetComponent<GameFlowScript>();
+
+    }
     // Start is called before the first frame update
     void Start()
     {
         m_NextTeam = Team.Jack;
-        m_BallFlow = GetComponent<BallFlowScript>();
         m_RemainBalls *= m_Remain;
-        m_GameFlowScript = GetComponent<GameFlowScript>();
     }
 
     // Update is called once per frame
@@ -92,6 +96,7 @@ public class TeamFlowScript : MonoBehaviour
         if (m_balls.Length == 0)
         {
             m_NextTeam = Team.Red;
+            m_IsMoving = false;
             return true;
         }
 
@@ -206,4 +211,5 @@ public class TeamFlowScript : MonoBehaviour
     {
         m_IsMoving = true;
     }
+
 }
