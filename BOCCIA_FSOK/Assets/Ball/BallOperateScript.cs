@@ -10,6 +10,17 @@ public class BallOperateScript : MonoBehaviour
     private GameObject m_Flow = null;       //ゲームの流れ全体をコントロールするオブジェクト
     private TeamFlowScript m_TeamFlow = null;
     private bool IsThrow = false;
+
+    private void Awake()
+    {
+        //RigidBodyを取得
+        m_rigidbody = GetComponent<Rigidbody>();
+        if (m_rigidbody == null)
+        {
+            //Rigidbodyコンポーネントが取得できなかったとき
+            Debug.LogError("エラー：Rigidbodyコンポーネントの取得に失敗しました。");
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -37,13 +48,6 @@ public class BallOperateScript : MonoBehaviour
         {
             //BallStateScriptコンポーネントが取得できなかったとき
             Debug.LogError("エラー：BallStateScriptコンポーネントの取得に失敗しました。");
-        }
-        //RigidBodyを取得
-        m_rigidbody = GetComponent<Rigidbody>();
-        if(m_rigidbody == null)
-        {
-            //Rigidbodyコンポーネントが取得できなかったとき
-            Debug.LogError("エラー：Rigidbodyコンポーネントの取得に失敗しました。");
         }
 
         //AddForce(new Vector3(10.0f,0.0f,0.0f));
