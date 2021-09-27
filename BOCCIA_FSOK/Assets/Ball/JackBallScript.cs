@@ -20,12 +20,16 @@ public class JackBallScript : MonoBehaviour
     private BallStateScript m_BallStateScript;
     private GameObject m_GameFlow = null;
     private TeamFlowScript m_TeamFlow = null;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         m_BallStateScript = GetComponent<BallStateScript>();
         //RigidBody‚ðŽæ“¾
         m_rigidbody = GetComponent<Rigidbody>();
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
         m_GameFlow = GameObject.Find("GameFlow");
         if(m_GameFlow == null)
         {

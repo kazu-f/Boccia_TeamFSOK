@@ -77,4 +77,13 @@ public class BallOperateScript : MonoBehaviour
         m_TeamFlow.SetMove();
         IsThrow = true;
     }
+
+    /// <summary>
+    /// ƒ{[ƒ‹‚ğ“Š‚°‚½‚©‚Ç‚¤‚©‚ğ”»’è
+    /// </summary>
+    /// <returns>–ß‚è’l‚ÍboolŒ^</returns>
+    public bool GetIsThrow()
+    {
+        return IsThrow;
+    }
 }

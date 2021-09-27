@@ -96,17 +96,19 @@ public class TeamFlowScript : MonoBehaviour
         if (m_balls.Length == 0)
         {
             m_NextTeam = Team.Red;
-            m_IsMoving = false;
             return true;
         }
-
-        for (int ballnum = 0; ballnum < m_balls.Length; ballnum++)
+        else
         {
-            if(m_balls[ballnum].GetComponent<BallStateScript>().GetState() != BallState.Stop)
+
+            for (int ballnum = 0; ballnum < m_balls.Length; ballnum++)
             {
-                //~‚Ü‚èØ‚Á‚Ä‚¢‚È‚¢‹…‚ª‚ ‚é‚½‚ß¸”s
-                m_NextTeam = Team.Num;
-                return false;
+                if (m_balls[ballnum].GetComponent<BallStateScript>().GetState() != BallState.Stop)
+                {
+                    //~‚Ü‚èØ‚Á‚Ä‚¢‚È‚¢‹…‚ª‚ ‚é‚½‚ß¸”s
+                    m_NextTeam = Team.Num;
+                    return false;
+                }
             }
         }
         //‘S‚Ä‚Ì‹…‚ª~‚Ü‚Á‚Ä‚¢‚½‚Ì‚ÅŒvZ‚ğ‘±‚¯‚é

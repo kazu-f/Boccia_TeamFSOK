@@ -590,6 +590,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2855252362594092683, guid: 098a635dc08e2f34e8f4943e385e35ce, type: 3}
+      propertyPath: m_Jack
+      value: 
+      objectReference: {fileID: 698151124280047581, guid: 1db618dfba427644e87299e3c1e419c3, type: 3}
     - target: {fileID: 2855252362594092684, guid: 098a635dc08e2f34e8f4943e385e35ce, type: 3}
       propertyPath: m_Name
       value: GameFlow
