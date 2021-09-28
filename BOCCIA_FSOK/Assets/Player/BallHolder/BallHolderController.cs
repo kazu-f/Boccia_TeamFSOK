@@ -46,7 +46,8 @@ namespace BocciaPlayer
         {
             if(!ballFlow.IsPreparedJack())
             {
-                var jackBall = Instantiate(jackBallObj);
+                var jackBall = ballFlow.GetJackBall();
+                jackBall.SetActive(true);
                 return jackBall;
             }
             if(currentBallNo < ballCount)
