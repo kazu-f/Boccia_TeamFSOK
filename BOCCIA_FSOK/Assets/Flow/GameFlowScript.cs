@@ -134,7 +134,7 @@ public class GameFlowScript : MonoBehaviour
                 score++;
             }
         }
-
+        m_VicTeam.SetScore(score);
         if (m_VicTeam.GetNearestTeam() == Team.Red)
         {
             Debug.Log("ê‘É`Å[ÉÄ" + m_VicTeam.GetScore());
