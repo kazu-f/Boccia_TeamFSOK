@@ -54,7 +54,7 @@ namespace BocciaPlayer
 
         public void SwitchPlayer(bool isEnable)
         {
-            if(isEnable == true && this.enabled != isEnable)
+            if(isEnable == true)
             {
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
