@@ -36,40 +36,44 @@ public class TeamFlowScript : MonoBehaviour
             return;
         }
 
-        //次に投げるチームによって処理を変える
-        switch(m_NextTeam)
+        //エンドが終わっていないとき
+        if (m_GameFlowScript.GetIsEnd() == false)
         {
-            //ジャックボールを投げるとき
-            case Team.Jack:
-                Debug.Log("初めにジャックボールを投げます");
-                if (m_BallFlow.IsPreparedJack())
-                {
-                    //ジャックボールを取得
-                    m_Jack = GameObject.FindGameObjectWithTag("Jack");
-                    if (m_Jack == null)
+            //次に投げるチームによって処理を変える
+            switch (m_NextTeam)
+            {
+                //ジャックボールを投げるとき
+                case Team.Jack:
+                    Debug.Log("初めにジャックボールを投げます");
+                    if (m_BallFlow.IsPreparedJack())
                     {
-                        //インスタンスの取得に失敗したとき
-                        Debug.Log("<color=red>エラー：ジャックボールの取得に失敗しました</color>");
+                        //ジャックボールを取得
+                        m_Jack = GameObject.FindGameObjectWithTag("Jack");
+                        if (m_Jack == null)
+                        {
+                            //インスタンスの取得に失敗したとき
+                            Debug.Log("<color=red>エラー：ジャックボールの取得に失敗しました</color>");
+                        }
+                        else
+                        {
+                            //ジャックボールが準備されたら次は赤チームが投げる
+                            m_NextTeam = Team.Red;
+                        }
                     }
-                    else
-                    {
-                        //ジャックボールが準備されたら次は赤チームが投げる
-                        m_NextTeam = Team.Red;
-                    }
-                }
-                break;
+                    break;
 
-            case Team.Red:
-                Debug.Log("次に赤チームが投げます");
-                break;
+                case Team.Red:
+                    Debug.Log("次に赤チームが投げます");
+                    break;
 
-            case Team.Blue:
-                Debug.Log("次に青チームが投げます");
-                break;
+                case Team.Blue:
+                    Debug.Log("次に青チームが投げます");
+                    break;
 
-            case Team.Num:
-                Debug.Log("次にボールを投げるチームが決まっていません");
-                break;
+                case Team.Num:
+                    Debug.Log("次にボールを投げるチームが決まっていません");
+                    break;
+            }
         }
     }
 

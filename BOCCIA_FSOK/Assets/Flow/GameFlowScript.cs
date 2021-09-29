@@ -58,6 +58,14 @@ public class GameFlowScript : MonoBehaviour
     }
 
     /// <summary>
+    /// エンドが終了しているかどうかを取得
+    /// </summary>
+    /// <returns>終了しているかどうか</returns>
+    public bool GetIsEnd()
+    {
+        return m_IsEnd;
+    }
+    /// <summary>
     /// 得点を計算する
     /// </summary>
     private void CalcScore()
