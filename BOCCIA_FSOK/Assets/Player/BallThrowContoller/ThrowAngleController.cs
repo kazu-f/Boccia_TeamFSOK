@@ -58,6 +58,9 @@ namespace BocciaPlayer
             playerCamera.transform.position = this.transform.position;
             playerCamera.transform.eulerAngles = Vector3.zero;
             this.transform.eulerAngles = Vector3.zero;
+            bocciaPlayer.transform.localEulerAngles = Vector3.zero;
+            m_newCamAngle = Vector3.zero;
+            m_newPlayerAngle = Vector3.zero;
         }
     }
 }

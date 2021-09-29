@@ -6,9 +6,8 @@ public class ActiveTeamController : MonoBehaviour
 {
     enum ThrowTeamState 
     {
-        throwJack,          //ジャックボール。
-        throwFirstBall,     //最初の一球。
-        throwAnyBall,       //その他のボール。
+        throwBall,          //ボールを投げる。
+        waitStopBall,       //ボールが止まるまで待つ。
         throwBallNone,      //投げるボールがない。
         State_Num
     };
@@ -24,7 +23,7 @@ public class ActiveTeamController : MonoBehaviour
 
     public Team startTeam = Team.Red;              //先行のプレイヤー。
     Team currentTeam;                              //現在のプレイヤー。
-    ThrowTeamState throwState = ThrowTeamState.throwJack;
+    ThrowTeamState throwState = ThrowTeamState.throwBall;
 
     // Start is called before the first frame update
     void Start()
@@ -39,31 +38,25 @@ public class ActiveTeamController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(TeamFlow.GetIsMoving())
-        {
-            StopThrow();
-            return;
-        }
+        //if(TeamFlow.GetIsMoving())
+        //{
+        //    return;
+        //}
         switch(throwState)
         {
-            case ThrowTeamState.throwJack:
-                if(BallFlow.IsPreparedJack())
+            case ThrowTeamState.throwBall:
+                if (TeamFlow.GetIsMoving())
                 {
-                    throwState = ThrowTeamState.throwFirstBall;
+                    throwState = ThrowTeamState.waitStopBall;
                 }
 
                 break;
-            case ThrowTeamState.throwFirstBall:
-                if (!TeamFlow.GetIsMoving())
-                {
-                    throwState = ThrowTeamState.throwAnyBall;
-                }
-
-                break;
-            case ThrowTeamState.throwAnyBall:
+            case ThrowTeamState.waitStopBall:
+                StopThrow();
                 if (!TeamFlow.GetIsMoving())
                 {
                     currentTeam = TeamFlow.GetNowTeam();
+                    throwState = ThrowTeamState.throwBall;
                     ChangeActivePlayer();
                 }
 
@@ -79,7 +72,7 @@ public class ActiveTeamController : MonoBehaviour
     public void ResetGame()
     {
         //ジャックボールから投げる。
-        throwState = ThrowTeamState.throwJack;
+        throwState = ThrowTeamState.throwBall;
         //先行のプレイヤーを変える。
         ChangeFirstPlayer();
     }
