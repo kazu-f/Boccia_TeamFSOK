@@ -96,6 +96,7 @@ public class TeamFlowScript : MonoBehaviour
         if (m_balls.Length == 0)
         {
             m_NextTeam = Team.Red;
+            m_IsMoving = false;
             return true;
         }
         else
