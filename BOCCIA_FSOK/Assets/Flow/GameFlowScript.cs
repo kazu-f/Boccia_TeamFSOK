@@ -5,10 +5,11 @@ using UnityEngine;
 public class GameFlowScript : MonoBehaviour
 {
     private bool m_IsEnd = false;
+    BallFlowScript ballFlow;
     // Start is called before the first frame update
     void Start()
     {
-
+        ballFlow = this.gameObject.GetComponent<BallFlowScript>();
     }
 
     // Update is called once per frame
@@ -34,7 +35,7 @@ public class GameFlowScript : MonoBehaviour
     private void CalcScore()
     {
         GameObject m_Jack = null;
-        m_Jack = GameObject.Find("JackBall");
+        m_Jack = ballFlow.GetJackBall();
         if (m_Jack == null)
         {
             //インスタンスの取得に失敗したとき
