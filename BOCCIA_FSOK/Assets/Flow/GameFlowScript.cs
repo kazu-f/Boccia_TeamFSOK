@@ -2,9 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct VictoryTeam
+{
+    private Team NearestTeam;       //最も近いチーム
+    private int Score;      //点数
+
+    public void SetNearestTeam(Team team)
+    {
+        NearestTeam = team;
+    }
+
+    public Team GetNearestTeam()
+    {
+        return NearestTeam;
+    }
+
+    public void SetScore(int score)
+    {
+        Score = score;
+    }
+
+    public int GetScore()
+    {
+        return Score;
+    }
+};
+
 public class GameFlowScript : MonoBehaviour
 {
-    private bool m_IsEnd = false;
+    private bool m_IsEnd = false;       //エンドが終了したかどうか
+    private VictoryTeam m_VicTeam; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -86,16 +114,17 @@ public class GameFlowScript : MonoBehaviour
 
         }
 
-        int NearestTeamNum = 0;
         if (NearDist[0] < NearDist[1])
         {
-            NearestTeamNum = 0;
+            m_VicTeam.SetNearestTeam(Team.Red);
         }
         else
         {
-            NearestTeamNum = 1;
+            m_VicTeam.SetNearestTeam(Team.Blue);
         }
+
         float SecondNearDist = Mathf.Max(NearDist[0], NearDist[1]);
+        //スコア
         int score = 0;
         for (int ballnum = 0; ballnum < m_balls.Length; ballnum++)
         {
@@ -106,13 +135,18 @@ public class GameFlowScript : MonoBehaviour
             }
         }
 
-        if (NearestTeamNum == 0)
+        if (m_VicTeam.GetNearestTeam() == Team.Red)
         {
-            Debug.Log("赤チーム" + score);
+            Debug.Log("赤チーム" + m_VicTeam.GetScore());
         }
-        else if(NearestTeamNum == 1)
+        else if (m_VicTeam.GetNearestTeam() == Team.Blue)
         {
-            Debug.Log("青チーム" + score);
+            Debug.Log("青チーム" + m_VicTeam.GetScore());
         }
+    }
+
+    public VictoryTeam GetVictoryTeam()
+    {
+        return m_VicTeam;
     }
 }
