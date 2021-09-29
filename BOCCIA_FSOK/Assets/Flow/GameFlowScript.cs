@@ -33,10 +33,11 @@ public class GameFlowScript : MonoBehaviour
     private bool m_IsEnd = false;       //エンドが終了したかどうか
     private VictoryTeam m_VicTeam; 
 
+    BallFlowScript ballFlow;
     // Start is called before the first frame update
     void Start()
     {
-
+        ballFlow = this.gameObject.GetComponent<BallFlowScript>();
     }
 
     // Update is called once per frame
@@ -62,7 +63,7 @@ public class GameFlowScript : MonoBehaviour
     private void CalcScore()
     {
         GameObject m_Jack = null;
-        m_Jack = GameObject.Find("JackBall");
+        m_Jack = ballFlow.GetJackBall();
         if (m_Jack == null)
         {
             //インスタンスの取得に失敗したとき
