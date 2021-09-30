@@ -14,6 +14,7 @@ public class ActiveTeamController : MonoBehaviour
 
     public BallFlowScript BallFlow;         //ジャックボールの判定。
     public TeamFlowScript TeamFlow;         //次投げるチームの判定。
+    public GameFlowScript GameFlow;         //ゲーム進行。
 
     public GameObject RedTeamPlayer;        //赤チームプレイヤー。
     public GameObject BlueTeamPlayer;       //青チームプレイヤー。
@@ -38,10 +39,6 @@ public class ActiveTeamController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(TeamFlow.GetIsMoving())
-        //{
-        //    return;
-        //}
         switch(throwState)
         {
             case ThrowTeamState.throwBall:
@@ -69,12 +66,14 @@ public class ActiveTeamController : MonoBehaviour
     }
 
     //もう一エンド行う。
-    public void ResetGame()
+    public void RestartGame()
     {
-        //ジャックボールから投げる。
+        //ボールを投げる。
         throwState = ThrowTeamState.throwBall;
         //先行のプレイヤーを変える。
         ChangeFirstPlayer();
+        //プレイヤーの有効フラグ切り替え。
+        ChangeActivePlayer();
     }
 
     //先行のプレイヤーを変更。
