@@ -12,8 +12,8 @@ public class BallStateScript : MonoBehaviour
 {
     private BallState m_state = BallState.Num;
     private Rigidbody m_rigidbody;
-    public float m_BorderSpeed = 0.005f;        //止まっているかの基準となる速度
-    private Vector3 m_moveSpeed = Vector3.zero;     //移動速度
+    private Vector3 m_moveSpeed;
+    private float m_borderSpeed = 0.005f;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,12 +26,13 @@ public class BallStateScript : MonoBehaviour
     {
         //移動速度を取得
         m_moveSpeed = m_rigidbody.velocity;
+
         //xz軸の移動のみ見る
         m_moveSpeed.y = 0.0f;
 
         if (m_state == BallState.Move)
         {
-            if (m_moveSpeed.magnitude < m_BorderSpeed)
+            if (m_moveSpeed.magnitude <= m_borderSpeed)
             {
                 //速度が一定以下の時
                 //移動を停止する
@@ -41,7 +42,7 @@ public class BallStateScript : MonoBehaviour
             }
         }
 
-        if (m_moveSpeed.magnitude > m_BorderSpeed)
+        if (m_moveSpeed.magnitude > m_borderSpeed)
         {
             //移動中にする
             m_state = BallState.Move;
@@ -57,6 +58,4 @@ public class BallStateScript : MonoBehaviour
     {
         return m_moveSpeed;
     }
-
-
 }

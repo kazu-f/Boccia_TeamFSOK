@@ -99,7 +99,7 @@ public class TeamFlowScript : MonoBehaviour
         m_balls = GameObject.FindGameObjectsWithTag("Ball");
         if (m_balls.Length == 0)
         {
-            m_NextTeam = Team.Red;
+            ChangeNextTeam();
             m_IsMoving = false;
             return true;
         }
@@ -219,4 +219,15 @@ public class TeamFlowScript : MonoBehaviour
         m_IsMoving = true;
     }
 
+    private void ChangeNextTeam()
+    {
+        if(m_NextTeam == Team.Red)
+        {
+            m_NextTeam = Team.Blue;
+        }
+        else
+        {
+            m_NextTeam = Team.Red;
+        }
+    }
 }
