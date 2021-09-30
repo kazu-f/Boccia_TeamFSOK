@@ -106,6 +106,10 @@ namespace BocciaPlayer
 
             //現在投げるボールを取得する。
             var obj = ballHolder.GetCurrentBall();
+            if(obj == null)
+            {
+                return;
+            }
 
             //ボールの位置を合わせる。
             obj.transform.position = ballPos;
