@@ -6,27 +6,53 @@ using UnityEngine.UI;
 public class AlphaChangeScript : MonoBehaviour
 {
     Text text;
-    Sprite sprite;
-    bool isText = true;
+    Image image;
+    bool isText = false;
+    bool isImage = false;
 
     public float ChangeTime = 2.0f;
     float time = 0.0f;
+    float alpha = 1.0f;
     // Start is called before the first frame update
     void Start()
     {
+        //イメージを取得。
+        image = GetComponent<Image>();
+        if(image != null)
+        {
+            //取得できた。
+            isImage = true;
+        }
         //テキストを取得。
         text = GetComponent<Text>();
-        //テキストを取得できなければ。
-        if(text == null)
+        if (text != null)
         {
-            sprite = GetComponent<Sprite>();
-            isText = false;
+            //取得できた。
+            isText = true;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        time += Time.deltaTime;
+        float t = (time / ChangeTime);
+        alpha = Mathf.Abs(t - 2 * Mathf.Floor(t / 2.0f) - 1.0f);
+        //alpha = 1.0f - (Mathf.Sin(time / ChangeTime) / 2.0f + 0.5f);
 
+        //スプライト。
+        if (isImage)
+        {
+            var col = image.color;
+            col.a = alpha;
+            image.color = col;
+        }
+        //テキスト。
+        if (isText)
+        {
+            var col = text.color;
+            col.a = alpha;
+            text.color = col;
+        }
     }
 }

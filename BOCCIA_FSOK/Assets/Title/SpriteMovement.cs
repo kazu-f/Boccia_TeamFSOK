@@ -36,6 +36,7 @@ public class SpriteMovement : MonoBehaviour
         //float t = (time / MovementTime);
         //float weight = Mathf.Abs(t - 2 * Mathf.Floor(t / 2.0f) - 1.0f);
 
+        //Sin”g‚ğ0.0`1.0‚Ì”ÍˆÍ‚É‚·‚éB
         float t = Mathf.Sin(time / MovementTime) / 2.0f + 0.5f;
 
         float posY = startPosY + MovementLength * t;
