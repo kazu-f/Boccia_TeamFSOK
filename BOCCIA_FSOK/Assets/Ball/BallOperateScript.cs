@@ -59,8 +59,10 @@ public class BallOperateScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //AddForce(new Vector3(10.0f,0.0f,0.0f));
-        m_TeamFlow.DecreaseBalls();
+        if (m_Team.GetTeam() != Team.Jack)
+        {
+            m_TeamFlow.DecreaseBalls();
+        }
     }
 
     // Update is called once per frame
