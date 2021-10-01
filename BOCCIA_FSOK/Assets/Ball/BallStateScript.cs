@@ -54,6 +54,17 @@ public class BallStateScript : MonoBehaviour
         return m_state;
     }
     
+    /// <summary>
+    /// ƒ{[ƒ‹‚ğ~‚ß‚éˆ—
+    /// </summary>
+    public void Stop()
+    {
+        //ˆÚ“®‚ğ’â~‚·‚é
+        m_rigidbody.velocity = Vector3.zero;
+        //’â~’†‚É‚·‚é
+        m_state = BallState.Stop;
+    }
+
     public Vector3 GetMoveSpeed()
     {
         return m_moveSpeed;
