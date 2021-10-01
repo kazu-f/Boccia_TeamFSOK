@@ -31,8 +31,8 @@ public struct VictoryTeam
 public class GameFlowScript : MonoBehaviour
 {
     private bool m_IsEnd = false;       //エンドが終了したかどうか
-    private VictoryTeam m_VicTeam; 
-
+    private VictoryTeam m_VicTeam;
+    private bool IsShowLog = false;
     BallFlowScript ballFlow;
     // Start is called before the first frame update
     void Start()
@@ -45,7 +45,14 @@ public class GameFlowScript : MonoBehaviour
     {
         if (m_IsEnd)
         {
+            //スコアを計算
             CalcScore();
+            if (IsShowLog == false)
+            {
+                //スコアを表示
+                ScoreLog();
+                IsShowLog = true;
+            }
         }
     }
 
@@ -144,6 +151,15 @@ public class GameFlowScript : MonoBehaviour
             }
         }
         m_VicTeam.SetScore(score);
+    }
+
+    public VictoryTeam GetVictoryTeam()
+    {
+        return m_VicTeam;
+    }
+
+    private void ScoreLog()
+    {
         if (m_VicTeam.GetNearestTeam() == Team.Red)
         {
             Debug.Log("赤チーム" + m_VicTeam.GetScore());
@@ -152,10 +168,5 @@ public class GameFlowScript : MonoBehaviour
         {
             Debug.Log("青チーム" + m_VicTeam.GetScore());
         }
-    }
-
-    public VictoryTeam GetVictoryTeam()
-    {
-        return m_VicTeam;
     }
 }
