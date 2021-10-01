@@ -16,20 +16,22 @@ public class BallFlowScript : MonoBehaviour
         m_Jack = Instantiate(JackPrefab);
         m_Jack.SetActive(false);
         m_BallOperate = m_Jack.GetComponent<BallOperateScript>();
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (m_Jack != null)
+        if (m_IsPreparedJack == false)
         {
-            //ステートを取得
-            m_JackState = m_Jack.GetComponent<BallStateScript>();
-            if(m_JackState.GetState() == BallState.Stop && m_BallOperate.GetIsThrow())
+            if (m_Jack != null)
             {
-                //ジャックボールが準備されたときにフラグを立てる
-                m_IsPreparedJack = true;
+                //ステートを取得
+                m_JackState = m_Jack.GetComponent<BallStateScript>();
+                if (m_JackState.GetState() == BallState.Stop && m_BallOperate.GetIsThrow())
+                {
+                    //ジャックボールが準備されたときにフラグを立てる
+                    m_IsPreparedJack = true;
+                }
             }
         }
     }

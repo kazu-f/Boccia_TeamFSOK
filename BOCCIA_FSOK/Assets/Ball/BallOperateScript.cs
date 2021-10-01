@@ -88,6 +88,7 @@ public class BallOperateScript : MonoBehaviour
         m_rigidbody.AddForce(speed);
         m_TeamFlow.SetMove();
         IsThrow = true;
+        Debug.Log("ƒ{[ƒ‹‚ª“®‚¢‚Ä‚¢‚Ü‚·");
     }
 
     /// <summary>

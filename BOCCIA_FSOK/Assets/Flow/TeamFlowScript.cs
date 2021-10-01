@@ -18,12 +18,12 @@ public class TeamFlowScript : MonoBehaviour
     {
         m_BallFlow = GetComponent<BallFlowScript>();
         m_GameFlowScript = GetComponent<GameFlowScript>();
-
     }
     // Start is called before the first frame update
     void Start()
     {
-        m_NextTeam = Team.Jack;
+        //初めに赤チームが投げる
+        m_NextTeam = Team.Red;
         m_RemainBalls *= m_Remain;
     }
 
@@ -32,36 +32,14 @@ public class TeamFlowScript : MonoBehaviour
     {
         if(m_IsMoving == true)
         {
-            Debug.Log("ボールが動いています");
             return;
         }
-
         //エンドが終わっていないとき
         if (m_GameFlowScript.GetIsEnd() == false)
         {
             //次に投げるチームによって処理を変える
             switch (m_NextTeam)
             {
-                //ジャックボールを投げるとき
-                case Team.Jack:
-                    Debug.Log("初めにジャックボールを投げます");
-                    if (m_BallFlow.IsPreparedJack())
-                    {
-                        //ジャックボールを取得
-                        m_Jack = GameObject.FindGameObjectWithTag("Jack");
-                        if (m_Jack == null)
-                        {
-                            //インスタンスの取得に失敗したとき
-                            Debug.Log("<color=red>エラー：ジャックボールの取得に失敗しました</color>");
-                        }
-                        else
-                        {
-                            //ジャックボールが準備されたら次は赤チームが投げる
-                            m_NextTeam = Team.Red;
-                        }
-                    }
-                    break;
-
                 case Team.Red:
                     Debug.Log("次に赤チームが投げます");
                     break;
@@ -88,7 +66,17 @@ public class TeamFlowScript : MonoBehaviour
     /// <returns>戻り値は計算ができたかどうか</returns>
     public bool CalucNextTeam()
     {
-        if(m_JackState == BallState.Move)
+        //ジャックボールを取得
+        m_Jack = m_BallFlow.GetJackBall();
+        if (m_Jack == null)
+        {
+            //インスタンスの取得に失敗したとき
+            Debug.Log("<color=red>エラー：ジャックボールの取得に失敗しました</color>");
+            return false;
+        }
+        //ジャックボールのステートを取得
+        m_JackState = m_Jack.GetComponent<BallStateScript>().GetState();
+        if (m_JackState == BallState.Move)
         {
             //ジャックボールがまだ動いているので計算は失敗
             m_NextTeam = Team.Num;
@@ -161,15 +149,6 @@ public class TeamFlowScript : MonoBehaviour
         }
 
         return true;
-    }
-
-    /// <summary>
-    /// ジャックボールの状態を保存
-    /// </summary>
-    /// <param name="state">状態</param>
-    public void SetJackState(BallState state)
-    {
-        m_JackState = state;
     }
 
     /// <summary>
