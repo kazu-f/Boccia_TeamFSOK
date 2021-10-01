@@ -25,6 +25,8 @@ public class TeamFlowScript : MonoBehaviour
         //初めに赤チームが投げる
         m_NextTeam = Team.Red;
         m_RemainBalls *= m_Remain;
+        //ログを流す
+        NextTeamLog();
     }
 
     // Update is called once per frame
@@ -33,25 +35,6 @@ public class TeamFlowScript : MonoBehaviour
         if(m_IsMoving == true)
         {
             return;
-        }
-        //エンドが終わっていないとき
-        if (m_GameFlowScript.GetIsEnd() == false)
-        {
-            //次に投げるチームによって処理を変える
-            switch (m_NextTeam)
-            {
-                case Team.Red:
-                    Debug.Log("次に赤チームが投げます");
-                    break;
-
-                case Team.Blue:
-                    Debug.Log("次に青チームが投げます");
-                    break;
-
-                case Team.Num:
-                    Debug.Log("次にボールを投げるチームが決まっていません");
-                    break;
-            }
         }
     }
 
@@ -90,6 +73,7 @@ public class TeamFlowScript : MonoBehaviour
         {
             m_NextTeam = Team.Red;
             m_IsMoving = false;
+            NextTeamLog();
             return true;
         }
         else
@@ -113,7 +97,7 @@ public class TeamFlowScript : MonoBehaviour
             //ボールからジャックボールへの距離
             Vector3 Dir = m_balls[ballnum].GetComponent<Rigidbody>().position - m_JackPos;
             float dist = Dir.magnitude;
-            if(NearestDist > dist)
+            if(dist < NearestDist)
             {
                 //今回のボールの方がジャックボールに近いので距離と番号を代入
                 NearestDist = dist;
@@ -147,6 +131,7 @@ public class TeamFlowScript : MonoBehaviour
             m_NextTeam = Team.Red;
         }
 
+        NextTeamLog();
         return true;
     }
 
@@ -207,6 +192,33 @@ public class TeamFlowScript : MonoBehaviour
         else
         {
             m_NextTeam = Team.Red;
+        }
+        NextTeamLog();
+    }
+
+    /// <summary>
+    /// 次のチームのログ
+    /// </summary>
+    public void NextTeamLog()
+    {
+        //エンドが終わっていないとき
+        if (m_GameFlowScript.GetIsEnd() == false)
+        {
+            //次に投げるチームによって処理を変える
+            switch (m_NextTeam)
+            {
+                case Team.Red:
+                    Debug.Log("次に赤チームが投げます");
+                    break;
+
+                case Team.Blue:
+                    Debug.Log("次に青チームが投げます");
+                    break;
+
+                case Team.Num:
+                    Debug.Log("次にボールを投げるチームが決まっていません");
+                    break;
+            }
         }
     }
 }

@@ -66,6 +66,13 @@ public class BallOperateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //ジャックボールの場合
+        if (m_Team.GetTeam() == Team.Jack)
+        {
+            //TeamFlowにジャックボールの位置を保存
+            m_TeamFlow.SetJackPos(this.transform.position);
+        }
+
         if (m_IsCalculated == false && IsThrow == true)
         {
             if (m_StateScript.GetState() == BallState.Stop)
@@ -141,6 +148,8 @@ public class BallOperateScript : MonoBehaviour
             m_TeamFlow.SetMove(false);
             //アクティブフラグをfalseにする
             this.gameObject.SetActive(false);
+            //ログを流す
+            m_TeamFlow.NextTeamLog();
         }
     }
 }
