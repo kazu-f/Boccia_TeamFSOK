@@ -731,7 +731,7 @@ PrefabInstance:
     - target: {fileID: 2573021026033543461, guid: aece206e88d6b104ca006510022428e3, type: 3}
       propertyPath: collider
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1535733239}
     - target: {fileID: 2573021026033543461, guid: aece206e88d6b104ca006510022428e3, type: 3}
       propertyPath: touchManager
       value: 
@@ -1036,6 +1036,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1535733239 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 1188657309579856276, guid: 21c23c5d3d6aa444f893b78133726b1f, type: 3}
+  m_PrefabInstance: {fileID: 343431109}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1586472210 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8747469215499163124, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
