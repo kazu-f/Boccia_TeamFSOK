@@ -88,13 +88,12 @@ public class TeamFlowScript : MonoBehaviour
         m_balls = GameObject.FindGameObjectsWithTag("Ball");
         if (m_balls.Length == 0)
         {
-            ChangeNextTeam();
+            m_NextTeam = Team.Red;
             m_IsMoving = false;
             return true;
         }
         else
         {
-
             for (int ballnum = 0; ballnum < m_balls.Length; ballnum++)
             {
                 if (m_balls[ballnum].GetComponent<BallStateScript>().GetState() != BallState.Stop)
@@ -194,12 +193,12 @@ public class TeamFlowScript : MonoBehaviour
     /// <summary>
     /// ボールが動いているフラグを立てる
     /// </summary>
-    public void SetMove()
+    public void SetMove(bool flag)
     {
-        m_IsMoving = true;
+        m_IsMoving = flag;
     }
 
-    private void ChangeNextTeam()
+    public void ChangeNextTeam()
     {
         if(m_NextTeam == Team.Red)
         {

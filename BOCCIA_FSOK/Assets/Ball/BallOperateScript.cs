@@ -11,10 +11,7 @@ public class BallOperateScript : MonoBehaviour
     private GameObject m_Flow = null;       //ゲームの流れ全体をコントロールするオブジェクト
     private TeamFlowScript m_TeamFlow = null;
     private bool IsThrow = false;
-    //現在のボールの状態
-    private BallState m_state = BallState.Num;
     public Vector3 DefaultPos;
-    private Vector3 m_moveSpeed = Vector3.zero;     //移動速度
     private Vector3 m_pos = Vector3.zero;
 
     private void Awake()
@@ -73,6 +70,7 @@ public class BallOperateScript : MonoBehaviour
         {
             if (m_StateScript.GetState() == BallState.Stop)
             {
+                //次に投げるチームを計算する
                 m_IsCalculated = m_TeamFlow.CalucNextTeam();
             }
         }
@@ -86,7 +84,7 @@ public class BallOperateScript : MonoBehaviour
     {
         //速度を加算
         m_rigidbody.AddForce(speed);
-        m_TeamFlow.SetMove();
+        m_TeamFlow.SetMove(true);
         IsThrow = true;
         Debug.Log("ボールが動いています");
     }
@@ -127,7 +125,21 @@ public class BallOperateScript : MonoBehaviour
         else
         {
             //ジャックボール以外の場合
-            m_TeamFlow.CalucNextTeam();
+            //ballというタグのついたゲームオブジェクトを配列に入れる
+            GameObject[] m_balls;
+            m_balls = GameObject.FindGameObjectsWithTag("Ball");
+            if (m_balls.Length == 0)
+            {
+                m_TeamFlow.ChangeNextTeam();
+            }
+            //else
+            //{
+            //    //他にもボールがあるので次に投げるチームを計算する
+            //    m_TeamFlow.CalucNextTeam();
+            //}
+            //Moveフラグをfalseにする
+            m_TeamFlow.SetMove(false);
+            //アクティブフラグをfalseにする
             this.gameObject.SetActive(false);
         }
     }
