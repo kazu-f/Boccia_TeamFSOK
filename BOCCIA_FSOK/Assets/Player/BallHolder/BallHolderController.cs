@@ -7,7 +7,6 @@ namespace BocciaPlayer
     public class BallHolderController : MonoBehaviour
     {
         public GameObject ballObj;      //ボールのプレファブ。
-        public GameObject jackBallObj;  //ジャックボールのプレファブ。
         public int ballCount = 6;       //チームのボールの数。
         GameObject[] teamBalls;         //ボールの配列。
         int currentBallNo = 0;          //現在使うボールの番号。
