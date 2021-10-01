@@ -11,12 +11,9 @@ public class BallOperateScript : MonoBehaviour
     private GameObject m_Flow = null;       //ゲームの流れ全体をコントロールするオブジェクト
     private TeamFlowScript m_TeamFlow = null;
     private bool IsThrow = false;
-    //エリア内にいるかどうかのフラグ
-    private bool m_InArea = true;
     //現在のボールの状態
     private BallState m_state = BallState.Num;
     public Vector3 DefaultPos;
-    public float m_BorderSpeed = 0.005f;        //止まっているかの基準となる速度
     private Vector3 m_moveSpeed = Vector3.zero;     //移動速度
     private Vector3 m_pos = Vector3.zero;
 
@@ -49,7 +46,7 @@ public class BallOperateScript : MonoBehaviour
         }
 
         m_Team = GetComponent<TeamDivisionScript>();
-        if(m_Team == null)
+        if (m_Team == null)
         {
             //TeamDivisionScriptコンポーネントが取得できなかったとき
             Debug.LogError("エラー：TeamDivisionScriptコンポーネントの取得に失敗しました。");
@@ -72,54 +69,9 @@ public class BallOperateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //各種状態を取得
-        m_state = m_StateScript.GetState();
-        m_moveSpeed = m_StateScript.GetMoveSpeed();
-        //オブジェクトのtransformを取得
-        Transform myTrans = this.transform;
-        //transformから座標を取得
-        m_pos = myTrans.position;
-
-        switch (m_state)
-        {
-            case BallState.Move:
-                if (m_InArea == false)
-                {
-                    //範囲外のため急激に止める
-                    m_rigidbody.velocity += m_moveSpeed * -0.5f * Time.deltaTime;
-                }
-                break;
-
-            case BallState.Stop:
-                //エリア外にいるとき
-                if (m_InArea == false)
-                {
-                    if (m_Team.GetTeam() == Team.Jack)
-                    {
-                        //クロスに戻す
-                        m_pos = DefaultPos;
-                        //TeamFlowにジャックボールの位置を保存
-                        m_TeamFlow.SetJackPos(m_pos);
-                        m_InArea = true;
-                    }
-                    else
-                    {
-                        m_TeamFlow.CalucNextTeam();
-                        this.gameObject.SetActive(false);
-                    }
-                }
-                //速度を0にセット
-                m_rigidbody.velocity = Vector3.zero;
-
-                break;
-        }
-
-        //座標を設定
-        myTrans.position = m_pos;
-
         if (m_IsCalculated == false && IsThrow == true)
         {
-            if(m_StateScript.GetState() == BallState.Stop)
+            if (m_StateScript.GetState() == BallState.Stop)
             {
                 m_IsCalculated = m_TeamFlow.CalucNextTeam();
             }
@@ -147,8 +99,35 @@ public class BallOperateScript : MonoBehaviour
         return IsThrow;
     }
 
-    private void OnTriggerExit(Collider other)
+    /// <summary>
+    /// 場外にボールが行った時の処理
+    /// </summary>
+    public void OutsideVenue()
     {
-        m_InArea = false;
+        //オブジェクトのtransformを取得
+        Transform myTrans = this.transform;
+        //transformから座標を取得
+        m_pos = myTrans.position;
+
+        //ボールを停止する
+        m_StateScript.Stop();
+
+        if (m_Team.GetTeam() == Team.Jack)
+        {
+            //ジャックボールの場合
+            //クロスに戻す
+            m_pos = DefaultPos;
+            //TeamFlowにジャックボールの位置を保存
+            m_TeamFlow.SetJackPos(m_pos);
+
+            //座標を設定
+            myTrans.position = m_pos;
+        }
+        else
+        {
+            //ジャックボール以外の場合
+            m_TeamFlow.CalucNextTeam();
+            this.gameObject.SetActive(false);
+        }
     }
 }

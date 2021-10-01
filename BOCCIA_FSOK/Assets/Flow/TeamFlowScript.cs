@@ -94,6 +94,7 @@ public class TeamFlowScript : MonoBehaviour
             m_NextTeam = Team.Num;
             return false;
         }
+
         //ballというタグのついたゲームオブジェクトを配列に入れる
         GameObject[] m_balls;
         m_balls = GameObject.FindGameObjectsWithTag("Ball");
