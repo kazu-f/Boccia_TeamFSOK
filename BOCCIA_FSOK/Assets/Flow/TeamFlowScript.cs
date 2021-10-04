@@ -5,6 +5,7 @@ using UnityEngine;
 public class TeamFlowScript : MonoBehaviour
 {
     public Team m_NextTeam = Team.Num;
+    private Team m_firstTeam = Team.Red;
     private BallFlowScript m_BallFlow = null;
     private GameObject m_Jack = null;
     private BallState m_JackState = BallState.Num;
@@ -23,7 +24,7 @@ public class TeamFlowScript : MonoBehaviour
     void Start()
     {
         //初めに赤チームが投げる
-        m_NextTeam = Team.Red;
+        m_NextTeam = m_firstTeam;
         m_RemainBalls *= m_Remain;
         //ログを流す
         NextTeamLog();
@@ -71,7 +72,7 @@ public class TeamFlowScript : MonoBehaviour
         m_balls = GameObject.FindGameObjectsWithTag("Ball");
         if (m_balls.Length == 0)
         {
-            m_NextTeam = Team.Red;
+            m_NextTeam = m_firstTeam;
             m_IsMoving = false;
             NextTeamLog();
             return true;
@@ -228,11 +229,18 @@ public class TeamFlowScript : MonoBehaviour
     public void ResetVar()
     {
         //初めに赤チームが投げる
-        m_NextTeam = Team.Red;
+        m_NextTeam = m_firstTeam;
         //ボールの数を初期化
         m_RemainBalls = Vector2Int.one;
         m_RemainBalls *= m_Remain;
         //ログを流す
         NextTeamLog();
+    }
+    /// <summary>
+    /// 投げ始めるチームを設定する。
+    /// </summary>
+    public void SetFirstTeam(Team firstTeam)
+    {
+        m_firstTeam = firstTeam;
     }
 }

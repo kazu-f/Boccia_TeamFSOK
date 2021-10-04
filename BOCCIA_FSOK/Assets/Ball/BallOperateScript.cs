@@ -59,10 +59,7 @@ public class BallOperateScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (m_Team.GetTeam() != Team.Jack)
-        {
-            m_TeamFlow.DecreaseBalls();
-        }
+
     }
 
     // Update is called once per frame
@@ -91,6 +88,10 @@ public class BallOperateScript : MonoBehaviour
     /// <param name="speed">加算する速度</param>
     public void AddForce(Vector3 speed)
     {
+        if (m_Team.GetTeam() != Team.Jack)
+        {
+            m_TeamFlow.DecreaseBalls();
+        }
         //速度を加算
         m_rigidbody.AddForce(speed);
         m_TeamFlow.SetMove(true);
@@ -141,11 +142,11 @@ public class BallOperateScript : MonoBehaviour
             {
                 m_TeamFlow.ChangeNextTeam();
             }
-            //else
-            //{
-            //    //他にもボールがあるので次に投げるチームを計算する
-            //    m_TeamFlow.CalucNextTeam();
-            //}
+            else
+            {
+                //他にもボールがあるので次に投げるチームを計算する
+                m_TeamFlow.CalucNextTeam();
+            }
             //Moveフラグをfalseにする
             m_TeamFlow.SetMove(false);
             //アクティブフラグをfalseにする
@@ -161,5 +162,6 @@ public class BallOperateScript : MonoBehaviour
     {
         IsThrow = false;
         m_IsCalculated = false;
+        m_StateScript.ResetState();
     }
 }

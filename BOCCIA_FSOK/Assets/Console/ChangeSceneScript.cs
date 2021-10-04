@@ -39,12 +39,11 @@ public class ChangeSceneScript : MonoBehaviour
         if(isAsync)
         {
             Invoke("LoadSceneAsync", invokeTime);
-            isSceneChange = true;
         }
         else
         {
             Invoke("LoadScene", invokeTime);
-            isSceneChange = true;
         }
+        isSceneChange = true;
     }
 }

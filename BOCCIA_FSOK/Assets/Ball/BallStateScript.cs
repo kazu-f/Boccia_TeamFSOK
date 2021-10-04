@@ -69,4 +69,9 @@ public class BallStateScript : MonoBehaviour
     {
         return m_moveSpeed;
     }
+
+    public void ResetState()
+    {
+        m_state = BallState.Num;
+    }
 }

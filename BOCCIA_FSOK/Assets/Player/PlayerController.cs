@@ -18,6 +18,7 @@ namespace BocciaPlayer
         {
             throwBallControler = this.gameObject.GetComponentInChildren<ThrowBallControler>();
             throwAngleController = this.gameObject.GetComponentInChildren<ThrowAngleController>();
+            ballHolderController = this.gameObject.GetComponentInChildren<BallHolderController>();
             touchManager = TouchManager.GetInstance();
             throwBallControler.ThrowBallDisable();
             throwAngleController.ThrowAngleDisable();
