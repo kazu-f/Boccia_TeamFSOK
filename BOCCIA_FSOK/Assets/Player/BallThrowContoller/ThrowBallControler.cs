@@ -24,7 +24,7 @@ namespace BocciaPlayer
         private bool m_isThrowing = false;              //投げたかどうか？
         //定数。
         const float FLICK_POWER = 0.005f;       //フリック判定用の定数。
-        const float MAX_THROW_POW = 300.0f;
+        const float MAX_THROW_POW = 800.0f;
         //インスタンス生成時に呼ばれる。
         private void Awake()
         {

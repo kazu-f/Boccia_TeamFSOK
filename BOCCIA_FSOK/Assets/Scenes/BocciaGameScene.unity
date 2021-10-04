@@ -969,6 +969,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 925159450067604562, guid: 316897e5107f4794f96160b0776a3095, type: 3}
   m_PrefabInstance: {fileID: 1838318251}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1290313186 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6728985110788585793, guid: 098a635dc08e2f34e8f4943e385e35ce, type: 3}
+  m_PrefabInstance: {fileID: 2006205700}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b59102645adc0f4c9c90609f7d59055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1384932396 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1930037185966225453, guid: 21c23c5d3d6aa444f893b78133726b1f, type: 3}
@@ -1461,7 +1472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BallFlow: {fileID: 286309645}
   TeamFlow: {fileID: 2006205701}
-  GameFlow: {fileID: 0}
+  GameFlow: {fileID: 1290313186}
   RedTeamPlayer: {fileID: 1961398229}
   BlueTeamPlayer: {fileID: 1793699768}
   startTeam: 0
