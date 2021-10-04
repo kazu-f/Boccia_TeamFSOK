@@ -16,7 +16,7 @@ public class GameFlowScript : MonoBehaviour
     public ActiveTeamController activePlayerController;    //プレイヤー制御。
     private ChangeSceneScript changeScene;              //シーン切り替え制御スクリプト。
 
-    public int GAME_FINISH_END = 2;    //1ゲーム辺りのエンド数。
+    [Range(2,6)]public int GAME_FINISH_END = 2;    //1ゲーム辺りのエンド数。
     private int nowEndNo = 0;               //現在のエンド数。
 
     private bool waitFlag = false;  //処理を待機する。
@@ -38,6 +38,7 @@ public class GameFlowScript : MonoBehaviour
             return;
         }
 
+        //そのエンドが終了した。
         if(endFlow.GetIsEnd() && !waitFlag)
         {
             nowEndNo++;
@@ -51,6 +52,20 @@ public class GameFlowScript : MonoBehaviour
             {
                 //ゲーム終了。
                 FinishGame();
+            }
+        }
+        else
+        {
+            //ボールが動いている。
+            if (teamFlow.GetIsMoving())
+            {
+                //特定のオブジェクトを止める。
+                SwitchGameObject(false);
+            }
+            else
+            {
+                //ボールが動いてなければ戻す。
+                SwitchGameObject(true);
             }
         }
         
@@ -82,5 +97,20 @@ public class GameFlowScript : MonoBehaviour
         activePlayerController.RestartGame();       //プレイヤーをリセット。  
 
         waitFlag = false;
+    }
+    /// <summary>
+    /// ボールが動いている間ゲームオブジェクトを動かさない。
+    /// </summary>
+    private void SwitchGameObject(bool isActive)
+    {
+        if(!(gameObjects.Length > 0))
+        {
+            return;
+        }
+
+        foreach(var obj in gameObjects)
+        {
+            obj.gameObject.SetActive(isActive);
+        }
     }
 }
