@@ -53,6 +53,8 @@ public class EndFlowScript : MonoBehaviour
                 ScoreLog();
                 IsShowLog = true;
             }
+            //リザルトを表示
+            DispResult();
         }
     }
 
@@ -168,5 +170,13 @@ public class EndFlowScript : MonoBehaviour
         {
             Debug.Log("青チーム" + m_VicTeam.GetScore());
         }
+    }
+
+    /// <summary>
+    /// エンドごとのリザルトを表示する関数
+    /// </summary>
+    private void DispResult()
+    {
+
     }
 }
