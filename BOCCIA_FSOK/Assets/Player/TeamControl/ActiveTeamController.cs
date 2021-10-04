@@ -76,6 +76,10 @@ public class ActiveTeamController : MonoBehaviour
     {
         //ボールを投げる。
         throwState = ThrowTeamState.throwBall;
+        //プレイヤーのリセット。
+        RedPlayerCon.ResetPlayer();
+        BluePlayerCon.ResetPlayer();
+
         //プレイヤーの有効フラグ切り替え。
         ChangeActivePlayer();
     }

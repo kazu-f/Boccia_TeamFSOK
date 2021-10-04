@@ -21,7 +21,6 @@ namespace BocciaPlayer
         private Vector2 m_endToStart = new Vector2(0.0f, 0.0f);       //開始座標から引き切った座標までのベクトル。
         private Vector2 m_touchPosInScreen = new Vector2(0.0f, 0.0f); //現在のタッチしている座標(スクリーン座標系？)
         private float m_throwPow = 0.0f;                //投げる力
-        private bool m_isThrowing = false;              //投げたかどうか？
         //定数。
         const float FLICK_POWER = 0.005f;       //フリック判定用の定数。
         const float MAX_THROW_POW = 800.0f;
@@ -88,10 +87,6 @@ namespace BocciaPlayer
                         //ボールを投げる。
                         ThrowBall();
                     }
-                    else
-                    {
-                        m_isThrowing = false;
-                    }
                     throwGauge.SetActive(false);
                 }
                 m_gaugeImageMat.SetFloat("_ThrowPow", m_throwPow);
@@ -124,8 +119,6 @@ namespace BocciaPlayer
 
             ballOperate.AddForce(vec);
 
-            m_isThrowing = true;
-
             //ボールを次に進める。
             var playerCon = bocciaPlayer.GetComponent<PlayerController>();
             playerCon.isThrowBallNone = ballHolder.UpdateCurrentBallNo();
@@ -145,13 +138,6 @@ namespace BocciaPlayer
         {
             this.enabled = false;
             throwGauge.SetActive(false);
-        }
-        /// <summary>
-        /// 投げたか瞬間どうか？
-        /// </summary>
-        public bool IsThrowing()
-        {
-            return m_isThrowing;
         }
     }
 }

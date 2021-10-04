@@ -10,6 +10,7 @@ using UnityEngine;
 
 public class GameFlowScript : MonoBehaviour
 {
+    private BallFlowScript ballFlow;   //ジャックボールの制御。
     private EndFlowScript endFlow;   //エンド進行制御スクリプト。
     private TeamFlowScript teamFlow;   //投げるチームを決定するスクリプト。
 

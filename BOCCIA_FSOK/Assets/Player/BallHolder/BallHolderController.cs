@@ -75,6 +75,7 @@ namespace BocciaPlayer
         /// </summary>
         public void ResetBall()
         {
+            currentBallNo = 0;
             for (int i = 0; i < ballCount; i++)
             {
                 //有効フラグを消す。

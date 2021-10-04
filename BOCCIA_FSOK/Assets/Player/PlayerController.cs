@@ -7,14 +7,17 @@ namespace BocciaPlayer
     public class PlayerController : MonoBehaviour
     {
         private TouchManager touchManager;
-        public ThrowBallControler throwBallControler;
-        public ThrowAngleController throwAngleController;
+        private ThrowBallControler throwBallControler;
+        private ThrowAngleController throwAngleController;
+        private BallHolderController ballHolderController;
         private Vector2 m_touchStartPos = new Vector2(0.0f,0.0f);     //触り始めた座標。
 
         public bool isThrowBallNone { get; set; } = false;   //ボールを投げ切ったかどうかのフラグ。trueで投げ切った。
 
         private void Awake()
         {
+            throwBallControler = this.gameObject.GetComponentInChildren<ThrowBallControler>();
+            throwAngleController = this.gameObject.GetComponentInChildren<ThrowAngleController>();
             touchManager = TouchManager.GetInstance();
             throwBallControler.ThrowBallDisable();
             throwAngleController.ThrowAngleDisable();
@@ -63,11 +66,11 @@ namespace BocciaPlayer
         }
 
         /// <summary>
-        /// ボールを投げたか？
+        /// プレイヤーをリセット。
         /// </summary>
-        public bool IsThrowing()
+        public void ResetPlayer()
         {
-            return throwBallControler.IsThrowing();
+            ballHolderController.ResetBall();
         }
     }
 }
