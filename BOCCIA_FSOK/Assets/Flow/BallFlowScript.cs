@@ -46,4 +46,13 @@ public class BallFlowScript : MonoBehaviour
     {
         return m_Jack;
     }
+
+    public void ResetVar()
+    {
+        var ballOperate = m_Jack.GetComponent<BallOperateScript>();
+        ballOperate.ResetVar();
+
+        m_IsPreparedJack = false;
+        m_Jack.SetActive(false);
+    }
 }

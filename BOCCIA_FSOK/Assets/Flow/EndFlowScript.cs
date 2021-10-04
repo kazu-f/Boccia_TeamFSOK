@@ -195,5 +195,6 @@ public class EndFlowScript : MonoBehaviour
             Debug.LogError("TeamFlowコンポーネントの取得に失敗しました");
         }
         m_TeamFlow.ResetVar();
+        ballFlow.ResetVar();
     }
 }

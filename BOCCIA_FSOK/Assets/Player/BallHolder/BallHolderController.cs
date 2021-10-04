@@ -83,6 +83,9 @@ namespace BocciaPlayer
                 //“K“–‚ÉˆÊ’u‚ğ‰Šú‰»B
                 teamBalls[i].transform.position = Vector3.zero;
                 teamBalls[i].transform.rotation = Quaternion.identity;
+
+                var ballOperate = teamBalls[i].GetComponent<BallOperateScript>();
+                ballOperate.ResetVar();
             }
 
         }

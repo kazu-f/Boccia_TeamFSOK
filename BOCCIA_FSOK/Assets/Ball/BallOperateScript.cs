@@ -154,4 +154,12 @@ public class BallOperateScript : MonoBehaviour
             m_TeamFlow.NextTeamLog();
         }
     }
+    /// <summary>
+    /// 変数のリセット。
+    /// </summary>
+    public void ResetVar()
+    {
+        IsThrow = false;
+        m_IsCalculated = false;
+    }
 }
