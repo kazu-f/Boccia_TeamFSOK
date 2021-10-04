@@ -9,12 +9,13 @@ public class ActiveTeamController : MonoBehaviour
         throwBall,          //ボールを投げる。
         waitStopBall,       //ボールが止まるまで待つ。
         throwBallNone,      //投げるボールがない。
+        finishEnd,          //エンド終了。
         State_Num
     };
 
     public BallFlowScript BallFlow;         //ジャックボールの判定。
     public TeamFlowScript TeamFlow;         //次投げるチームの判定。
-    public EndFlowScript GameFlow;         //ゲーム進行。
+    public EndFlowScript EndFlow;         //エンド進行。
 
     public GameObject RedTeamPlayer;        //赤チームプレイヤー。
     public GameObject BlueTeamPlayer;       //青チームプレイヤー。
@@ -22,7 +23,6 @@ public class ActiveTeamController : MonoBehaviour
     private BocciaPlayer.PlayerController RedPlayerCon;
     private BocciaPlayer.PlayerController BluePlayerCon;
 
-    public Team startTeam = Team.Red;              //先行のプレイヤー。
     Team currentTeam;                              //現在のプレイヤー。
     ThrowTeamState throwState = ThrowTeamState.throwBall;
 
@@ -31,14 +31,17 @@ public class ActiveTeamController : MonoBehaviour
     {
         RedPlayerCon = RedTeamPlayer.GetComponent<BocciaPlayer.PlayerController>();
         BluePlayerCon = BlueTeamPlayer.GetComponent<BocciaPlayer.PlayerController>();
-        currentTeam = startTeam;
-        //投げるプレイヤーに切り替え。
+        //投げるプレイヤーを切り替え。
         ChangeActivePlayer();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(EndFlow.GetIsEnd() && throwState != ThrowTeamState.finishEnd)
+        {
+            throwState = ThrowTeamState.finishEnd;
+        }
         switch(throwState)
         {
             case ThrowTeamState.throwBall:
@@ -52,10 +55,13 @@ public class ActiveTeamController : MonoBehaviour
                 StopThrow();
                 if (!TeamFlow.GetIsMoving())
                 {
-                    currentTeam = TeamFlow.GetNowTeam();
                     throwState = ThrowTeamState.throwBall;
                     ChangeActivePlayer();
                 }
+
+                break;
+            case ThrowTeamState.finishEnd:
+                StopThrow();
 
                 break;
             default:
@@ -70,24 +76,8 @@ public class ActiveTeamController : MonoBehaviour
     {
         //ボールを投げる。
         throwState = ThrowTeamState.throwBall;
-        //先行のプレイヤーを変える。
-        ChangeFirstPlayer();
         //プレイヤーの有効フラグ切り替え。
         ChangeActivePlayer();
-    }
-
-    //先行のプレイヤーを変更。
-    void ChangeFirstPlayer()
-    {
-        //先行のプレイヤーを変更。
-        if (startTeam == Team.Red)
-        {
-            startTeam = Team.Blue;              //先行のプレイヤー。
-        }
-        else
-        {
-            startTeam = Team.Red;              //先行のプレイヤー。
-        }
     }
 
     /// <summary>
@@ -95,6 +85,8 @@ public class ActiveTeamController : MonoBehaviour
     /// </summary>
     void ChangeActivePlayer()
     {
+        //次に投げるチーム取得。
+        currentTeam = TeamFlow.GetNowTeam();
         if (currentTeam == Team.Red)
         {
             RedTeamPlayer.SetActive(true);

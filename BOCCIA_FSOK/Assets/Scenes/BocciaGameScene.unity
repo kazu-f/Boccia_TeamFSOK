@@ -1472,7 +1472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BallFlow: {fileID: 286309645}
   TeamFlow: {fileID: 2006205701}
-  GameFlow: {fileID: 1290313186}
+  EndFlow: {fileID: 1290313186}
   RedTeamPlayer: {fileID: 1961398229}
   BlueTeamPlayer: {fileID: 1793699768}
   startTeam: 0

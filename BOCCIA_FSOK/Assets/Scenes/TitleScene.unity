@@ -396,6 +396,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChangeTime: 2
+  alphaMin: 0
+  alphaMax: 1
 --- !u!1 &1130834303
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,6 +407,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1130834305}
+  - component: {fileID: 1130834306}
   - component: {fileID: 1130834304}
   m_Layer: 0
   m_Name: ChangeScene
@@ -440,6 +443,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1130834306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130834303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c129b6f66a41104898ebb8a8ed74c24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touchManager: {fileID: 1174846515}
+--- !u!114 &1174846515 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4515876688681389763, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
+  m_PrefabInstance: {fileID: 2143874164}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a33b4474ff79a84fae9efc4dbbefabf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1832218724
 GameObject:
   m_ObjectHideFlags: 0

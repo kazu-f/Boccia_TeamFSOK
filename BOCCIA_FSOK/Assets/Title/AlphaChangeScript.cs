@@ -11,6 +11,8 @@ public class AlphaChangeScript : MonoBehaviour
     bool isImage = false;
 
     public float ChangeTime = 2.0f;
+    public float alphaMin = 0.0f;
+    public float alphaMax = 1.0f;
     float time = 0.0f;
     float alpha = 1.0f;
     // Start is called before the first frame update
@@ -37,8 +39,9 @@ public class AlphaChangeScript : MonoBehaviour
     {
         time += Time.deltaTime;
         float t = (time / ChangeTime);
-        alpha = Mathf.Abs(t - 2 * Mathf.Floor(t / 2.0f) - 1.0f);
+        float weight = Mathf.Abs(t - 2 * Mathf.Floor(t / 2.0f) - 1.0f);
         //alpha = 1.0f - (Mathf.Sin(time / ChangeTime) / 2.0f + 0.5f);
+        alpha = Mathf.Lerp(alphaMin, alphaMax, weight);
 
         //スプライト。
         if (isImage)
