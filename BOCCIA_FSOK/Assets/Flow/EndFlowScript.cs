@@ -34,10 +34,17 @@ public class EndFlowScript : MonoBehaviour
     private VictoryTeam m_VicTeam;
     private bool IsShowLog = false;
     BallFlowScript ballFlow;
+    DispScoreScript DispScore = null;
+
+    private void Awake()
+    {
+        ballFlow = this.gameObject.GetComponent<BallFlowScript>();
+        DispScore = this.gameObject.GetComponent<DispScoreScript>();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        ballFlow = this.gameObject.GetComponent<BallFlowScript>();
+
     }
 
     // Update is called once per frame
@@ -53,8 +60,10 @@ public class EndFlowScript : MonoBehaviour
                 ScoreLog();
                 IsShowLog = true;
             }
+            //テキストの色を変更
+            DispScore.SetTextTeam(m_VicTeam.GetNearestTeam());
             //リザルトを表示
-            DispResult();
+            DispScore.DispResult(m_VicTeam.GetScore());
         }
     }
 
@@ -170,13 +179,5 @@ public class EndFlowScript : MonoBehaviour
         {
             Debug.Log("青チーム" + m_VicTeam.GetScore());
         }
-    }
-
-    /// <summary>
-    /// エンドごとのリザルトを表示する関数
-    /// </summary>
-    private void DispResult()
-    {
-
     }
 }
