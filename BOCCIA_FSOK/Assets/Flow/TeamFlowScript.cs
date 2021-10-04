@@ -11,13 +11,13 @@ public class TeamFlowScript : MonoBehaviour
     private Vector3 m_JackPos = Vector3.zero;
     private Vector2Int m_RemainBalls = Vector2Int.one;
     private int m_Remain = 6;
-    private GameFlowScript m_GameFlowScript = null;
+    private EndFlowScript m_GameFlowScript = null;
     private bool m_IsMoving = false;
 
     private void Awake()
     {
         m_BallFlow = GetComponent<BallFlowScript>();
-        m_GameFlowScript = GetComponent<GameFlowScript>();
+        m_GameFlowScript = GetComponent<EndFlowScript>();
     }
     // Start is called before the first frame update
     void Start()

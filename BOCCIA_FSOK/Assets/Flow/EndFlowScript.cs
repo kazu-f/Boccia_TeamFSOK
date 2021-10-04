@@ -28,7 +28,7 @@ public struct VictoryTeam
     }
 };
 
-public class GameFlowScript : MonoBehaviour
+public class EndFlowScript : MonoBehaviour
 {
     private bool m_IsEnd = false;       //ƒGƒ“ƒh‚ªI—¹‚µ‚½‚©‚Ç‚¤‚©
     private VictoryTeam m_VicTeam;

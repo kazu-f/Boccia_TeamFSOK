@@ -14,7 +14,7 @@ public class ActiveTeamController : MonoBehaviour
 
     public BallFlowScript BallFlow;         //ジャックボールの判定。
     public TeamFlowScript TeamFlow;         //次投げるチームの判定。
-    public GameFlowScript GameFlow;         //ゲーム進行。
+    public EndFlowScript GameFlow;         //ゲーム進行。
 
     public GameObject RedTeamPlayer;        //赤チームプレイヤー。
     public GameObject BlueTeamPlayer;       //青チームプレイヤー。
