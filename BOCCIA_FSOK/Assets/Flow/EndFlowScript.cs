@@ -35,7 +35,7 @@ public class EndFlowScript : MonoBehaviour
     private bool IsShowLog = false;
     BallFlowScript ballFlow;
     DispScoreScript DispScore = null;
-
+    TeamFlowScript m_TeamFlow = null;
     private void Awake()
     {
         ballFlow = this.gameObject.GetComponent<BallFlowScript>();
@@ -179,5 +179,21 @@ public class EndFlowScript : MonoBehaviour
         {
             Debug.Log("青チーム" + m_VicTeam.GetScore());
         }
+    }
+
+    /// <summary>
+    /// 変数などをリセットする関数
+    /// </summary>
+    public void ResetVar()
+    {
+        m_IsEnd = false;
+        IsShowLog = false;
+        //TeamFlowコンポーネントの取得
+        m_TeamFlow = this.gameObject.GetComponent<TeamFlowScript>();
+        if(m_TeamFlow == null)
+        {
+            Debug.LogError("TeamFlowコンポーネントの取得に失敗しました");
+        }
+        m_TeamFlow.ResetVar();
     }
 }

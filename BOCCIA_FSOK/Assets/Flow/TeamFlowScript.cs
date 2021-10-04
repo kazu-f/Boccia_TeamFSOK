@@ -221,4 +221,18 @@ public class TeamFlowScript : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ResetVar()
+    {
+        //初めに赤チームが投げる
+        m_NextTeam = Team.Red;
+        //ボールの数を初期化
+        m_RemainBalls = Vector2Int.one;
+        m_RemainBalls *= m_Remain;
+        //ログを流す
+        NextTeamLog();
+    }
 }
