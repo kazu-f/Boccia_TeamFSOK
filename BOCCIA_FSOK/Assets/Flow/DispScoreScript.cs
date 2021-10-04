@@ -25,7 +25,7 @@ public class DispScoreScript : MonoBehaviour
 
     public void DispResult(int score)
     {
-        m_ScoreResult.text += score + "得点しました";
+        m_ScoreResult.text = score + "点!";
     }
 
     /// <summary>
@@ -40,12 +40,12 @@ public class DispScoreScript : MonoBehaviour
             case Team.Red:
                 //赤に変える
                 m_ScoreResult.color = Color.red;
-                m_ScoreResult.text = "赤チームが";
+                //m_ScoreResult.text = "赤チームが";
                 break;
             case Team.Blue:
                 //青に変える
                 m_ScoreResult.color = Color.blue;
-                m_ScoreResult.text = "青チームが";
+                //m_ScoreResult.text = "青チームが";
                 break;
             default:
                 return;
