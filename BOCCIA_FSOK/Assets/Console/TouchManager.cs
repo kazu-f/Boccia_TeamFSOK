@@ -195,7 +195,20 @@ public class TouchManager : MonoBehaviour
     /// </summary>
     public static bool IsOnUI()
     {
+#if UNITY_EDITOR
+        if(!Input.GetMouseButton(0))
+        {
+            return false;
+        }
+#else
+        if(Input.touchCount == 0)
+        {
+            return false;
+        }
+#endif
+
         PointerEventData pointer = new PointerEventData(EventSystem.current);
+
 #if UNITY_EDITOR
         pointer.position = Input.mousePosition;
 #else
