@@ -32,7 +32,7 @@ namespace BocciaPlayer
             throwGauge = Instantiate(throwGaugePrefab);
             //ゲージの親をキャンバスにする。
             var canvas = touchManager.GetCanvas();
-            throwGauge.transform.SetParent(canvas.transform);
+            throwGauge.transform.SetParent(canvas.GetComponent<RectTransform>(),false);
 
             //マテリアルの取得。。
             var image = throwGauge.GetComponent<Image>();
