@@ -76,8 +76,8 @@ public class GameFlowScript : MonoBehaviour
     /// </summary>
     private void FinishGame()
     {
-        //シーンを2秒後切り替える。
-        changeScene.ChangeScene(false, WAIT_TIME);
+        //シーンを切り替える。
+        changeScene.ChangeSceneInvoke(false, WAIT_TIME);
     }
 
     /// <summary>

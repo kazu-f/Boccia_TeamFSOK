@@ -17,7 +17,7 @@ public class TitleSceneScript : MonoBehaviour
     {
      if(touchManager.IsTouch())
         {
-            changeScene.ChangeScene(true, 2.0f);
+            changeScene.ChangeSceneInvoke(true, 2.0f);
         }
     }
 }

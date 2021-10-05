@@ -30,7 +30,7 @@ public class ChangeSceneScript : MonoBehaviour
     }
 
     //シーンを変更。
-    public void ChangeScene(bool isAsync,float invokeTime = 0.0f)
+    public void ChangeSceneInvoke(bool isAsync,float invokeTime = 0.0f)
     {
         if(isSceneChange)
         {
@@ -43,6 +43,25 @@ public class ChangeSceneScript : MonoBehaviour
         else
         {
             Invoke("LoadScene", invokeTime);
+        }
+        isSceneChange = true;
+    }
+    /// <summary>
+    /// シーン変更。
+    /// </summary>
+    public void ChangeScene(bool isAsync)
+    {
+        if(isSceneChange)
+        {
+            return;
+        }
+        if(isAsync)
+        {
+            LoadSceneAsync();
+        }
+        else
+        {
+            LoadScene();
         }
         isSceneChange = true;
     }
