@@ -23,8 +23,7 @@ public class SetScoreTextScript : MonoBehaviour
     /// エンドリザルトをセットする。
     /// </summary>
     /// <param name="result">リザルト。</param>
-    /// <param name="no">エンド番号。</param>
-    public void SetEndResult(GameScore.EndResult result,int no)
+    public void SetEndResult(GameScore.EndResult result)
     {
         redTeamScore.text = result.redTeamScore.ToString();
         blueTeamScore.text = result.blueTeamScore.ToString();
