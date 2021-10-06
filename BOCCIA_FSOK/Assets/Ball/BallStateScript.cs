@@ -28,22 +28,22 @@ public class BallStateScript : MonoBehaviour
         m_moveSpeed = m_rigidbody.velocity;
 
         //xzŽ²‚ÌˆÚ“®‚Ì‚ÝŒ©‚é
-        m_moveSpeed.y = 0.0f;
+        //m_moveSpeed.y = 0.0f;
 
-        if (m_state == BallState.Move)
+        if (m_moveSpeed.magnitude <= m_borderSpeed)
         {
-            if (m_moveSpeed.magnitude <= m_borderSpeed)
+            if (m_state == BallState.Move)
             {
                 //‘¬“x‚ªˆê’èˆÈ‰º‚ÌŽž
                 //ˆÚ“®‚ð’âŽ~‚·‚é
                 m_rigidbody.velocity = Vector3.zero;
-                //’âŽ~’†‚É‚·‚é
-                m_state = BallState.Stop;
             }
+            //’âŽ~’†‚É‚·‚é
+            m_state = BallState.Stop;
         }
-
-        if (m_moveSpeed.magnitude > m_borderSpeed)
+        else
         {
+
             //ˆÚ“®’†‚É‚·‚é
             m_state = BallState.Move;
         }
