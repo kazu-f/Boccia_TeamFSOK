@@ -104,6 +104,8 @@ namespace GameScore
                 var gameScore = gameObject.GetComponent<GameScoreScript>();
                 if (gameScore != null)
                 {
+                    //最終エンド数記録。
+                    gameScore.SetFinalEndNum(FinalEndNum);
                     //スコアをコピー。
                     gameScore.CopyScore(results);
                     //中断。
