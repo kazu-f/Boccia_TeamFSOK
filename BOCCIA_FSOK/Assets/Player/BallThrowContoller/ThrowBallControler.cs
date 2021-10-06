@@ -28,11 +28,10 @@ namespace BocciaPlayer
         private void Awake()
         {
             touchManager = TouchManager.GetInstance();
-            //投げゲージ作成。
-            throwGauge = Instantiate(throwGaugePrefab);
             //ゲージの親をキャンバスにする。
             var canvas = touchManager.GetCanvas();
-            throwGauge.transform.SetParent(canvas.GetComponent<RectTransform>(),false);
+            //投げゲージ作成。
+            throwGauge = Instantiate(throwGaugePrefab, canvas.GetComponent<RectTransform>(),false);
 
             //マテリアルの取得。。
             var image = throwGauge.GetComponent<Image>();
