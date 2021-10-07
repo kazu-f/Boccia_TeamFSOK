@@ -37,10 +37,6 @@ public class TeamFlowScript : MonoBehaviour
         {
             m_change = false;
         }
-        if(m_IsMoving == true)
-        {
-            return;
-        }
     }
 
     public Team GetNowTeam()
