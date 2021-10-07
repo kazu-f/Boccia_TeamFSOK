@@ -104,9 +104,13 @@ public class ScoreResultDispScript : MonoBehaviour
             case EnScoreDispState.enUISlideIn:
                 if (currentNo < EndNum)
                 {
-                    //UIを順番にスライドイン。
-                    resultTextsObj[currentNo].GetComponent<UISlideIn>().SlideIn();
-                    state = EnScoreDispState.enUIWaitSlide;
+                    var uiSlideIn = resultTextsObj[currentNo].GetComponent<UISlideIn>();
+                    if(uiSlideIn.IsInited())
+                    {
+                        //UIを順番にスライドイン。
+                        uiSlideIn.SlideIn();
+                        state = EnScoreDispState.enUIWaitSlide;
+                    }
                 }
                 else
                 {
