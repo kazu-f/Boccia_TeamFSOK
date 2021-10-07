@@ -13,7 +13,6 @@ public class BallOperateScript : MonoBehaviour
     private bool IsThrow = false;
     public Vector3 DefaultPos;
     private Vector3 m_pos = Vector3.zero;
-
     private void Awake()
     {
         //RigidBodyを取得
@@ -65,19 +64,20 @@ public class BallOperateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ジャックボールの場合
-        if (m_Team.GetTeam() == Team.Jack)
+        if (IsThrow)
         {
-            //TeamFlowにジャックボールの位置を保存
-            m_TeamFlow.SetJackPos(this.transform.position);
-        }
-
-        if (m_IsCalculated == false && IsThrow == true)
-        {
-            if (m_StateScript.GetState() == BallState.Stop)
+            if (m_IsCalculated == false)
             {
-                //次に投げるチームを計算する
-                m_IsCalculated = m_TeamFlow.CalucNextTeam();
+                if (m_StateScript.GetState() == BallState.Stop)
+                {
+                    //次に投げるチームを計算する
+                    m_IsCalculated = m_TeamFlow.CalucNextTeam();
+                    if (m_IsCalculated)
+                    {
+                        m_TeamFlow.NextTeamLog();
+                    }
+                }
+
             }
         }
     }
@@ -151,8 +151,6 @@ public class BallOperateScript : MonoBehaviour
             m_TeamFlow.SetMove(false);
             //アクティブフラグをfalseにする
             this.gameObject.SetActive(false);
-            //ログを流す
-            m_TeamFlow.NextTeamLog();
         }
     }
     /// <summary>

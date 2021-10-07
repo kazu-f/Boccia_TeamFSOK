@@ -74,7 +74,7 @@ public class TeamFlowScript : MonoBehaviour
         {
             m_NextTeam = m_firstTeam;
             m_IsMoving = false;
-            NextTeamLog();
+            //NextTeamLog();
             return true;
         }
         else
@@ -132,7 +132,7 @@ public class TeamFlowScript : MonoBehaviour
             m_NextTeam = Team.Red;
         }
 
-        NextTeamLog();
+        //NextTeamLog();
         return true;
     }
 

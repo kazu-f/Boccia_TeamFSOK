@@ -13,22 +13,38 @@ public class BallStateScript : MonoBehaviour
     private BallState m_state = BallState.Num;
     private Rigidbody m_rigidbody;
     private Vector3 m_moveSpeed;
-    private float m_borderSpeed = 0.005f;
-    // Start is called before the first frame update
-    void Start()
+    private float m_borderSpeed = 0.0005f;
+
+    private void Awake()
     {
         //RigidBodyを取得
         m_rigidbody = GetComponent<Rigidbody>();
+        if (m_rigidbody == null)
+        {
+            Debug.LogError("リジッドボディ取得できてません!!!");
+        }
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        CalcState();
+    }
+
+    private void CalcState()
+    {
+        if (m_rigidbody == null)
+        {
+            m_state = BallState.Num;
+            return;
+        }
         //移動速度を取得
         m_moveSpeed = m_rigidbody.velocity;
-
-        //xz軸の移動のみ見る
-        //m_moveSpeed.y = 0.0f;
 
         if (m_moveSpeed.magnitude <= m_borderSpeed)
         {
@@ -43,12 +59,11 @@ public class BallStateScript : MonoBehaviour
         }
         else
         {
-
             //移動中にする
             m_state = BallState.Move;
         }
-    }
 
+    }
     public BallState GetState()
     {
         return m_state;
@@ -63,11 +78,6 @@ public class BallStateScript : MonoBehaviour
         m_rigidbody.velocity = Vector3.zero;
         //停止中にする
         m_state = BallState.Stop;
-    }
-
-    public Vector3 GetMoveSpeed()
-    {
-        return m_moveSpeed;
     }
 
     public void ResetState()
