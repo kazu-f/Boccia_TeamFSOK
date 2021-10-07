@@ -44,8 +44,11 @@ public class BallStateScript : MonoBehaviour
         }
         //ˆÚ“®‘¬“x‚ðŽæ“¾
         m_moveSpeed = m_rigidbody.velocity;
-        if (m_moveSpeed.magnitude == 0.0f)
+        if (m_moveSpeed.magnitude <= m_borderSpeed)
         {
+            //‘¬“x‚ªˆê’èˆÈ‰º‚ÌŽž
+            //ˆÚ“®‚ð’âŽ~‚·‚é
+            m_rigidbody.velocity = Vector3.zero;
             //’âŽ~’†‚É‚·‚é
             m_state = BallState.Stop;
         }
@@ -53,13 +56,6 @@ public class BallStateScript : MonoBehaviour
         {
             //ˆÚ“®’†‚É‚·‚é
             m_state = BallState.Move;
-        }
-
-        if (m_moveSpeed.magnitude <= m_borderSpeed)
-        {
-            //‘¬“x‚ªˆê’èˆÈ‰º‚ÌŽž
-            //ˆÚ“®‚ð’âŽ~‚·‚é
-            m_rigidbody.velocity = Vector3.zero;
         }
     }
 

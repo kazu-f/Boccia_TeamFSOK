@@ -206,7 +206,6 @@ public class TeamFlowScript : MonoBehaviour
     /// <returns></returns>
     public bool GetIsMoving()
     {
-        IsStopAllBalls();
         return m_IsMoving;
     }
 
