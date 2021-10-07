@@ -31,6 +31,7 @@ public struct VictoryTeam
 public class EndFlowScript : MonoBehaviour
 {
     private bool m_IsEnd = false;       //エンドが終了したかどうか
+    private bool m_Calced = false;
     private VictoryTeam m_VicTeam;
     private bool IsShowLog = false;
     BallFlowScript ballFlow;
@@ -64,6 +65,7 @@ public class EndFlowScript : MonoBehaviour
             DispScore.SetTextTeam(m_VicTeam.GetNearestTeam());
             //リザルトを表示
             DispScore.DispResult(m_VicTeam.GetScore());
+            m_Calced = true;
         }
     }
 
@@ -75,6 +77,14 @@ public class EndFlowScript : MonoBehaviour
         m_IsEnd = true;
     }
 
+    /// <summary>
+    /// 得点計算終わっているかどうか
+    /// </summary>
+    /// <returns>計算終了しているかどうか</returns>
+    public bool GetCalced()
+    {
+        return m_Calced;
+    }
     /// <summary>
     /// エンドが終了しているかどうかを取得
     /// </summary>
@@ -187,6 +197,7 @@ public class EndFlowScript : MonoBehaviour
     public void ResetVar()
     {
         m_IsEnd = false;
+        m_Calced = false;
         IsShowLog = false;
         //TeamFlowコンポーネントの取得
         m_TeamFlow = this.gameObject.GetComponent<TeamFlowScript>();
