@@ -66,12 +66,17 @@ public class TeamFlowScript : MonoBehaviour
     /// <returns>戻り値は計算ができたかどうか</returns>
     public bool CalucNextTeam()
     {
-
         //ballというタグのついたゲームオブジェクトを配列に入れる
         GameObject[] m_balls;
         m_balls = GameObject.FindGameObjectsWithTag("Ball");
         if (m_balls.Length == 0)
         {
+            if (m_RemainBalls.x == 0 && m_RemainBalls.y == 0)
+            {
+                m_GameFlowScript.GameEnd();
+                return true;
+            }
+
             if (m_RemainBalls.x == m_RemainBalls.y)
             {
                 m_NextTeam = m_firstTeam;
