@@ -127,35 +127,40 @@ public class BallOperateScript : MonoBehaviour
         //ボールを停止する
         m_StateScript.Stop();
 
-        if (m_Team.GetTeam() == Team.Jack)
+        if(m_IsCalculated == false)
         {
-            //ジャックボールの場合
-            //クロスに戻す
-            m_pos = DefaultPos;
-            //TeamFlowにジャックボールの位置を保存
-            m_TeamFlow.SetJackPos(m_pos);
-
-            //座標を設定
-            myTrans.position = m_pos;
-        }
-        else
-        {
-            //ジャックボール以外の場合
-            //ballというタグのついたゲームオブジェクトを配列に入れる
-            GameObject[] m_balls;
-            m_balls = GameObject.FindGameObjectsWithTag("Ball");
-            if (m_balls.Length == 0)
+            if (m_Team.GetTeam() == Team.Jack)
             {
-                m_TeamFlow.ChangeNextTeam();
+                //ジャックボールの場合
+                //クロスに戻す
+                m_pos = DefaultPos;
+                //TeamFlowにジャックボールの位置を保存
+                m_TeamFlow.SetJackPos(m_pos);
+
+                //座標を設定
+                myTrans.position = m_pos;
             }
             else
             {
-                //他にもボールがあるので次に投げるチームを計算する
-                m_TeamFlow.CalucNextTeam();
+                //ジャックボール以外の場合
+                //ballというタグのついたゲームオブジェクトを配列に入れる
+                GameObject[] m_balls;
+                m_balls = GameObject.FindGameObjectsWithTag("Ball");
+                if (m_balls.Length == 0)
+                {
+                    m_TeamFlow.ChangeNextTeam();
+                }
+                else
+                {
+                    //他にもボールがあるので次に投げるチームを計算する
+                    m_TeamFlow.CalucNextTeam();
+                }
             }
-            //Moveフラグをfalseにする
-            m_TeamFlow.SetMove(false);
-            //アクティブフラグをfalseにする
+            m_TeamFlow.NextTeamLog();
+            m_IsCalculated = true;
+        }
+        if(m_Team.GetTeam() != Team.Jack)
+        {
             this.gameObject.SetActive(false);
         }
     }
