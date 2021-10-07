@@ -7,13 +7,10 @@ public class BallOperateScript : MonoBehaviour
     private BallStateScript m_StateScript = null;
     private TeamDivisionScript m_Team = null;
     private Rigidbody m_rigidbody = null;
-    private bool m_IsCalculated = false;
     private GameObject m_Flow = null;       //ゲームの流れ全体をコントロールするオブジェクト
     private TeamFlowScript m_TeamFlow = null;
-    private bool IsThrow = false;
     public Vector3 DefaultPos;
     private Vector3 m_pos = Vector3.zero;
-    private int m_Frame = 0;
     private void Awake()
     {
         //RigidBodyを取得
@@ -59,33 +56,11 @@ public class BallOperateScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (IsThrow)
-        {
-            if (m_IsCalculated == false)
-            {
-                m_Frame++;
-                if (m_Frame > 10)
-                {
-                    if (m_StateScript.GetState() == BallState.Stop)
-                    {
-                        //次に投げるチームを計算する
-                        m_IsCalculated = m_TeamFlow.CalucNextTeam();
-                        m_TeamFlow.m_change = m_IsCalculated;
-                        if (m_IsCalculated)
-                        {
-                            m_TeamFlow.NextTeamLog();
-                        }
-                    }
-                }
-
-            }
-        }
     }
 
     /// <summary>
@@ -100,18 +75,9 @@ public class BallOperateScript : MonoBehaviour
         }
         //速度を加算
         m_rigidbody.AddForce(speed);
-        m_TeamFlow.SetMove(true);
-        IsThrow = true;
+        //ボールを投げた判定をTeamFlowに送る
+        m_TeamFlow.ThrowBall();
         Debug.Log("ボールが動いています");
-    }
-
-    /// <summary>
-    /// ボールを投げたかどうかを判定
-    /// </summary>
-    /// <returns>戻り値はbool型</returns>
-    public bool GetIsThrow()
-    {
-        return IsThrow;
     }
 
     /// <summary>
@@ -127,51 +93,45 @@ public class BallOperateScript : MonoBehaviour
         //ボールを停止する
         m_StateScript.Stop();
 
-        if(m_IsCalculated == false)
+        if (m_Team.GetTeam() == Team.Jack)
         {
-            if (m_Team.GetTeam() == Team.Jack)
-            {
-                //ジャックボールの場合
-                //クロスに戻す
-                m_pos = DefaultPos;
-                //TeamFlowにジャックボールの位置を保存
-                m_TeamFlow.SetJackPos(m_pos);
+            //ジャックボールの場合
+            //クロスに戻す
+            m_pos = DefaultPos;
+            //TeamFlowにジャックボールの位置を保存
+            m_TeamFlow.SetJackPos(m_pos);
 
-                //座標を設定
-                myTrans.position = m_pos;
+            //座標を設定
+            myTrans.position = m_pos;
+        }
+        else
+        {
+            //ジャックボール以外の場合
+            //ballというタグのついたゲームオブジェクトを配列に入れる
+            GameObject[] m_balls;
+            m_balls = GameObject.FindGameObjectsWithTag("Ball");
+            if (m_balls.Length == 0)
+            {
+                m_TeamFlow.ChangeNextTeam();
             }
             else
             {
-                //ジャックボール以外の場合
-                //ballというタグのついたゲームオブジェクトを配列に入れる
-                GameObject[] m_balls;
-                m_balls = GameObject.FindGameObjectsWithTag("Ball");
-                if (m_balls.Length == 0)
-                {
-                    m_TeamFlow.ChangeNextTeam();
-                }
-                else
-                {
-                    //他にもボールがあるので次に投げるチームを計算する
-                    m_TeamFlow.CalucNextTeam();
-                }
+                //他にもボールがあるので次に投げるチームを計算する
+                m_TeamFlow.CalucNextTeam();
             }
-            m_TeamFlow.NextTeamLog();
-            m_IsCalculated = true;
         }
-        if(m_Team.GetTeam() != Team.Jack)
+        m_TeamFlow.NextTeamLog();
+        if (m_Team.GetTeam() != Team.Jack)
         {
             this.gameObject.SetActive(false);
         }
     }
+
     /// <summary>
     /// 変数のリセット。
     /// </summary>
     public void ResetVar()
     {
-        IsThrow = false;
-        m_IsCalculated = false;
-        m_Frame = 0;
         m_StateScript.ResetState();
     }
 }

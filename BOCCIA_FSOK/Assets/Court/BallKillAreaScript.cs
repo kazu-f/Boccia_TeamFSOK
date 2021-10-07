@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class BallKillAreaScript : MonoBehaviour
 {
+    GameObject m_GameFlow = null;
+
+    private void Awake()
+    {
+        m_GameFlow = GameObject.Find("GameFlow");
+        if(m_GameFlow == null)
+        {
+            //ゲームフロウオブジェクトが取得できなかった時
+            Debug.LogError("GameFlowオブジェクトが取得できませんでした");
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +29,15 @@ public class BallKillAreaScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        other.gameObject.GetComponent<BallOperateScript>().OutsideVenue();
+        if(other.gameObject.tag == "Ball")
+        {
+            m_GameFlow.GetComponent<TeamFlowScript>().OutsideVenue();
+            other.gameObject.SetActive(false);
+        }
+        else if(other.gameObject.tag == "Jack")
+        {
+            other.GetComponent<JackBallScript>().OutsideVenue();
+        }
     }
 
 }

@@ -27,7 +27,7 @@ public class BallFlowScript : MonoBehaviour
             {
                 //ステートを取得
                 m_JackState = m_Jack.GetComponent<BallStateScript>();
-                if (m_JackState.GetState() == BallState.Stop && m_BallOperate.GetIsThrow())
+                if (m_JackState.GetState() == BallState.Stop/* && m_BallOperate.GetIsThrow()*/)
                 {
                     //ジャックボールが準備されたときにフラグを立てる
                     m_IsPreparedJack = true;
