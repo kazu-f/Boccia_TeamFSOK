@@ -12,6 +12,7 @@ public class UISlideIn : MonoBehaviour
     private Vector3 inPosition;        // スライドイン後の位置
     private Vector3 outPosition;      // スライドアウト後の位置
     private bool isMoving = false;              //スライド中か。
+    private bool isInited = false;              //座標設定済みか？
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,8 @@ public class UISlideIn : MonoBehaviour
         inPosition = transform.localPosition;           //スライドイン後の位置。
         outPosition = transform.localPosition + dir;    //スライドアウト後の位置。
         transform.localPosition = transform.localPosition - dir;
+
+        isInited = true;
     }
 
     // Update is called once per frame
@@ -83,6 +86,15 @@ public class UISlideIn : MonoBehaviour
     public bool IsMoving()
     {
         return isMoving;
+    }
+
+    /// <summary>
+    /// 座標設定済みか？
+    /// </summary>
+    /// <returns></returns>
+    public bool IsInited()
+    {
+        return isInited;
     }
 
     void OnDrawGizmos()
