@@ -14,17 +14,20 @@ public class TeamFlowScript : MonoBehaviour
     private int m_Remain = 6;
     private EndFlowScript m_GameFlowScript = null;
     private bool m_IsMoving = false;
-    public bool m_change = false;
+    private bool IsThrow = false;
+    private int m_Frame = 0;
     private void Awake()
     {
         m_BallFlow = GetComponent<BallFlowScript>();
         m_GameFlowScript = GetComponent<EndFlowScript>();
     }
+
     // Start is called before the first frame update
     void Start()
     {
-        //初めに赤チームが投げる
+        //初めに投げるチームを決定
         m_NextTeam = m_firstTeam;
+        //ボールの所持数を増やす
         m_RemainBalls *= m_Remain;
         //ログを流す
         NextTeamLog();
@@ -33,9 +36,22 @@ public class TeamFlowScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(m_change == true)
+        if (IsThrow)
         {
-            m_change = false;
+            //1フレーム目だとうまくいかないので少し遅延させる
+            if (m_Frame < 10)
+            {
+                m_Frame++;
+                return;
+            }
+            //ボールを投げた時
+            IsStopAllBalls();
+            if (m_IsMoving == false)
+            {
+                //全てのボールが止まっているとき
+                IsThrow = !CalucNextTeam();
+            }
+            m_Frame = 0;
         }
     }
 
@@ -50,47 +66,25 @@ public class TeamFlowScript : MonoBehaviour
     /// <returns>戻り値は計算ができたかどうか</returns>
     public bool CalucNextTeam()
     {
-        //ジャックボールを取得
-        m_Jack = m_BallFlow.GetJackBall();
-        if (m_Jack == null)
-        {
-            //インスタンスの取得に失敗したとき
-            Debug.Log("<color=red>エラー：ジャックボールの取得に失敗しました</color>");
-            return false;
-        }
-        //ジャックボールのステートを取得
-        m_JackState = m_Jack.GetComponent<BallStateScript>().GetState();
-        if (m_JackState == BallState.Move)
-        {
-            //ジャックボールがまだ動いているので計算は失敗
-            m_NextTeam = Team.Num;
-            return false;
-        }
 
         //ballというタグのついたゲームオブジェクトを配列に入れる
         GameObject[] m_balls;
         m_balls = GameObject.FindGameObjectsWithTag("Ball");
         if (m_balls.Length == 0)
         {
-            m_NextTeam = m_firstTeam;
-            m_IsMoving = false;
-            //NextTeamLog();
+            if (m_RemainBalls.x == m_RemainBalls.y)
+            {
+                m_NextTeam = m_firstTeam;
+            }
+            else
+            {
+                ChangeNextTeam();
+            }
+            NextTeamLog();
             return true;
         }
-        else
-        {
-            for (int ballnum = 0; ballnum < m_balls.Length; ballnum++)
-            {
-                if (m_balls[ballnum].GetComponent<BallStateScript>().GetState() != BallState.Stop)
-                {
-                    //止まり切っていない球があるため失敗
-                    m_NextTeam = Team.Num;
-                    return false;
-                }
-            }
-        }
-        //全ての球が止まっていたので計算を続ける
-        m_IsMoving = false;
+
+        //ここからは一つ以上のボールがあるときの処理
         int NearestBallNum = 0;
         float NearestDist = 10000;
         for(int ballnum = 0; ballnum < m_balls.Length;ballnum++)
@@ -132,8 +126,47 @@ public class TeamFlowScript : MonoBehaviour
             m_NextTeam = Team.Red;
         }
 
-        //NextTeamLog();
+        NextTeamLog();
         return true;
+    }
+
+    /// <summary>
+    /// 全てのボールが止まっているかどうか判定
+    /// </summary>
+    private void IsStopAllBalls()
+    {
+        //ジャックボールを取得
+        m_Jack = m_BallFlow.GetJackBall();
+        //ジャックボールのステートを取得
+        m_JackState = m_Jack.GetComponent<BallStateScript>().GetState();
+        if (m_JackState == BallState.Move)
+        {
+            //ジャックボールが停止していない
+            m_IsMoving = true;
+            return;
+        }
+
+        //ボールを取得
+        GameObject[] m_balls;
+        m_balls = GameObject.FindGameObjectsWithTag("Ball");
+        //ボールを取得できた
+        if (m_balls.Length != 0)
+        {
+            //一つ以上ボールがある
+            for (int num = 0; num < m_balls.Length; num++)
+            {
+                //ボールの状態を取得
+                if (m_balls[num].GetComponent<BallStateScript>().GetState() != BallState.Stop)
+                {
+                    //止まっていないボールがある
+                    m_IsMoving = true;
+                    return;
+                }
+            }
+        }
+
+        //全てのボールが止まっている
+        m_IsMoving = false;
     }
 
     /// <summary>
@@ -173,17 +206,21 @@ public class TeamFlowScript : MonoBehaviour
     /// <returns></returns>
     public bool GetIsMoving()
     {
+        IsStopAllBalls();
         return m_IsMoving;
     }
 
-    /// <summary>
-    /// ボールが動いているフラグを立てる
-    /// </summary>
-    public void SetMove(bool flag)
-    {
-        m_IsMoving = flag;
-    }
+    ///// <summary>
+    ///// ボールが動いているフラグを立てる
+    ///// </summary>
+    //public void SetMove(bool flag)
+    //{
+    //    m_IsMoving = flag;
+    //}
 
+    /// <summary>
+    /// 次のチームを変更
+    /// </summary>
     public void ChangeNextTeam()
     {
         if(m_NextTeam == Team.Red)
@@ -194,7 +231,6 @@ public class TeamFlowScript : MonoBehaviour
         {
             m_NextTeam = Team.Red;
         }
-        NextTeamLog();
     }
 
     /// <summary>
@@ -242,5 +278,18 @@ public class TeamFlowScript : MonoBehaviour
     public void SetFirstTeam(Team firstTeam)
     {
         m_firstTeam = firstTeam;
+    }
+
+    public void ThrowBall()
+    {
+        IsThrow = true;
+    }
+
+    /// <summary>
+    /// 場外にボールが行った時の処理
+    /// </summary>
+    public void OutsideVenue()
+    {
+
     }
 }
