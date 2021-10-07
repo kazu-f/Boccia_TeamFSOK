@@ -14,7 +14,7 @@ public class TeamFlowScript : MonoBehaviour
     private int m_Remain = 6;
     private EndFlowScript m_GameFlowScript = null;
     private bool m_IsMoving = false;
-
+    public bool m_change = false;
     private void Awake()
     {
         m_BallFlow = GetComponent<BallFlowScript>();
@@ -33,6 +33,10 @@ public class TeamFlowScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(m_change == true)
+        {
+            m_change = false;
+        }
         if(m_IsMoving == true)
         {
             return;

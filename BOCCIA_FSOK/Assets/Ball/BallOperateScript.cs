@@ -13,6 +13,7 @@ public class BallOperateScript : MonoBehaviour
     private bool IsThrow = false;
     public Vector3 DefaultPos;
     private Vector3 m_pos = Vector3.zero;
+    private int m_Frame = 0;
     private void Awake()
     {
         //RigidBodyを取得
@@ -68,13 +69,18 @@ public class BallOperateScript : MonoBehaviour
         {
             if (m_IsCalculated == false)
             {
-                if (m_StateScript.GetState() == BallState.Stop)
+                m_Frame++;
+                if (m_Frame > 10)
                 {
-                    //次に投げるチームを計算する
-                    m_IsCalculated = m_TeamFlow.CalucNextTeam();
-                    if (m_IsCalculated)
+                    if (m_StateScript.GetState() == BallState.Stop)
                     {
-                        m_TeamFlow.NextTeamLog();
+                        //次に投げるチームを計算する
+                        m_IsCalculated = m_TeamFlow.CalucNextTeam();
+                        m_TeamFlow.m_change = m_IsCalculated;
+                        if (m_IsCalculated)
+                        {
+                            m_TeamFlow.NextTeamLog();
+                        }
                     }
                 }
 
@@ -160,6 +166,7 @@ public class BallOperateScript : MonoBehaviour
     {
         IsThrow = false;
         m_IsCalculated = false;
+        m_Frame = 0;
         m_StateScript.ResetState();
     }
 }
