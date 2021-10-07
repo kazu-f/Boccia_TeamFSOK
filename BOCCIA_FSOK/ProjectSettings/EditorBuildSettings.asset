@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BocciaGameScene.unity
     guid: c5d7a41d584aad940a88942de77cafaa
+  - enabled: 1
+    path: Assets/Scenes/GameResultScene.unity
+    guid: 10555d3254cef624b8554cdc8ff15d49
   m_configObjects: {}

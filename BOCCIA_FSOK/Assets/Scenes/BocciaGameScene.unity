@@ -1831,7 +1831,7 @@ PrefabInstance:
       objectReference: {fileID: 108661693}
     - target: {fileID: 7981345801601168016, guid: 36d8230ed8e742e4d8cfc838ed79cf3f, type: 3}
       propertyPath: GameSceneString
-      value: TitleScene
+      value: GameResultScene
       objectReference: {fileID: 0}
     - target: {fileID: 8903943480845696647, guid: 36d8230ed8e742e4d8cfc838ed79cf3f, type: 3}
       propertyPath: activePlayerController

@@ -9,30 +9,45 @@ public class ScoreResultDispScript : MonoBehaviour
     {
         enUISlideIn,
         enUIWaitSlide,
-        enResultSlideIn,
+        enResultSumDisp,
+        enFinish,
         enStateNum
     }
 
 
     [SerializeField] private GameObject canvas;         //キャンバス。
+    [SerializeField] private TouchManager touchManager;         //キャンバス。
     public GameScore.GameScoreScript scoreScript;      //スコアを記録しているスクリプト。
     public GameObject resultPrefab;                     //リザルトのプレファブ。
+    public GameObject resultSumPrefab;                     //リザルトのプレファブ。
+    public GameObject tapGoTitle;                           //タイトルへ戻る。
     private GameObject[] resultTextsObj;                   //エンド毎のテキスト。
     private GameObject resultSumText;                       //合計スコアのテキスト。
+    private ChangeSceneScript changeScene;                  //シーン切り替え制御。
 
     [SerializeField] private Vector3 direction;             //リザルトを並べる方向。
 
     private EnScoreDispState state = EnScoreDispState.enUISlideIn;
     private int EndNum = 0;                             //エンド数。
     private int currentNo = 0;                          //現在スライドインしているスコア。
+    bool isFinish = false;                              //終了。
 
     // Start is called before the first frame update
     void Start()
     {
-        //EndNum = scoreScript.GetFinalEndNum();      //エンド数を取得。
-        EndNum = 3;      //エンド数を取得。
+        //非表示。
+        tapGoTitle.SetActive(false);
+        //シーン切り替え制御。
+        changeScene = this.gameObject.GetComponent<ChangeSceneScript>();
+
+        EndNum = scoreScript.GetFinalEndNum();      //エンド数を取得。
+
         if (EndNum <= 0) return;
         resultTextsObj = new GameObject[EndNum];
+
+        GameScore.EndResult sumScore = new GameScore.EndResult();
+
+        Vector3 lastPos;
 
         for(int i = 0; i < EndNum; i++)
         {
@@ -50,13 +65,35 @@ public class ScoreResultDispScript : MonoBehaviour
 
             //リザルト取得。
             GameScore.EndResult result = scoreScript.GetEndResult(i);
+            sumScore = sumScore + result;
 
             //スコア表示にリザルトをセット。
             var setScore = obj.GetComponent<SetScoreTextScript>();
-            setScore.SetEndResult(result, i + 1);
+            setScore.SetEndResult(result);
 
             resultTextsObj[i] = obj;
         }
+        //一番下の座標。
+        lastPos = resultTextsObj[EndNum - 1].transform.localPosition;
+        //スコア合計
+        {
+            resultSumText = Instantiate(resultSumPrefab, canvas.transform);
+
+            var rect = resultSumText.GetComponent<RectTransform>();
+
+            //オブジェクトの位置をずらす。
+            Vector3 posDist = direction.normalized;
+            posDist.x *= rect.sizeDelta.x * 2.0f;
+            posDist.y *= rect.sizeDelta.y * 2.0f;
+            //テキストの位置を設定。
+            resultSumText.transform.localPosition = lastPos + canvas.transform.TransformVector(posDist);
+
+            //リザルトスコアをセット。
+            resultSumText.GetComponent<SetScoreTextScript>().SetEndResult(sumScore);
+
+            resultSumText.SetActive(false);
+        }
+
     }
 
     // Update is called once per frame
@@ -73,7 +110,7 @@ public class ScoreResultDispScript : MonoBehaviour
                 }
                 else
                 {
-                    state = EnScoreDispState.enStateNum;
+                    state = EnScoreDispState.enResultSumDisp;
                 }
                 break;
             case EnScoreDispState.enUIWaitSlide:
@@ -83,9 +120,37 @@ public class ScoreResultDispScript : MonoBehaviour
                     state = EnScoreDispState.enUISlideIn;
                 }
                 break;
+
+            case EnScoreDispState.enResultSumDisp:
+                Invoke("DispResultSum", 1.0f);
+                state = EnScoreDispState.enFinish;
+
+                break;
+
+            case EnScoreDispState.enFinish:
+                if(isFinish)
+                {
+                    tapGoTitle.SetActive(true);
+                    if(touchManager.IsTouch())
+                    {
+                        //シーン切り替え。
+                        changeScene.ChangeScene(false);
+                    }
+                }
+
+                break;
             default:
                 break;
         }        
+    }
+
+    /// <summary>
+    /// スコア合計表示。
+    /// </summary>
+    private void DispResultSum()
+    {
+        isFinish = true;
+        resultSumText.SetActive(true);
     }
 
     //スライドを並べる方向を可視化

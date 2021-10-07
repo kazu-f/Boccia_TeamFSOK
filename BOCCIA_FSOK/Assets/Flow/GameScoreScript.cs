@@ -8,7 +8,17 @@ namespace GameScore
     public struct EndResult
     {
         public int redTeamScore;
-        public int blueTeamScore;    
+        public int blueTeamScore;
+
+        public EndResult(int red = 0, int blue = 0) { redTeamScore = red; blueTeamScore = blue; }
+
+        public static EndResult operator+ (EndResult val1,EndResult val2)
+        {
+            EndResult ret;
+            ret.redTeamScore = val1.redTeamScore + val2.redTeamScore;
+            ret.blueTeamScore = val1.blueTeamScore + val2.blueTeamScore;
+            return ret;
+        }
     }
 
     public class GameScoreScript : MonoBehaviour
@@ -94,6 +104,8 @@ namespace GameScore
                 var gameScore = gameObject.GetComponent<GameScoreScript>();
                 if (gameScore != null)
                 {
+                    //最終エンド数記録。
+                    gameScore.SetFinalEndNum(FinalEndNum);
                     //スコアをコピー。
                     gameScore.CopyScore(results);
                     //中断。
