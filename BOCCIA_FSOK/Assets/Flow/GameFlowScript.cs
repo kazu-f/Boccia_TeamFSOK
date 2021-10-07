@@ -45,7 +45,7 @@ public class GameFlowScript : MonoBehaviour
         }
 
         //そのエンドが終了した。
-        if(endFlow.GetIsEnd() && !waitFlag)
+        if(endFlow.GetCalced() && !waitFlag)
         {
             //そのエンドのリザルト記録。
             RecordEndResult();
