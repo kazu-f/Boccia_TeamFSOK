@@ -55,8 +55,16 @@ public class TeamFlowScript : MonoBehaviour
             if (m_IsMoving == false)
             {
                 //全てのボールが止まっているとき
-                IsThrow = !CalucNextTeam();
-                m_NextBallImage.GetComponent<ChangeBallSprite>().ChangeSprite(m_NextTeam);
+                //IsThrow = !CalucNextTeam();
+                if (CalucNextTeam())
+                {
+                    //次に投げるチームのボールのスプライトを変更
+                    m_NextBallImage.GetComponent<ChangeBallSprite>().ChangeSprite(m_NextTeam);
+                    //投げ終わり
+                    IsThrow = false;
+                    //カメラ変更
+                    GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
+                }
             }
             m_Frame = 0;
         }
@@ -169,7 +177,11 @@ public class TeamFlowScript : MonoBehaviour
             for (int num = 0; num < m_balls.Length; num++)
             {
                 //ボールの状態を取得
-                if (m_balls[num].GetComponent<BallStateScript>().GetState() != BallState.Stop)
+                if (m_balls[num].GetComponent<BallStateScript>().GetState() == BallState.Stop)
+                {
+                    m_balls[num].GetComponent<BallOperateScript>().EndThrowing();
+                }
+                else
                 {
                     //止まっていないボールがある
                     m_IsMoving = true;
@@ -221,14 +233,6 @@ public class TeamFlowScript : MonoBehaviour
     {
         return m_IsMoving;
     }
-
-    ///// <summary>
-    ///// ボールが動いているフラグを立てる
-    ///// </summary>
-    //public void SetMove(bool flag)
-    //{
-    //    m_IsMoving = flag;
-    //}
 
     /// <summary>
     /// 次のチームを変更
