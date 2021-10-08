@@ -10,7 +10,10 @@ public class BallOperateScript : MonoBehaviour
     private GameObject m_Flow = null;       //ゲームの流れ全体をコントロールするオブジェクト
     private TeamFlowScript m_TeamFlow = null;
     public Vector3 DefaultPos;
-    private GameObject m_FollowCamera = null;
+    private GameObject m_GameCamera = null;
+    private GameCameraScript m_GameCameraScript = null;
+    private bool IsThrowing = true;
+
     private void Awake()
     {
         //RigidBodyを取得
@@ -52,10 +55,18 @@ public class BallOperateScript : MonoBehaviour
             //BallStateScriptコンポーネントが取得できなかったとき
             Debug.LogError("エラー：BallStateScriptコンポーネントの取得に失敗しました。");
         }
-        m_FollowCamera = GameObject.Find("FollowCamera");
-        if(m_FollowCamera == null)
+        m_GameCamera = GameObject.Find("GameCamera");
+        if (m_GameCamera == null)
         {
-            Debug.LogError("FollowCameraの取得に失敗しました");
+            Debug.LogError("GameCameraの取得に失敗しました");
+        }
+        else
+        {
+            m_GameCameraScript = m_GameCamera.GetComponent<GameCameraScript>();
+            if(m_GameCameraScript == null)
+            {
+                Debug.LogError("GameCameraScriptの取得に失敗しました");
+            }
         }
     }
     // Start is called before the first frame update
@@ -66,6 +77,11 @@ public class BallOperateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (IsThrowing)
+        {
+            Vector3 position = this.gameObject.transform.position;
+            m_GameCameraScript.SetFollowCameraParam(position);
+        }
     }
 
     /// <summary>
@@ -82,6 +98,8 @@ public class BallOperateScript : MonoBehaviour
         m_rigidbody.AddForce(speed);
         //ボールを投げた判定をTeamFlowに送る
         m_TeamFlow.ThrowBall();
+        //カメラを切り替える
+        m_GameCameraScript.SwitchCamera();
         Debug.Log("ボールが動いています");
     }
 
@@ -90,6 +108,15 @@ public class BallOperateScript : MonoBehaviour
     /// </summary>
     public void ResetVar()
     {
+        IsThrowing = true;
         m_StateScript.ResetState();
+    }
+
+    /// <summary>
+    /// 投げ終わった
+    /// </summary>
+    public void EndThrowing()
+    {
+        IsThrowing = false;
     }
 }
