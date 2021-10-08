@@ -9,6 +9,7 @@ TagManager:
   - uGUI
   - GameFlow
   - TouchManager
+  - Court
   layers:
   - Default
   - TransparentFX
