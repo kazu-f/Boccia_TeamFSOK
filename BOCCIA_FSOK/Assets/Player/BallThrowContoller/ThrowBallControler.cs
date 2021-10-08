@@ -11,6 +11,7 @@ namespace BocciaPlayer
         public BallHolderController ballHolder;
         public GameObject bocciaPlayer;
         public GameObject throwGaugePrefab;
+        private AudioSource throwSE;
         //private。
         private GameObject throwGauge;
         private RectTransform m_gaugeTransform;
@@ -43,7 +44,8 @@ namespace BocciaPlayer
             m_gaugeSize.y = m_gaugeTransform.rect.height * m_gaugeTransform.localScale.y / canvasRect.sizeDelta.y;
 
             throwGauge.SetActive(false);
-            
+            //SEを取得。
+            throwSE = GetComponent<AudioSource>();
         }
         // Start is called before the first frame update
         void Start()
@@ -117,6 +119,8 @@ namespace BocciaPlayer
             vec.y = 10.0f;
 
             ballOperate.AddForce(vec);
+
+            throwSE.Play();
 
             //ボールを次に進める。
             var playerCon = bocciaPlayer.GetComponent<PlayerController>();
