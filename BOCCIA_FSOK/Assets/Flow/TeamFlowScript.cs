@@ -16,10 +16,16 @@ public class TeamFlowScript : MonoBehaviour
     private bool m_IsMoving = false;
     private bool IsThrow = false;
     private int m_Frame = 0;
+    private GameObject m_NextBallImage = null;
     private void Awake()
     {
         m_BallFlow = GetComponent<BallFlowScript>();
         m_GameFlowScript = GetComponent<EndFlowScript>();
+        m_NextBallImage = GameObject.Find("NextBallImage");
+        if(m_NextBallImage == null)
+        {
+            Debug.LogError("NextBallImage‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½");
+        }
     }
 
     // Start is called before the first frame update
@@ -50,6 +56,7 @@ public class TeamFlowScript : MonoBehaviour
             {
                 //‘S‚Ä‚Ìƒ{[ƒ‹‚ª~‚Ü‚Á‚Ä‚¢‚é‚Æ‚«
                 IsThrow = !CalucNextTeam();
+                m_NextBallImage.GetComponent<ChangeBallSprite>().ChangeSprite(m_NextTeam);
             }
             m_Frame = 0;
         }
