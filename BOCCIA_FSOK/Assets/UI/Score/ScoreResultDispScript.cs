@@ -10,6 +10,7 @@ public class ScoreResultDispScript : MonoBehaviour
         enUISlideIn,
         enUIWaitSlide,
         enResultSumDisp,
+        enWinLoseEffect,
         enFinish,
         enStateNum
     }
@@ -27,10 +28,14 @@ public class ScoreResultDispScript : MonoBehaviour
 
     [SerializeField] private Vector3 direction;             //リザルトを並べる方向。
 
+    private GameScore.EndResult sumScore = new GameScore.EndResult();       //リザルトスコア。
+
     private EnScoreDispState state = EnScoreDispState.enUISlideIn;
     private int EndNum = 0;                             //エンド数。
     private int currentNo = 0;                          //現在スライドインしているスコア。
+    bool isWait = false;                                //待機させるか。
     bool isFinish = false;                              //終了。
+    const float WAIT_TIME = 1.0f;                       //演出毎の待機時間。
 
     // Start is called before the first frame update
     void Start()
@@ -40,14 +45,10 @@ public class ScoreResultDispScript : MonoBehaviour
         //シーン切り替え制御。
         changeScene = this.gameObject.GetComponent<ChangeSceneScript>();
 
-        var canvasRect = canvas.GetComponent<RectTransform>();
-
         EndNum = scoreScript.GetFinalEndNum();      //エンド数を取得。
 
         if (EndNum <= 0) return;
         resultTextsObj = new GameObject[EndNum];
-
-        GameScore.EndResult sumScore = new GameScore.EndResult();
 
         Vector3 lastPos;
 
@@ -91,7 +92,7 @@ public class ScoreResultDispScript : MonoBehaviour
             resultSumText.transform.position = lastPos + canvas.transform.TransformVector(posDist);
 
             //リザルトスコアをセット。
-            resultSumText.GetComponent<SetScoreTextScript>().SetEndResult(sumScore);
+            resultSumText.GetComponentInChildren<SetScoreTextScript>().SetEndResult(sumScore);
 
             resultSumText.SetActive(false);
         }
@@ -128,11 +129,21 @@ public class ScoreResultDispScript : MonoBehaviour
                 break;
 
             case EnScoreDispState.enResultSumDisp:
-                Invoke("DispResultSum", 1.0f);
-                state = EnScoreDispState.enFinish;
+                if(!isWait)
+                {
+                    Invoke("DispResultSum", WAIT_TIME);
+                    isWait = true;
+                }
 
                 break;
+            case EnScoreDispState.enWinLoseEffect:
+                if(!isWait)
+                {
+                    Invoke("WinOrLoseEffect", WAIT_TIME);
+                    isWait = true;
+                }
 
+                break;
             case EnScoreDispState.enFinish:
                 if(isFinish)
                 {
@@ -155,10 +166,38 @@ public class ScoreResultDispScript : MonoBehaviour
     /// </summary>
     private void DispResultSum()
     {
-        isFinish = true;
         if(resultSumText != null) resultSumText.SetActive(true);
+        state = EnScoreDispState.enWinLoseEffect;      //ステート進行。
+        //待機状態を解除。
+        isWait = false;
     }
 
+    /// <summary>
+    /// 勝敗演出。
+    /// </summary>
+    private void WinOrLoseEffect()
+    {
+        var winDisp = resultSumText.GetComponentInChildren<WinnerDisp>();
+        //勝利者をセット。
+        if(sumScore.redTeamScore > sumScore.blueTeamScore)
+        {
+            winDisp.SetWinnerTeam(Team.Red);
+        }
+        //else if(sumScore.redTeamScore < sumScore.blueTeamScore)
+        //{
+        //    winDisp.SetWinnerTeam(Team.Blue);
+        //}
+        else
+        {
+            winDisp.SetWinnerTeam(Team.Blue);
+        }
+
+        state = EnScoreDispState.enFinish;      //ステート進行。
+        //終了フラグを立てる。
+        isFinish = true;
+        //待機状態を解除。
+        isWait = false;
+    }
     //スライドを並べる方向を可視化
     void OnDrawGizmos()
     {
