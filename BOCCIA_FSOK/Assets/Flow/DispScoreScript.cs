@@ -51,4 +51,10 @@ public class DispScoreScript : MonoBehaviour
                 return;
         }
     }
+
+    //ƒŠƒZƒbƒgŠÖ”
+    public void ResetVar()
+    {
+        m_ScoreResult.color = Vector4.zero;
+    }
 }

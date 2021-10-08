@@ -199,6 +199,7 @@ public class EndFlowScript : MonoBehaviour
         m_IsEnd = false;
         m_Calced = false;
         IsShowLog = false;
+        DispScore.ResetVar();
         //TeamFlowコンポーネントの取得
         m_TeamFlow = this.gameObject.GetComponent<TeamFlowScript>();
         if(m_TeamFlow == null)
