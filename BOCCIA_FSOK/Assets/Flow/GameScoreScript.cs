@@ -25,7 +25,7 @@ namespace GameScore
     {
         static private int MAX_END_NUM = 6;         //記録が出来る最大エンド数。
         private EndResult[] results = new EndResult[MAX_END_NUM];    //最大6エンドまで記録可能。
-        private int FinalEndNum = 0;           //現在のゲームの最終エンド数。
+        private int FinalEndNum = 2;           //現在のゲームの最終エンド数。
 
         // Start is called before the first frame update
         void Start()

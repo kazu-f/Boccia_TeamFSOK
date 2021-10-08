@@ -38,6 +38,9 @@ namespace BocciaPlayer
                     m_newCamAngle.y += angleSpeed * rotVec.x;
                     m_newPlayerAngle.y += angleSpeed * rotVec.x;
 
+                    m_newCamAngle.y = AngleTrans(m_newCamAngle.y);
+                    m_newPlayerAngle.y = AngleTrans(m_newPlayerAngle.y);
+
                     m_newCamAngle.y = Mathf.Clamp(m_newCamAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);
                     m_newPlayerAngle.y = Mathf.Clamp(m_newPlayerAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);
 
@@ -68,6 +71,17 @@ namespace BocciaPlayer
             bocciaPlayer.transform.localEulerAngles = Vector3.zero;
             m_newCamAngle = m_defaultCamRot;
             m_newPlayerAngle = Vector3.zero;
+        }
+        /// <summary>
+        /// âÒì]Ç0Å`360ÅÅÅÑ-180Å`180Ç…ïœä∑ÅB
+        /// </summary>
+        private float AngleTrans(float angle)
+        {
+            if(angle > 180.0f)
+            {
+                angle -= 360.0f;
+            }
+            return angle;
         }
     }
 }

@@ -40,6 +40,8 @@ public class ScoreResultDispScript : MonoBehaviour
         //シーン切り替え制御。
         changeScene = this.gameObject.GetComponent<ChangeSceneScript>();
 
+        var canvasRect = canvas.GetComponent<RectTransform>();
+
         EndNum = scoreScript.GetFinalEndNum();      //エンド数を取得。
 
         if (EndNum <= 0) return;
@@ -58,10 +60,10 @@ public class ScoreResultDispScript : MonoBehaviour
 
             //オブジェクトの位置をずらす。
             Vector3 posDist = direction.normalized;
-            posDist.x *= rect.sizeDelta.x * i * 2.0f;
-            posDist.y *= rect.sizeDelta.y * i * 2.0f;
+            posDist.x *= rect.sizeDelta.x * i;
+            posDist.y *= rect.sizeDelta.y * i;
 
-            obj.transform.localPosition = this.transform.localPosition + canvas.transform.TransformVector(posDist);
+            obj.transform.position = this.transform.position + canvas.transform.TransformVector(posDist);
 
             //リザルト取得。
             GameScore.EndResult result = scoreScript.GetEndResult(i);
@@ -74,7 +76,7 @@ public class ScoreResultDispScript : MonoBehaviour
             resultTextsObj[i] = obj;
         }
         //一番下の座標。
-        lastPos = resultTextsObj[EndNum - 1].transform.localPosition;
+        lastPos = resultTextsObj[EndNum - 1].transform.position;
         //スコア合計
         {
             resultSumText = Instantiate(resultSumPrefab, canvas.transform);
@@ -83,10 +85,10 @@ public class ScoreResultDispScript : MonoBehaviour
 
             //オブジェクトの位置をずらす。
             Vector3 posDist = direction.normalized;
-            posDist.x *= rect.sizeDelta.x * 2.0f;
-            posDist.y *= rect.sizeDelta.y * 2.0f;
+            posDist.x *= rect.sizeDelta.x;
+            posDist.y *= rect.sizeDelta.y;
             //テキストの位置を設定。
-            resultSumText.transform.localPosition = lastPos + canvas.transform.TransformVector(posDist);
+            resultSumText.transform.position = lastPos + canvas.transform.TransformVector(posDist);
 
             //リザルトスコアをセット。
             resultSumText.GetComponent<SetScoreTextScript>().SetEndResult(sumScore);
