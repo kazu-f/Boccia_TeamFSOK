@@ -10,7 +10,7 @@ public class BallOperateScript : MonoBehaviour
     private GameObject m_Flow = null;       //ゲームの流れ全体をコントロールするオブジェクト
     private TeamFlowScript m_TeamFlow = null;
     public Vector3 DefaultPos;
-    private Vector3 m_pos = Vector3.zero;
+    private GameObject m_FollowCamera = null;
     private void Awake()
     {
         //RigidBodyを取得
@@ -52,6 +52,11 @@ public class BallOperateScript : MonoBehaviour
             //BallStateScriptコンポーネントが取得できなかったとき
             Debug.LogError("エラー：BallStateScriptコンポーネントの取得に失敗しました。");
         }
+        m_FollowCamera = GameObject.Find("FollowCamera");
+        if(m_FollowCamera == null)
+        {
+            Debug.LogError("FollowCameraの取得に失敗しました");
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -67,7 +72,7 @@ public class BallOperateScript : MonoBehaviour
     /// リジッドボディに速度を加算
     /// </summary>
     /// <param name="speed">加算する速度</param>
-    public void AddForce(Vector3 speed)
+    public void Throw(Vector3 speed)
     {
         if (m_Team.GetTeam() != Team.Jack)
         {
@@ -78,53 +83,6 @@ public class BallOperateScript : MonoBehaviour
         //ボールを投げた判定をTeamFlowに送る
         m_TeamFlow.ThrowBall();
         Debug.Log("ボールが動いています");
-    }
-
-    /// <summary>
-    /// 場外にボールが行った時の処理
-    /// </summary>
-    public void OutsideVenue()
-    {
-        //オブジェクトのtransformを取得
-        Transform myTrans = this.transform;
-        //transformから座標を取得
-        m_pos = myTrans.position;
-
-        //ボールを停止する
-        m_StateScript.Stop();
-
-        if (m_Team.GetTeam() == Team.Jack)
-        {
-            //ジャックボールの場合
-            //クロスに戻す
-            m_pos = DefaultPos;
-            //TeamFlowにジャックボールの位置を保存
-            m_TeamFlow.SetJackPos(m_pos);
-
-            //座標を設定
-            myTrans.position = m_pos;
-        }
-        else
-        {
-            //ジャックボール以外の場合
-            //ballというタグのついたゲームオブジェクトを配列に入れる
-            GameObject[] m_balls;
-            m_balls = GameObject.FindGameObjectsWithTag("Ball");
-            if (m_balls.Length == 0)
-            {
-                m_TeamFlow.ChangeNextTeam();
-            }
-            else
-            {
-                //他にもボールがあるので次に投げるチームを計算する
-                m_TeamFlow.CalucNextTeam();
-            }
-        }
-        m_TeamFlow.NextTeamLog();
-        if (m_Team.GetTeam() != Team.Jack)
-        {
-            this.gameObject.SetActive(false);
-        }
     }
 
     /// <summary>
