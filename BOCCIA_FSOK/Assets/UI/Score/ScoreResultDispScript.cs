@@ -135,7 +135,7 @@ public class ScoreResultDispScript : MonoBehaviour
                 if(isFinish)
                 {
                     tapGoTitle.SetActive(true);
-                    if(touchManager.IsTouch())
+                    if(touchManager.GetPhase() == TouchPhase.Ended)
                     {
                         //シーン切り替え。
                         changeScene.ChangeScene(false);
@@ -154,7 +154,7 @@ public class ScoreResultDispScript : MonoBehaviour
     private void DispResultSum()
     {
         isFinish = true;
-        resultSumText.SetActive(true);
+        if(resultSumText != null) resultSumText.SetActive(true);
     }
 
     //スライドを並べる方向を可視化
