@@ -39,4 +39,23 @@ public class ChangeBallSprite : MonoBehaviour
                 return;
         }
     }
+
+    public void GameEnd()
+    {
+        var c = m_Image.color;
+        //ƒ¿‚ğ0‚É‚·‚é
+        m_Image.color = new Color(c.r, c.g, c.b, 0.0f);
+    }
+    /// <summary>
+    /// ƒŠƒZƒbƒgˆ—
+    /// </summary>
+    public void ResetVar()
+    {
+        //ƒ¿‚ğ–ß‚·
+        m_Image.sprite = m_JackBallSprite;
+        var c = m_Image.color;
+        //ƒ¿‚ğ0‚É‚·‚é
+        m_Image.color = new Color(c.r, c.g, c.b, 1.0f);
+
+    }
 }

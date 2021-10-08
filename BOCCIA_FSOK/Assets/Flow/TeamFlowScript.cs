@@ -126,6 +126,7 @@ public class TeamFlowScript : MonoBehaviour
         {
             //両方投げ終わっているのでゲームエンド
             m_GameFlowScript.GameEnd();
+            m_NextBallImage.GetComponent<ChangeBallSprite>().GameEnd();
         }
         else if(m_RemainBalls.x == 0)
         {
@@ -277,6 +278,7 @@ public class TeamFlowScript : MonoBehaviour
     {
         //初めに赤チームが投げる
         m_NextTeam = m_firstTeam;
+        m_NextBallImage.GetComponent<ChangeBallSprite>().ResetVar();
         //ボールの数を初期化
         m_RemainBalls = Vector2Int.one;
         m_RemainBalls *= m_Remain;
