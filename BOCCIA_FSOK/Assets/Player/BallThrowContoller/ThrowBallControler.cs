@@ -118,7 +118,7 @@ namespace BocciaPlayer
             vec.z *= MAX_THROW_POW * m_throwPow;
             vec.y = 10.0f;
 
-            ballOperate.AddForce(vec);
+            ballOperate.Throw(vec);
 
             throwSE.Play();
 
