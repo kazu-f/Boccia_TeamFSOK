@@ -11,8 +11,9 @@ public class BallOperateScript : MonoBehaviour
     private TeamFlowScript m_TeamFlow = null;
     private GameObject m_GameCamera = null;
     private GameCameraScript m_GameCameraScript = null;
-    private bool IsThrowing = true;
-
+    //private bool IsThrowing = true;
+    //private bool InArea = false;
+    private IBallScript m_ball = null;
     private void Awake()
     {
         //RigidBodyを取得
@@ -67,6 +68,11 @@ public class BallOperateScript : MonoBehaviour
                 Debug.LogError("GameCameraScriptの取得に失敗しました");
             }
         }
+        m_ball = this.gameObject.GetComponent<IBallScript>();
+        if(m_ball == null)
+        {
+            Debug.LogError("IBallScriptコンポーネントの取得に失敗しました");
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -76,7 +82,7 @@ public class BallOperateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (IsThrowing)
+        if (m_ball.GetIsThrow())
         {
             Vector3 position = this.gameObject.transform.position;
             m_GameCameraScript.SetFollowCameraParam(position);
@@ -107,8 +113,8 @@ public class BallOperateScript : MonoBehaviour
     /// </summary>
     public void ResetVar()
     {
-        IsThrowing = true;
         m_StateScript.ResetState();
+        m_ball.ResetVar();
     }
 
     /// <summary>
@@ -116,6 +122,11 @@ public class BallOperateScript : MonoBehaviour
     /// </summary>
     public void EndThrowing()
     {
-        IsThrowing = false;
+        m_ball.EndThrow();
+    }
+
+    public bool GetInArea()
+    {
+        return m_ball.GetInArea();
     }
 }

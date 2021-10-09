@@ -1,0 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerBallScript : IBallScript
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    /// <summary>
+    /// ボールがエリア内に入った時の処理
+    /// </summary>
+    public override void InsideVenue()
+    {
+        InArea = true;
+    }
+
+    /// <summary>
+    /// ボールがエリア外に出た時の処理
+    /// </summary>
+    public override void OutsideVenue()
+    {
+        InArea = false;
+        this.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// ボールが停止したときの処理
+    /// </summary>
+    public override void EndThrow()
+    {
+        if(InArea == false)
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
+}

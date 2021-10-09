@@ -29,15 +29,7 @@ public class BallKillAreaScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Ball")
-        {
-            m_GameFlow.GetComponent<TeamFlowScript>().OutsideVenue();
-            other.gameObject.SetActive(false);
-        }
-        else if(other.gameObject.tag == "Jack")
-        {
-            other.GetComponent<JackBallScript>().OutsideVenue();
-        }
+        //other.GetComponent<IBallScript>().OutsideVenue();
     }
 
 }

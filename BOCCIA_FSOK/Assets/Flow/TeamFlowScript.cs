@@ -54,6 +54,19 @@ public class TeamFlowScript : MonoBehaviour
             IsStopAllBalls();
             if (m_IsMoving == false)
             {
+                if (m_BallFlow.IsPreparedJack() == false)
+                {
+                    //ジャックボールが準備されていないとき
+                    ChangeNextTeam();
+                    ChangeFirstTeam();
+                    //投げ終わり
+                    IsThrow = false;
+                    //カメラ変更
+                    GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
+                    m_Frame = 0;
+
+                    return;
+                }
                 //全てのボールが止まっているとき
                 //IsThrow = !CalucNextTeam();
                 if (CalucNextTeam())
@@ -64,9 +77,10 @@ public class TeamFlowScript : MonoBehaviour
                     IsThrow = false;
                     //カメラ変更
                     GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
+                    m_Frame = 0;
+
                 }
             }
-            m_Frame = 0;
         }
     }
 
@@ -166,6 +180,10 @@ public class TeamFlowScript : MonoBehaviour
             m_IsMoving = true;
             return;
         }
+        else
+        {
+            m_Jack.GetComponent<BallOperateScript>().EndThrowing();
+        }
 
         //ボールを取得
         GameObject[] m_balls;
@@ -249,6 +267,17 @@ public class TeamFlowScript : MonoBehaviour
         }
     }
 
+    public void ChangeFirstTeam()
+    {
+        if (m_firstTeam == Team.Red)
+        {
+            m_firstTeam = Team.Blue;
+        }
+        else
+        {
+            m_firstTeam = Team.Red;
+        }
+    }
     /// <summary>
     /// 次のチームのログ
     /// </summary>
@@ -300,13 +329,5 @@ public class TeamFlowScript : MonoBehaviour
     public void ThrowBall()
     {
         IsThrow = true;
-    }
-
-    /// <summary>
-    /// 場外にボールが行った時の処理
-    /// </summary>
-    public void OutsideVenue()
-    {
-
     }
 }
