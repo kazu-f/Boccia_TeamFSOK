@@ -9,7 +9,6 @@ public class BallOperateScript : MonoBehaviour
     private Rigidbody m_rigidbody = null;
     private GameObject m_Flow = null;       //ゲームの流れ全体をコントロールするオブジェクト
     private TeamFlowScript m_TeamFlow = null;
-    public Vector3 DefaultPos;
     private GameObject m_GameCamera = null;
     private GameCameraScript m_GameCameraScript = null;
     private bool IsThrowing = true;
