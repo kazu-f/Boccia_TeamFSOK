@@ -7,6 +7,7 @@ public class SetScoreTextScript : MonoBehaviour
 {
     [SerializeField] private Text redTeamScore;     //赤チームのスコア。
     [SerializeField] private Text blueTeamScore;    //青チームのスコア。
+    private GameScore.EndResult result;
 
     // Start is called before the first frame update
     void Start()

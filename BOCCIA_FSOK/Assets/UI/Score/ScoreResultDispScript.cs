@@ -178,19 +178,23 @@ public class ScoreResultDispScript : MonoBehaviour
     private void WinOrLoseEffect()
     {
         var winDisp = resultSumText.GetComponentInChildren<WinnerDisp>();
+        var winText = resultSumText.GetComponentInChildren<WinnerTextEffect>();
         //勝利者をセット。
         if(sumScore.redTeamScore > sumScore.blueTeamScore)
         {
             winDisp.SetWinnerTeam(Team.Red);
+            winText.EnableWinnerTeam(Team.Red);
         }
-        //else if(sumScore.redTeamScore < sumScore.blueTeamScore)
-        //{
-        //    winDisp.SetWinnerTeam(Team.Blue);
-        //}
-        else
+        else/* if (sumScore.redTeamScore < sumScore.blueTeamScore)*/
         {
             winDisp.SetWinnerTeam(Team.Blue);
+            winText.EnableWinnerTeam(Team.Blue);
         }
+        //else
+        //{
+        //    winDisp.SetWinnerTeam(Team.Num);
+        //    winText.EnableWinnerTeam(Team.Num);
+        //}
 
         state = EnScoreDispState.enFinish;      //ステート進行。
         //終了フラグを立てる。

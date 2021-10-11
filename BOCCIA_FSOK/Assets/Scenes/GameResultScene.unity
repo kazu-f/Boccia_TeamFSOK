@@ -508,7 +508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8772490000060099398, guid: 3ec48df930cc98e48b7d2d4cb54941dc, type: 3}
       propertyPath: m_Name
-      value: BurstPaper
+      value: RightBurstPaper
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ec48df930cc98e48b7d2d4cb54941dc, type: 3}
@@ -1140,7 +1140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8772490000060099398, guid: 3ec48df930cc98e48b7d2d4cb54941dc, type: 3}
       propertyPath: m_Name
-      value: BurstPaper (1)
+      value: LeftBurstPaper
       objectReference: {fileID: 0}
     - target: {fileID: 8772490000060099398, guid: 3ec48df930cc98e48b7d2d4cb54941dc, type: 3}
       propertyPath: m_IsActive
