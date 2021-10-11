@@ -22,6 +22,7 @@ public class ScoreResultDispScript : MonoBehaviour
     public GameObject resultPrefab;                     //リザルトのプレファブ。
     public GameObject resultSumPrefab;                     //リザルトのプレファブ。
     public GameObject tapGoTitle;                           //タイトルへ戻る。
+    public GameObject winnerParticle;                       //パーティクル。
     private GameObject[] resultTextsObj;                   //エンド毎のテキスト。
     private GameObject resultSumText;                       //合計スコアのテキスト。
     private ChangeSceneScript changeScene;                  //シーン切り替え制御。
@@ -179,16 +180,19 @@ public class ScoreResultDispScript : MonoBehaviour
     {
         var winDisp = resultSumText.GetComponentInChildren<WinnerDisp>();
         var winText = resultSumText.GetComponentInChildren<WinnerTextEffect>();
+        var particleScript = winnerParticle.GetComponent<ResultParticleScript>();
         //勝利者をセット。
         if(sumScore.redTeamScore > sumScore.blueTeamScore)
         {
             winDisp.SetWinnerTeam(Team.Red);
             winText.EnableWinnerTeam(Team.Red);
+            particleScript.PlayWinnerParticle(Team.Red);
         }
         else/* if (sumScore.redTeamScore < sumScore.blueTeamScore)*/
         {
             winDisp.SetWinnerTeam(Team.Blue);
             winText.EnableWinnerTeam(Team.Blue);
+            particleScript.PlayWinnerParticle(Team.Blue);
         }
         //else
         //{
