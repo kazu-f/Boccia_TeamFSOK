@@ -704,7 +704,7 @@ PrefabInstance:
     - target: {fileID: 2573021026033543461, guid: aece206e88d6b104ca006510022428e3, type: 3}
       propertyPath: collider
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 4051269890441071843}
     - target: {fileID: 2573021026033543461, guid: aece206e88d6b104ca006510022428e3, type: 3}
       propertyPath: touchManager
       value: 
@@ -2282,3 +2282,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4df82f7401e45cd49b6fc6104f82ccda, type: 3}
+--- !u!65 &4051269890441071843 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 6042206121413869082, guid: 4df82f7401e45cd49b6fc6104f82ccda, type: 3}
+  m_PrefabInstance: {fileID: 4051269890441071842}
+  m_PrefabAsset: {fileID: 0}
