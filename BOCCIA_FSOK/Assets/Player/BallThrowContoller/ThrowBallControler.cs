@@ -10,6 +10,8 @@ namespace BocciaPlayer
         TouchManager touchManager;
         public BallHolderController ballHolder;
         public GameObject bocciaPlayer;
+        public GameObject throwDummyObj;
+        private ThrowDummyScript throwDummy;
         public GameObject throwGaugePrefab;
         private AudioSource throwSE;
         //private。
@@ -22,6 +24,9 @@ namespace BocciaPlayer
         private Vector2 m_endToStart = new Vector2(0.0f, 0.0f);       //開始座標から引き切った座標までのベクトル。
         private Vector2 m_touchPosInScreen = new Vector2(0.0f, 0.0f); //現在のタッチしている座標(スクリーン座標系？)
         private float m_throwPow = 0.0f;                //投げる力
+
+        private Vector3 m_force = new Vector3(0.0f, 0.0f, 0.0f);      //初速。
+        private Vector3 m_throwPos = new Vector3(0.0f, 0.0f, 0.0f);   //ボールの始点。
         //定数。
         const float FLICK_POWER = 0.005f;       //フリック判定用の定数。
         const float MAX_THROW_POW = 200.0f;
@@ -44,8 +49,14 @@ namespace BocciaPlayer
             m_gaugeSize.y = m_gaugeTransform.rect.height * m_gaugeTransform.localScale.y / canvasRect.sizeDelta.y;
 
             throwGauge.SetActive(false);
+
+            //予測線の処理。
+            throwDummy = throwDummyObj.GetComponent<ThrowDummyScript>();
+
             //SEを取得。
             throwSE = GetComponent<AudioSource>();
+
+            throwDummyObj.SetActive(false);
         }
         // Start is called before the first frame update
         void Start()
@@ -57,8 +68,6 @@ namespace BocciaPlayer
         {
             if (touchManager.IsTouch())
             {
-                throwGauge.SetActive(true);
-
                 //前フレームから動きがある。
                 if (touchManager.GetPhase() != TouchPhase.Stationary)
                 {
@@ -77,6 +86,9 @@ namespace BocciaPlayer
                         m_endToStart = m_touchStartPos - m_touchEndPos;
                         m_throwPow = m_endToStart.y / m_gaugeSize.y;
                         m_throwPow = Mathf.Min(1.0f, Mathf.Max(m_throwPow, 0.0f));
+
+                        CalcThrowForce();
+                        throwDummy.SetForce(m_force);
                     }
                 }
                 else if (touchManager.GetPhase() == TouchPhase.Ended)
@@ -89,17 +101,33 @@ namespace BocciaPlayer
                         ThrowBall();
                     }
                     throwGauge.SetActive(false);
+                    throwDummyObj.SetActive(false);
                 }
                 m_gaugeImageMat.SetFloat("_ThrowPow", m_throwPow);
             }
+        }
+        /// <summary>
+        /// 始点を計算。
+        /// </summary>
+        void CalcPosition()
+        {
+            m_throwPos = this.transform.position;
+            m_throwPos.y *= m_touchStartPos.y;
+        }
+        /// <summary>
+        /// 初速を計算。
+        /// </summary>
+        void CalcThrowForce()
+        {
+            m_force = bocciaPlayer.transform.forward;       //プレイヤーの前方向を取る。
+            m_force.x *= MAX_THROW_POW * m_throwPow;
+            m_force.z *= MAX_THROW_POW * m_throwPow;
+            //m_force.y = 10.0f;
         }
 
         //ボールを投げる処理。
         void ThrowBall()
         {
-            var ballPos = this.transform.position;
-            ballPos.y *= m_touchStartPos.y;
-
             //現在投げるボールを取得する。
             var obj = ballHolder.GetCurrentBall();
             if(obj == null)
@@ -108,17 +136,13 @@ namespace BocciaPlayer
             }
 
             //ボールの位置を合わせる。
-            obj.transform.position = ballPos;
+            obj.transform.position = m_throwPos;
             obj.transform.rotation = this.transform.rotation;
 
             //ボールに投げる力を加える。
             var ballOperate = obj.GetComponent<BallOperateScript>();
-            Vector3 vec = bocciaPlayer.transform.forward;       //プレイヤーの前方向を取る。
-            vec.x *= MAX_THROW_POW * m_throwPow;
-            vec.z *= MAX_THROW_POW * m_throwPow;
-            vec.y = 10.0f;
 
-            ballOperate.Throw(vec);
+            ballOperate.Throw(m_force);
 
             throwSE.Play();
 
@@ -131,8 +155,12 @@ namespace BocciaPlayer
         public void ThrowBallEnable()
         {
             this.enabled = true;
+            throwGauge.SetActive(true);
+            throwDummyObj.SetActive(true);
             m_touchStartPos = touchManager.GetTouchPosInScreen();
             m_touchEndPos = touchManager.GetTouchPosInScreen();
+            CalcPosition();
+            throwDummy.SetPosition(m_throwPos);
             m_gaugeTransform.anchoredPosition = touchManager.GetTouchPos();
             m_throwPow = 0.0f;
         }
