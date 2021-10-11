@@ -10,11 +10,14 @@ namespace BocciaPlayer
 		[SerializeField]private Transform dummyObjParent;       //弾道を表示する点の親オブジェクト
 
 		private Vector3 force;      //初速のベクトル。
-		private Vector3 oldForce;	//前フレームのベクトル。
+		[SerializeField] private float mass;			//質量。
 
 		[SerializeField]private int dummyCount;			//弾道予測の点の数
-
 		[SerializeField]private float secInterval;      //弾道を表示する間隔の秒数
+		[SerializeField] private float DummyGraceDist;  //非表示距離。
+
+		[SerializeField] private float offsetSpeed;
+		private float offset = 0.0f;
 
 		private List<GameObject> dummySphereList = new List<GameObject>();
 
@@ -37,19 +40,28 @@ namespace BocciaPlayer
 
 		void Update()
 		{
-			//更新がなければ処理しない。
-			if (force == oldForce) return;
+			offset = Mathf.Repeat(Time.time * offsetSpeed, secInterval);
+			////更新がなければ処理しない。
+			//if (force == oldForce) return;
 			//弾道予測の位置に点を移動
 			for (int i = 0; i < dummyCount; i++)
 			{
-				var t = i * secInterval;
-				float x = t * force.x + transform.position.x;
-				float z = t * force.z + transform.position.z;
-				float y = (force.y * t) - 0.5f * (-Physics.gravity.y) * Mathf.Pow(t, 2.0f) + transform.position.y;
-				dummySphereList[i].transform.position = new Vector3(x, y, z);
+				var t = (i * secInterval) + offset;
+				Vector3 vec = new Vector3();
+				vec = (force * t) + (0.5f * Physics.gravity * Mathf.Pow(t, 2.0f));
+				if (vec.magnitude < DummyGraceDist)
+                {
+					dummySphereList[i].SetActive(false);
+				}
+                else
+				{
+					vec = vec + transform.position;
+					dummySphereList[i].SetActive(true);
+					dummySphereList[i].transform.position = vec;						
+				}
 			}
 
-			oldForce = force;
+			//oldForce = force;
 		}
 
 		/// <summary>
@@ -64,7 +76,7 @@ namespace BocciaPlayer
 		/// </summary>
 		public void SetForce(Vector3 _force)
         {
-			force = _force;
+			force = _force / mass * Time.fixedDeltaTime;
         }
 
         public void OnEnable()

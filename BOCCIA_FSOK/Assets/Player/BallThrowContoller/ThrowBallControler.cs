@@ -122,7 +122,7 @@ namespace BocciaPlayer
             m_force = bocciaPlayer.transform.forward;       //プレイヤーの前方向を取る。
             m_force.x *= MAX_THROW_POW * m_throwPow;
             m_force.z *= MAX_THROW_POW * m_throwPow;
-            //m_force.y = 10.0f;
+            m_force.y = 10.0f;
         }
 
         //ボールを投げる処理。
@@ -163,6 +163,7 @@ namespace BocciaPlayer
             throwDummy.SetPosition(m_throwPos);
             m_gaugeTransform.anchoredPosition = touchManager.GetTouchPos();
             m_throwPow = 0.0f;
+            m_force = Vector3.zero;
         }
 
         public void ThrowBallDisable()

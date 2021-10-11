@@ -45,6 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dummyObjPref: {fileID: 25734285750366132, guid: d30241254a58f8f44b855b75fa0eb7f1, type: 3}
   dummyObjParent: {fileID: 2178808268779605789}
-  dummyCount: 15
-  dummyGrace: 3
-  secInterval: 0.005
+  mass: 0.275
+  dummyCount: 10
+  secInterval: 0.05
+  DummyGraceDist: 0.3
+  offsetSpeed: 0.08
