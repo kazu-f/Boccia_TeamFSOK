@@ -29,8 +29,9 @@ public class PlayerBallScript : IBallScript
     /// </summary>
     public override void OutsideVenue()
     {
-        InArea = false;
-        this.gameObject.SetActive(false);
+        GetOutRange = true;
+        //InArea = false;
+        //this.gameObject.SetActive(false);
     }
 
     /// <summary>

@@ -6,7 +6,9 @@ public abstract class IBallScript : MonoBehaviour
 {
     protected bool InArea = false;
     protected bool IsThrowing = true;
-
+    protected bool GetOutRange = false;
+    public float KillTime = 1.0f;
+    private float NowTime = 0.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +18,16 @@ public abstract class IBallScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (GetOutRange)
+        {
+            //”ÍˆÍŠO‚Éo‚Ä‚¢‚é‚Æ‚«
+            NowTime += Time.deltaTime;
+            if (NowTime > KillTime)
+            {
+                InKillArea();
+                NowTime = 0.0f;
+            }
+        }
     }
 
     /// <summary>
@@ -52,6 +63,8 @@ public abstract class IBallScript : MonoBehaviour
     {
         IsThrowing = true;
         InArea = false;
+        GetOutRange = false;
+        NowTime = 0.0f;
     }
 
     public bool GetIsThrow()
