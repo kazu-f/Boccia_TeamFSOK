@@ -101,7 +101,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!54 &698151124280047526
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,7 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695b3c3f6923863488b9c5b2b166bc0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultPos: {x: 0, y: 0, z: 0}
 --- !u!114 &-5339565081898727273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e4081090496f24182a90729015238a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DefaultPos: {x: 0, y: 0, z: 0}
+  m_DefaultPos: {x: 0, y: 1, z: 1}
 --- !u!114 &1209841432277366357
 MonoBehaviour:
   m_ObjectHideFlags: 0
