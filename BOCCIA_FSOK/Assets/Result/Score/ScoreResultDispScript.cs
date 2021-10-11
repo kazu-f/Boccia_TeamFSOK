@@ -149,7 +149,8 @@ public class ScoreResultDispScript : MonoBehaviour
                 if(isFinish)
                 {
                     tapGoTitle.SetActive(true);
-                    if(touchManager.GetPhase() == TouchPhase.Ended)
+                    if(touchManager.IsTouch() && 
+                        touchManager.GetPhase() == TouchPhase.Ended)
                     {
                         //ƒV[ƒ“Ø‚è‘Ö‚¦B
                         changeScene.ChangeScene(false);
