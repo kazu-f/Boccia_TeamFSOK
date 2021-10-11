@@ -188,17 +188,18 @@ public class ScoreResultDispScript : MonoBehaviour
             winText.EnableWinnerTeam(Team.Red);
             particleScript.PlayWinnerParticle(Team.Red);
         }
-        else/* if (sumScore.redTeamScore < sumScore.blueTeamScore)*/
+        else if (sumScore.redTeamScore < sumScore.blueTeamScore)
         {
             winDisp.SetWinnerTeam(Team.Blue);
             winText.EnableWinnerTeam(Team.Blue);
             particleScript.PlayWinnerParticle(Team.Blue);
         }
-        //else
-        //{
-        //    winDisp.SetWinnerTeam(Team.Num);
-        //    winText.EnableWinnerTeam(Team.Num);
-        //}
+        else
+        {
+            winDisp.SetWinnerTeam(Team.Num);
+            winText.EnableWinnerTeam(Team.Num);
+            particleScript.PlayWinnerParticle(Team.Num);
+        }
 
         state = EnScoreDispState.enFinish;      //ステート進行。
         //終了フラグを立てる。
