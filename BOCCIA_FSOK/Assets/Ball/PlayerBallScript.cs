@@ -38,9 +38,17 @@ public class PlayerBallScript : IBallScript
     /// </summary>
     public override void EndThrow()
     {
-        if(InArea == false)
+        IsThrowing = false;
+        if (InArea == false)
         {
             this.gameObject.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// ƒLƒ‹ƒGƒŠƒA‚É“ü‚Á‚½‚Ìˆ—
+    /// </summary>
+    public override void InKillArea()
+    {
     }
 }

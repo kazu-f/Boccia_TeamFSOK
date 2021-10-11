@@ -95,6 +95,7 @@ public class BallOperateScript : MonoBehaviour
     /// <param name="speed">‰ÁŽZ‚·‚é‘¬“x</param>
     public void Throw(Vector3 speed)
     {
+        m_ball.ThrowBall();
         if (m_Team.GetTeam() != Team.Jack)
         {
             m_TeamFlow.DecreaseBalls();

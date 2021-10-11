@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class IBallScript : MonoBehaviour
 {
     protected bool InArea = false;
-    private bool IsThrowing = true;
+    protected bool IsThrowing = true;
 
     // Start is called before the first frame update
     void Start()
@@ -30,10 +30,19 @@ public abstract class IBallScript : MonoBehaviour
     public abstract void OutsideVenue();
 
     /// <summary>
+    /// キルエリアに入った時の処理
+    /// </summary>
+    public abstract void InKillArea();
+
+    /// <summary>
     /// ボールが止まった時の処理
     /// </summary>
     public abstract void EndThrow();
 
+    public void ThrowBall()
+    {
+        IsThrowing = true;
+    }
     public bool GetInArea()
     {
         return InArea;

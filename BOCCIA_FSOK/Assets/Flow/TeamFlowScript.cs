@@ -56,15 +56,7 @@ public class TeamFlowScript : MonoBehaviour
             {
                 if (m_BallFlow.IsPreparedJack() == false)
                 {
-                    //ジャックボールが準備されていないとき
-                    ChangeNextTeam();
-                    ChangeFirstTeam();
-                    //投げ終わり
-                    IsThrow = false;
-                    //カメラ変更
-                    GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
-                    m_Frame = 0;
-
+                    ChangeJackThrowTeam();
                     return;
                 }
                 //全てのボールが止まっているとき
@@ -311,6 +303,7 @@ public class TeamFlowScript : MonoBehaviour
     {
         //初めに赤チームが投げる
         m_NextTeam = m_firstTeam;
+        m_IsMoving = false;
         m_NextBallImage.GetComponent<ChangeBallSprite>().ResetVar();
         //ボールの数を初期化
         m_RemainBalls = Vector2Int.one;
@@ -329,5 +322,22 @@ public class TeamFlowScript : MonoBehaviour
     public void ThrowBall()
     {
         IsThrow = true;
+    }
+
+    /// <summary>
+    /// ジャックボールを投げるチームを変更する
+    /// </summary>
+    public void ChangeJackThrowTeam()
+    {
+        //ジャックボールが準備されていないとき
+        ChangeNextTeam();
+        ChangeFirstTeam();
+        //投げ終わり
+        IsThrow = false;
+        //カメラ変更
+        GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
+        m_Frame = 0;
+        m_IsMoving = false;
+        NextTeamLog();
     }
 }
