@@ -50,5 +50,7 @@ public class PlayerBallScript : IBallScript
     /// </summary>
     public override void InKillArea()
     {
+        InArea = false;
+        this.gameObject.SetActive(false);
     }
 }
