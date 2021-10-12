@@ -46,7 +46,7 @@ public class SwichActiveGameObjects : MonoBehaviour
 
     }
     /// <summary>
-    /// ボールが動いている間ゲームオブジェクトを動かさない。
+    /// ゲームオブジェクトのアクティブを変更。
     /// </summary>
     public void SwitchGameObject(bool isActive)
     {
@@ -55,6 +55,16 @@ public class SwichActiveGameObjects : MonoBehaviour
             Debug.Log("ゲームオブジェクトが登録されていない。");
             return;
         }
+
+        if(isActive)
+        {
+            Debug.Log("アクティブにする。");
+        }
+        else
+        {
+            Debug.Log("アクティブ解除。");
+        }
+
 
         foreach (var obj in gameObjects)
         {

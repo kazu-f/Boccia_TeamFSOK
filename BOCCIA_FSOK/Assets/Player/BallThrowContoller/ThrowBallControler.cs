@@ -65,24 +65,6 @@ namespace BocciaPlayer
 
                 if (touchManager.GetPhase() == TouchInfo.Moved)
                 {
-                    //var deltaMoveVec = touchManager.GetDeltaPosInScreen();
-
-                    ////上方向にフリックしていなければ、投げる力を弱めようとしていると判断する。
-                    //if (/*deltaMoveVec.y < FLICK_POWER &&*/ 
-                    //    m_touchPosInScreen.y < m_touchStartPos.y)
-                    //{
-                    //    //移動した後の座標。
-                    //    m_touchEndPos = m_touchPosInScreen;
-                    //    m_endToStart = m_touchStartPos - m_touchEndPos;
-                    //    m_throwPow = m_endToStart.y / throwGauge.GetGaugeSize().y;
-                    //    m_throwPow = Mathf.Min(1.0f, Mathf.Max(m_throwPow, 0.0f));
-
-                    //    throwGauge.SetThrowPow(m_throwPow);
-
-                    //    CalcThrowForce();
-                    //    throwDummy.SetForce(m_force);
-                    //}
-
                     //移動した後の座標。
                     m_touchEndPos = m_touchPosInScreen;
                     m_endToStart = m_touchStartPos - m_touchEndPos;
@@ -99,20 +81,9 @@ namespace BocciaPlayer
                     if (m_throwPow > 0.0f)
                     {
                         //ボールを投げる。
-                        Invoke("ThrowBall", THROW_DELAY);
-                        SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
                         isDecision = true;
+                        Invoke("ThrowBall", THROW_DELAY);
                     }
-                    //ThrowBall();
-
-                    ////指を離すタイミングで投げるかどうか決定。
-                    //if (m_touchStartPos.y < m_touchPosInScreen.y
-                    //    && m_endToStart.y > 0.01f)
-                    //{
-                    //    //ボールを投げる。
-                    //    ThrowBall();
-                    //}
-
                 }
             }
             else if(isDecision)
@@ -125,7 +96,6 @@ namespace BocciaPlayer
                     var playerCon = bocciaPlayer.GetComponent<PlayerController>();
                     playerCon.isThrowBallNone = ballHolder.UpdateCurrentBallNo();
                     isDecision = false;
-                    SwichActiveGameObjects.GetInstance().SwitchGameObject(true);
                 }
             }
         }
@@ -172,11 +142,14 @@ namespace BocciaPlayer
             throwSE.Play();
         }
 
-        //ボールを投げる制御を開始。
-        public void ThrowBallEnable()
+        public bool IsDecision()
+        {
+            return isDecision;
+        }
+
+        private void OnEnable()
         {
             if (isDecision) return;
-            this.enabled = true;
             throwGauge.gameObject.SetActive(true);
             throwDummyObj.SetActive(true);
             //タッチ位置を初期化。
@@ -192,14 +165,8 @@ namespace BocciaPlayer
             throwGauge.SetThrowPow(0.0f);
         }
 
-        public bool IsDecision()
-        {
-            return isDecision;
-        }
-
         private void OnDisable()
         {
-            this.enabled = false;
             throwGauge.gameObject.SetActive(false);
             throwDummyObj.SetActive(false);
         }

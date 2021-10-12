@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BocciaPlayer
 {
     public class ThrowAngleController : MonoBehaviour
     {
         TouchManager touchManager;
-        public GameObject playerCamera;
-        public GameObject bocciaPlayer;
-        public float angleSpeed = 20.0f;
+        public GameObject angleArrowObj;      //イメージのオブジェクト。
+        public GameObject playerCamera;         //カメラ。  
+        public GameObject bocciaPlayer;         //プレイヤー。
+        public float angleSpeed = 20.0f;        //回転速度。
         private Vector3 m_newCamAngle = new Vector3(0, 0, 0);
         private Vector3 m_newPlayerAngle = new Vector3(0, 0, 0);
         private Vector3 m_defaultCamRot = new Vector3(0, 0, 0);
@@ -50,16 +52,16 @@ namespace BocciaPlayer
             }
         }
 
-        public void ThrowAngleEnable()
+        private void OnEnable()
         {
-            this.enabled = true;
             m_newCamAngle = playerCamera.transform.localEulerAngles;
             m_newPlayerAngle = bocciaPlayer.transform.localEulerAngles;
+            angleArrowObj.SetActive(true);
         }
 
-        public void ThrowAngleDisable()
+        private void OnDisable()
         {
-            this.enabled = false;
+
         }
 
         //このプレイヤーの位置に座標を合わせる。
