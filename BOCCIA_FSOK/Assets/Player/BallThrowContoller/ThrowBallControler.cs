@@ -151,6 +151,7 @@ namespace BocciaPlayer
             throwDummy.SetPosition(m_throwPos);
             //m_gaugeTransform.anchoredPosition = touchManager.GetTouchPos();
             m_throwPow = 0.0f;
+            throwGauge.SetThrowPow(0.0f);
             m_force = Vector3.zero;
         }
 
