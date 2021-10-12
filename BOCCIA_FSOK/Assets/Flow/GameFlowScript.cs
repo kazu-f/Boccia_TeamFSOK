@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 public class GameFlowScript : MonoBehaviour
 {
-    public GameObject[] gameObjects;    //ボールが動いている間止めるオブジェクトたち。
+    private SwichActiveGameObjects switchActiveObjs;
     private EndFlowScript endFlow;   //エンド進行制御スクリプト。
     private TeamFlowScript teamFlow;   //投げるチームを決定するスクリプト。
     public ActiveTeamController activePlayerController;    //プレイヤー制御。
@@ -27,6 +27,7 @@ public class GameFlowScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        switchActiveObjs = SwichActiveGameObjects.GetInstance();
         endFlow = this.gameObject.GetComponent<EndFlowScript>();                //エンド制御スクリプト取得。
         teamFlow = this.gameObject.GetComponent<TeamFlowScript>();              //投げるチームを決定するスクリプト取得。
         changeScene = this.gameObject.GetComponent<ChangeSceneScript>();        //シーン切り替え制御スクリプト取得。
@@ -63,20 +64,20 @@ public class GameFlowScript : MonoBehaviour
                 FinishGame();
             }
         }
-        else
-        {
-            //ボールが動いている。
-            if (teamFlow.GetIsMoving())
-            {
-                //特定のオブジェクトを止める。
-                SwitchGameObject(false);
-            }
-            else
-            {
-                //ボールが動いてなければ戻す。
-                SwitchGameObject(true);
-            }
-        }
+        //else
+        //{
+        //    //ボールが動いている。
+        //    if (teamFlow.GetIsMoving())
+        //    {
+        //        //特定のオブジェクトを止める。
+        //        switchActiveObjs.SwitchGameObject(false);
+        //    }
+        //    else
+        //    {
+        //        //ボールが動いてなければ戻す。
+        //        switchActiveObjs.SwitchGameObject(true);
+        //    }
+        //}
         
     }
 
@@ -129,20 +130,5 @@ public class GameFlowScript : MonoBehaviour
         activePlayerController.RestartGame();       //プレイヤーをリセット。  
 
         waitFlag = false;
-    }
-    /// <summary>
-    /// ボールが動いている間ゲームオブジェクトを動かさない。
-    /// </summary>
-    private void SwitchGameObject(bool isActive)
-    {
-        if(!(gameObjects.Length > 0))
-        {
-            return;
-        }
-
-        foreach(var obj in gameObjects)
-        {
-            obj.gameObject.SetActive(isActive);
-        }
     }
 }

@@ -20,7 +20,7 @@ namespace BocciaPlayer
             throwAngleController = this.gameObject.GetComponentInChildren<ThrowAngleController>();
             ballHolderController = this.gameObject.GetComponentInChildren<BallHolderController>();
             touchManager = TouchManager.GetInstance();
-            throwBallControler.ThrowBallDisable();
+            throwBallControler.enabled = false;
             throwAngleController.ThrowAngleDisable();
             this.gameObject.SetActive(false);
             this.enabled = false;
@@ -33,6 +33,7 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
+            if (throwBallControler.IsDecision()) return;
             if(touchManager.IsTouch())
             {
                 if(touchManager.GetPhase() == TouchInfo.Began)
@@ -51,7 +52,7 @@ namespace BocciaPlayer
             }
             else
             {
-                throwBallControler.ThrowBallDisable();
+                throwBallControler.enabled = false;
                 throwAngleController.ThrowAngleDisable();
             }
         }
