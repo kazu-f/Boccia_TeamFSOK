@@ -35,7 +35,7 @@ namespace BocciaPlayer
         {
             if(touchManager.IsTouch())
             {
-                if(touchManager.GetPhase() == TouchPhase.Began)
+                if(touchManager.GetPhase() == TouchInfo.Began)
                 {
                     m_touchStartPos = touchManager.GetTouchPosInScreen();
                     //有効化フラグを切り替える。

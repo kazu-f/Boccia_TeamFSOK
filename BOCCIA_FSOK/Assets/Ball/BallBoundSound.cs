@@ -5,7 +5,7 @@ using UnityEngine;
 public class BallBoundSound : MonoBehaviour
 {
     private AudioSource boundSE;
-    private Rigidbody rigidbody;
+    new private Rigidbody rigidbody;
     // Start is called before the first frame update
     void Start()
     {

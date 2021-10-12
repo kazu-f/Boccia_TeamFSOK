@@ -18,7 +18,7 @@ public class TitleSceneScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (touchManager.GetPhase() == TouchPhase.Ended)
+        if (touchManager.GetPhase() == TouchInfo.Ended)
         {
             changeScene.ChangeSceneInvoke(true, 2.0f);
             if(touchSE != null)

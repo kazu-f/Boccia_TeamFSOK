@@ -4,6 +4,20 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// タッチ情報。タッチの状態を表す。
+/// </summary>
+public enum TouchInfo
+{ 
+    Began = TouchPhase.Began,
+    Moved = TouchPhase.Moved,
+    Stationary = TouchPhase.Stationary,
+    Ended = TouchPhase.Ended,
+    Canceled = TouchPhase.Canceled,
+    None
+}
+
+
 public class TouchManager : MonoBehaviour
 {
     public Canvas canvas;
@@ -13,7 +27,7 @@ public class TouchManager : MonoBehaviour
     Vector2 m_oldPos = new Vector2(0, 0);          //前フレームの座標。
     Vector2 m_deltaPos = new Vector2(0, 0);         //前フレーム座標からの差分。
     Vector2 m_deltaPosInScreen = new Vector2(0, 0);         //スクリーン上での前フレーム座標からの差分。
-    TouchPhase m_touchPhase = TouchPhase.Began;     //状態。
+    TouchInfo m_touchPhase = TouchInfo.Began;     //状態。
     bool m_isTouch = false;      //タッチしているか？
     bool m_isOnUI = false;       //UIを触っているか？
 
@@ -72,13 +86,13 @@ public class TouchManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             this.m_isTouch = true;
-            this.m_touchPhase = TouchPhase.Began;
+            this.m_touchPhase = TouchInfo.Began;
         }
         // 離した瞬間
         else if (Input.GetMouseButtonUp(0))
         {
             this.m_isTouch = true;
-            this.m_touchPhase = TouchPhase.Ended;
+            this.m_touchPhase = TouchInfo.Ended;
         }
         // 押しっぱなし
         else if (Input.GetMouseButton(0))
@@ -86,12 +100,16 @@ public class TouchManager : MonoBehaviour
             this.m_isTouch = true;
             if (m_oldPos == m_touchPos)
             {
-                this.m_touchPhase = TouchPhase.Stationary;
+                this.m_touchPhase = TouchInfo.Stationary;
             }
             else
             {
-                this.m_touchPhase = TouchPhase.Moved;
+                this.m_touchPhase = TouchInfo.Moved;
             }
+        }
+        else
+        {
+            this.m_touchPhase = TouchInfo.None;
         }
 
         if (this.m_isTouch && !m_isOnUI)
@@ -110,12 +128,11 @@ public class TouchManager : MonoBehaviour
             m_touchPos = m_oldPos;
         }
 #else
-
         // 端末
         if (Input.touchCount == 1 && !m_isOnUI)
         {
             Touch touch = Input.GetTouch(0);
-            this.m_touchPhase = touch.phase;    //タッチ状態。
+            this.m_touchPhase = (TouchInfo)touch.phase;    //タッチ状態。
             {
                 this.m_touchPos = touch.position;   //タッチ座標。
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
@@ -131,7 +148,7 @@ public class TouchManager : MonoBehaviour
         }
         else
         {
-            m_touchPhase = TouchPhase.Ended;
+            m_touchPhase = TouchInfo.None;
         }
 #endif
         if (m_isOnUI)
@@ -139,7 +156,7 @@ public class TouchManager : MonoBehaviour
             m_isTouch = false;
         }
         //タッチが終わればUIを触っていないことになる。
-        if(m_touchPhase == TouchPhase.Ended)
+        if(m_touchPhase == TouchInfo.None)
         {
             m_isOnUI = false;
         }
@@ -177,7 +194,7 @@ public class TouchManager : MonoBehaviour
     /// <summary>
     /// タッチ状態を取得。
     /// </summary>
-    public TouchPhase GetPhase()
+    public TouchInfo GetPhase()
     {
         return m_touchPhase;
     }

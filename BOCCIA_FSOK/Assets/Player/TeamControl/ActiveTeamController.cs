@@ -40,6 +40,7 @@ public class ActiveTeamController : MonoBehaviour
     {
         if(EndFlow.GetIsEnd() && throwState != ThrowTeamState.finishEnd)
         {
+            StopThrow();
             throwState = ThrowTeamState.finishEnd;
         }
         switch(throwState)
@@ -47,12 +48,12 @@ public class ActiveTeamController : MonoBehaviour
             case ThrowTeamState.throwBall:
                 if (TeamFlow.GetIsMoving())
                 {
+                    StopThrow();
                     throwState = ThrowTeamState.waitStopBall;
                 }
 
                 break;
             case ThrowTeamState.waitStopBall:
-                StopThrow();
                 if (!TeamFlow.GetIsMoving())
                 {
                     throwState = ThrowTeamState.throwBall;

@@ -69,12 +69,12 @@ namespace BocciaPlayer
             if (touchManager.IsTouch())
             {
                 //前フレームから動きがある。
-                if (touchManager.GetPhase() != TouchPhase.Stationary)
+                if (touchManager.GetPhase() != TouchInfo.Stationary)
                 {
                     m_touchPosInScreen = touchManager.GetTouchPosInScreen();
                 }
 
-                if (touchManager.GetPhase() == TouchPhase.Moved)
+                if (touchManager.GetPhase() == TouchInfo.Moved)
                 {
                     var deltaMoveVec = touchManager.GetDeltaPosInScreen();
                     //上方向にフリックしていなければ、投げる力を弱めようとしていると判断する。
@@ -91,7 +91,7 @@ namespace BocciaPlayer
                         throwDummy.SetForce(m_force);
                     }
                 }
-                else if (touchManager.GetPhase() == TouchPhase.Ended)
+                else if (touchManager.GetPhase() == TouchInfo.Ended)
                 {
                     //指を離すタイミングで投げるかどうか決定。
                     if (m_touchStartPos.y < m_touchPosInScreen.y
