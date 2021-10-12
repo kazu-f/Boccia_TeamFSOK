@@ -283,10 +283,12 @@ public class TeamFlowScript : MonoBehaviour
             {
                 case Team.Red:
                     Debug.Log("次に赤チームが投げます");
+                    Debug.Log("残り" + m_RemainBalls.x + "球です");
                     break;
 
                 case Team.Blue:
                     Debug.Log("次に青チームが投げます");
+                    Debug.Log("残り" + m_RemainBalls.y + "球です");
                     break;
 
                 case Team.Num:
