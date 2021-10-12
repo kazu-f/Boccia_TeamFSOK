@@ -60,15 +60,22 @@ public class CameraMove2D : MonoBehaviour
     {
         float cameraCenterY = camera.orthographicSize;
         float cameraCenterX = cameraCenterY / ScreenAspect;
-        if (boxSize.x > cameraCenterX * 2.0f
-            && boxSize.z > cameraCenterY * 2.0f)
+        //x‚ð”ÍˆÍ‚ÉŽû‚ß‚éB
+        if (boxSize.x > cameraCenterX * 2.0f)
         {
             position.x = Mathf.Clamp(position.x, posMin.x + cameraCenterX, posMax.x - cameraCenterX);
-            position.z = Mathf.Clamp(position.z, posMin.z + cameraCenterY, posMax.z - cameraCenterY);
         }
         else
         {
             position.x = collider.transform.position.x;
+        }
+        //z‚ð”ÍˆÍ‚ÉŽû‚ß‚éB
+        if(boxSize.z > cameraCenterY * 2.0f)
+        {
+            position.z = Mathf.Clamp(position.z, posMin.z + cameraCenterY, posMax.z - cameraCenterY);
+        }
+        else
+        {
             position.z = collider.transform.position.z;
         }
 
