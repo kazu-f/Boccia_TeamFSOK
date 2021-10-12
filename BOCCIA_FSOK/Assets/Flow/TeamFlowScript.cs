@@ -340,4 +340,20 @@ public class TeamFlowScript : MonoBehaviour
         m_IsMoving = false;
         NextTeamLog();
     }
+
+    /// <summary>
+    /// 次に投げるチームの残りの球数
+    /// </summary>
+    /// <returns>残りの球数</returns>
+    public int GetRemainBall()
+    {
+        if(m_NextTeam == Team.Red)
+        {
+            return m_RemainBalls.x;
+        }
+        else
+        {
+            return m_RemainBalls.y;
+        }
+    }
 }
