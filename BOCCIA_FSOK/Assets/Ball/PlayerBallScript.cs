@@ -30,7 +30,7 @@ public class PlayerBallScript : IBallScript
     public override void OutsideVenue()
     {
         GetOutRange = true;
-        //InArea = false;
+        InArea = false;
         //this.gameObject.SetActive(false);
     }
 
