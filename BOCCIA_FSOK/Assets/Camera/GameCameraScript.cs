@@ -41,4 +41,13 @@ public class GameCameraScript : MonoBehaviour
     {
         m_FollowCamera.GetComponent<FollowCameraScript>().SetBallPosition(pos);
     }
+
+    /// <summary>
+    /// ’Ç]ƒJƒƒ‰‚©‚Ç‚¤‚©
+    /// </summary>
+    /// <returns>’Ç]‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO</returns>
+    public bool IsFollowCamera()
+    {
+        return IsFollow;
+    }
 }
