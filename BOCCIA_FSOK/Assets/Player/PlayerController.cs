@@ -13,6 +13,7 @@ namespace BocciaPlayer
         private Vector2 m_touchStartPos = new Vector2(0.0f,0.0f);     //触り始めた座標。
 
         public bool isThrowBallNone { get; set; } = false;   //ボールを投げ切ったかどうかのフラグ。trueで投げ切った。
+        private bool isTouch = false;
 
         private void Awake()
         {
@@ -20,8 +21,8 @@ namespace BocciaPlayer
             throwAngleController = this.gameObject.GetComponentInChildren<ThrowAngleController>();
             ballHolderController = this.gameObject.GetComponentInChildren<BallHolderController>();
             touchManager = TouchManager.GetInstance();
-            throwBallControler.ThrowBallDisable();
-            throwAngleController.ThrowAngleDisable();
+            throwBallControler.enabled = false;
+            throwAngleController.enabled = false;
             this.gameObject.SetActive(false);
             this.enabled = false;
         }
@@ -33,26 +34,34 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
+            if (throwBallControler.IsDecision())
+            {
+                return;
+            }
             if(touchManager.IsTouch())
             {
-                if(touchManager.GetPhase() == TouchInfo.Began)
+                if (touchManager.GetPhase() == TouchInfo.Began)
                 {
+                    SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
                     m_touchStartPos = touchManager.GetTouchPosInScreen();
                     //有効化フラグを切り替える。
                     if (m_touchStartPos.y > 0.2f)
                     {
-                        throwBallControler.ThrowBallEnable();
+                        throwBallControler.enabled = true;
                     }
                     else if (m_touchStartPos.y <= 0.2f)
                     {
-                        throwAngleController.ThrowAngleEnable();
+                        throwAngleController.enabled = true;
                     }
+                    isTouch = true;
                 }
             }
-            else
+            else if(isTouch)
             {
-                throwBallControler.ThrowBallDisable();
-                throwAngleController.ThrowAngleDisable();
+                throwBallControler.enabled = false;
+                throwAngleController.enabled = false;
+                SwichActiveGameObjects.GetInstance().SwitchGameObject(true);
+                isTouch = false;
             }
         }
 
