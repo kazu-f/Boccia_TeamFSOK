@@ -34,20 +34,20 @@ public class TouchPosExample : MonoBehaviour
 
         m_Text.text += "\nScreen Position : " + posInScreen;
 
-        TouchPhase touchPhase = touchManager.GetPhase();
-        if(touchPhase == TouchPhase.Began)
+        TouchInfo touchPhase = touchManager.GetPhase();
+        if(touchPhase == TouchInfo.Began)
         {
             m_Text.text += "\nTouchPhase : Began";
         }
-        else if(touchPhase == TouchPhase.Moved)
+        else if(touchPhase == TouchInfo.Moved)
         {
             m_Text.text += "\nTouchPhase : Moved";
         }
-        else if(touchPhase == TouchPhase.Stationary)
+        else if(touchPhase == TouchInfo.Stationary)
         {
             m_Text.text += "\nTouchPhase : Stationary";
         }
-        else if(touchPhase == TouchPhase.Ended)
+        else if(touchPhase == TouchInfo.Ended)
         {
             m_Text.text += "\nTouchPhase : Ended";
         }

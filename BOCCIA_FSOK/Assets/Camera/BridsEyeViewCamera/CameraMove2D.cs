@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class CameraMove2D : MonoBehaviour
 {
-    public Collider collider;
+    new public Collider collider;
 
     public TouchManager touchManager;   //タッチマネージャー。
     public Slider slider;           //カメラの拡大率のスライダー。
 
     public float moveSpeed = 2.0f;    //カメラのスピード。
-    Camera camera;                  //カメラ。
+    new Camera camera;                  //カメラ。
     Vector3 position;               //座標。
     Vector3 posMax;                 //コートの最大座標。
     Vector3 posMin;                 //コートの最小座標。
@@ -43,7 +43,7 @@ public class CameraMove2D : MonoBehaviour
         isMove = false;
         if (touchManager.IsTouch())
         {
-            if(touchManager.GetPhase() == TouchPhase.Moved)
+            if(touchManager.GetPhase() == TouchInfo.Moved)
             {
                 float camSpeed = camera.orthographicSize;
 

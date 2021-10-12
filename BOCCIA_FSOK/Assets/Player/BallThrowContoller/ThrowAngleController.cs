@@ -32,7 +32,7 @@ namespace BocciaPlayer
         {
             if (touchManager.IsTouch())
             {
-                if (touchManager.GetPhase() == TouchPhase.Moved)
+                if (touchManager.GetPhase() == TouchInfo.Moved)
                 {
                     var rotVec = touchManager.GetDeltaPosInScreen();
                     m_newCamAngle.y += angleSpeed * rotVec.x;

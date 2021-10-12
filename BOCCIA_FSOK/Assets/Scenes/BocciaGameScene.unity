@@ -2269,6 +2269,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Court
       objectReference: {fileID: 0}
+    - target: {fileID: 1467016264460479554, guid: 4df82f7401e45cd49b6fc6104f82ccda, type: 3}
+      propertyPath: m_TagString
+      value: Court
+      objectReference: {fileID: 0}
     - target: {fileID: 2238345268142765816, guid: 4df82f7401e45cd49b6fc6104f82ccda, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.5
@@ -2337,6 +2341,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6042206121413869082, guid: 4df82f7401e45cd49b6fc6104f82ccda, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 9b758d24335f01d41a141dea5b82a99a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4df82f7401e45cd49b6fc6104f82ccda, type: 3}
 --- !u!65 &4051269890441071843 stripped
