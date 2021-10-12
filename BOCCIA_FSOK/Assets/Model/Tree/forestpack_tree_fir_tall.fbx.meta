@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: forestpack_tree_fir
-    second: {fileID: 2100000, guid: 44f864cdbdfdf0343becdc35a6ac529d, type: 2}
+    second: {fileID: 2100000, guid: 2254abf42274b014a928faa02fa111be, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
