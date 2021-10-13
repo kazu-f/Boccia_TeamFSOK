@@ -38,24 +38,21 @@ namespace BocciaPlayer
             {
                 return;
             }
-            if(touchManager.IsTouch())
+            if(touchManager.GetPhase() == TouchInfo.Began)
             {
-                if (touchManager.GetPhase() == TouchInfo.Began)
+                SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
+                m_touchStartPos = touchManager.GetTouchPosInScreen();
+                //有効化フラグを切り替える。
+                if (m_touchStartPos.y > 0.2f)
                 {
-                    SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
-                    m_touchStartPos = touchManager.GetTouchPosInScreen();
-                    //有効化フラグを切り替える。
-                    if (m_touchStartPos.y > 0.2f)
-                    {
-                        throwBallControler.enabled = true;
-                    }
-                    else if (m_touchStartPos.y <= 0.2f)
-                    {
-                        throwAngleController.enabled = true;
-                    }
+                    throwBallControler.enabled = true;
+                }
+                else if (m_touchStartPos.y <= 0.2f)
+                {
+                    throwAngleController.enabled = true;
                 }
             }
-            else
+            else if(touchManager.GetPhase() == TouchInfo.None)
             {
                 throwBallControler.enabled = false;
                 throwAngleController.enabled = false;

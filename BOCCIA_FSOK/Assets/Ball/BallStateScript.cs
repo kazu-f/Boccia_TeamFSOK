@@ -101,4 +101,9 @@ public class BallStateScript : MonoBehaviour
     {
         isThrow = true;
     }
+
+    public bool IsThrowing()
+    {
+        return isThrow;
+    }
 }

@@ -91,13 +91,13 @@ namespace BocciaPlayer
             {
                 //Debug.Log("ボールが動いているか。");
                 if (currentBallState != null && 
-                    currentBallState.GetState() == BallState.Stop)
+                    !currentBallState.IsThrowing())
                 {
-                    currentBallState = null;
-                    //ボールを次に進める。
-                    var playerCon = bocciaPlayer.GetComponent<PlayerController>();
-                    playerCon.isThrowBallNone = ballHolder.UpdateCurrentBallNo();
-                    isDecision = false;
+                    if(currentBallState.GetState() != BallState.Move)
+                    {
+                        currentBallState = null;
+                        isDecision = false;
+                    }
                 }
             }
         }
@@ -143,6 +143,10 @@ namespace BocciaPlayer
             ballOperate.Throw(m_force);
 
             throwSE.Play();
+
+            //ボールを次に進める。
+            var playerCon = bocciaPlayer.GetComponent<PlayerController>();
+            playerCon.isThrowBallNone = ballHolder.UpdateCurrentBallNo();
         }
 
         public bool IsDecision()
@@ -152,7 +156,6 @@ namespace BocciaPlayer
 
         private void OnEnable()
         {
-            if (isDecision) return;
             throwGauge.gameObject.SetActive(true);
             throwDummyObj.SetActive(true);
             //タッチ位置を初期化。
