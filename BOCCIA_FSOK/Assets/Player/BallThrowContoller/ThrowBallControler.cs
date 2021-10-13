@@ -25,7 +25,7 @@ namespace BocciaPlayer
         private Vector3 m_force = new Vector3(0.0f, 0.0f, 0.0f);      //初速。
         private Vector3 m_throwPos = new Vector3(0.0f, 0.0f, 0.0f);   //ボールの始点。7
 
-        private const float THROW_DELAY = 0.4f;           //投げるまでのディレイの時間。
+        private const float THROW_DELAY = 0.2f;           //投げるまでのディレイの時間。
         private bool isDecision = false;           //投げる力を決定したか。
 
         //定数。
@@ -82,13 +82,15 @@ namespace BocciaPlayer
                     {
                         //ボールを投げる。
                         isDecision = true;
-                        Invoke("ThrowBall", THROW_DELAY);
+                        StartCoroutine("ThrowBall");
                     }
                 }
             }
-            else if(isDecision)
+            
+            if(isDecision)
             {
-                if(currentBallState != null && 
+                //Debug.Log("ボールが動いているか。");
+                if (currentBallState != null && 
                     currentBallState.GetState() == BallState.Stop)
                 {
                     currentBallState = null;
@@ -119,13 +121,14 @@ namespace BocciaPlayer
         }
 
         //ボールを投げる処理。
-        void ThrowBall()
+        IEnumerator ThrowBall()
         {
+            yield return new WaitForSeconds(THROW_DELAY);
             //現在投げるボールを取得する。
             var obj = ballHolder.GetCurrentBall();
             if(obj == null)
             {
-                return;
+                yield return null;
             }
 
             //ボールの位置を合わせる。

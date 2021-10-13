@@ -53,15 +53,13 @@ namespace BocciaPlayer
                     {
                         throwAngleController.enabled = true;
                     }
-                    isTouch = true;
                 }
             }
-            else if(isTouch)
+            else
             {
                 throwBallControler.enabled = false;
                 throwAngleController.enabled = false;
                 SwichActiveGameObjects.GetInstance().SwitchGameObject(true);
-                isTouch = false;
             }
         }
 
@@ -71,6 +69,7 @@ namespace BocciaPlayer
             {
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
+                SwichActiveGameObjects.GetInstance().SwitchGameObject(true);
             }
             this.enabled = isEnable;
         }

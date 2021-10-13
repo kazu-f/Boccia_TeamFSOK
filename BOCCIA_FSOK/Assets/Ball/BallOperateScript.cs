@@ -49,7 +49,7 @@ public class BallOperateScript : MonoBehaviour
             Debug.LogError("エラー：TeamDivisionScriptコンポーネントの取得に失敗しました。");
         }
         //ボールの状態を操作するスクリプトを取得
-        m_StateScript = GetComponent<BallStateScript>();
+        m_StateScript = this.gameObject.GetComponent<BallStateScript>();
         if (m_StateScript == null)
         {
             //BallStateScriptコンポーネントが取得できなかったとき
@@ -100,6 +100,8 @@ public class BallOperateScript : MonoBehaviour
         {
             m_TeamFlow.DecreaseBalls();
         }
+        //投げた。
+        m_StateScript.EnableIsthrow();
         //速度を加算
         m_rigidbody.AddForce(speed);
         //ボールを投げた判定をTeamFlowに送る

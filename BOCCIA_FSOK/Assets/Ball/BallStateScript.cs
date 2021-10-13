@@ -14,6 +14,8 @@ public class BallStateScript : MonoBehaviour
     private Rigidbody m_rigidbody;
     private Vector3 m_moveSpeed;
     private float m_borderSpeed = 0.0005f;
+    private bool isThrow = false;
+
     private void Awake()
     {
         //RigidBody‚ðŽæ“¾
@@ -32,6 +34,12 @@ public class BallStateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isThrow)
+        {
+            this.StartCoroutine(this.WaitAddForce());
+            return;
+        }
+
         CalcState();
     }
 
@@ -59,7 +67,16 @@ public class BallStateScript : MonoBehaviour
         }
     }
 
-    public BallState GetState()
+    private IEnumerator WaitAddForce()
+    {
+        yield return new WaitForFixedUpdate();
+        if((m_rigidbody.velocity.magnitude > 0.0f))
+        {
+            isThrow = false;
+        }
+    }
+
+        public BallState GetState()
     {
         return m_state;
     }
@@ -80,4 +97,8 @@ public class BallStateScript : MonoBehaviour
         m_state = BallState.Num;
     }
 
+    public void EnableIsthrow()
+    {
+        isThrow = true;
+    }
 }
