@@ -91,7 +91,7 @@ namespace BocciaPlayer
             {
                 //Debug.Log("ƒ{[ƒ‹‚ª“®‚¢‚Ä‚¢‚é‚©B");
                 if (currentBallState != null && 
-                    !currentBallState.IsThrowing())
+                    currentBallState.GetIsPhysicsUpdate())
                 {
                     if(currentBallState.GetState() != BallState.Move)
                     {
