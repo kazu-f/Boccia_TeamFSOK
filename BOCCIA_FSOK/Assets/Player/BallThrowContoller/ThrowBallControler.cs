@@ -144,6 +144,9 @@ namespace BocciaPlayer
 
             throwSE.Play();
 
+            throwGauge.gameObject.SetActive(false);
+            throwDummyObj.SetActive(false);
+
             //ボールを次に進める。
             var playerCon = bocciaPlayer.GetComponent<PlayerController>();
             playerCon.isThrowBallNone = ballHolder.UpdateCurrentBallNo();
