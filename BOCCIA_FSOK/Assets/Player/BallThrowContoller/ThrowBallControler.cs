@@ -81,25 +81,24 @@ namespace BocciaPlayer
                     if (m_throwPow > 0.0f)
                     {
                         //ボールを投げる。
-                        isDecision = true;
                         StartCoroutine("ThrowBall");
                     }
                 }
             }
             
-            if(isDecision)
-            {
-                //Debug.Log("ボールが動いているか。");
-                if (currentBallState != null && 
-                    currentBallState.GetIsPhysicsUpdate())
-                {
-                    if(currentBallState.GetState() != BallState.Move)
-                    {
-                        currentBallState = null;
-                        isDecision = false;
-                    }
-                }
-            }
+            //if(isDecision)
+            //{
+            //    //Debug.Log("ボールが動いているか。");
+            //    if (currentBallState != null && 
+            //        currentBallState.GetIsPhysicsUpdate())
+            //    {
+            //        if(currentBallState.GetState() != BallState.Move)
+            //        {
+            //            currentBallState = null;
+            //            isDecision = false;
+            //        }
+            //    }
+            //}
         }
         /// <summary>
         /// 始点を計算。
@@ -123,6 +122,7 @@ namespace BocciaPlayer
         //ボールを投げる処理。
         IEnumerator ThrowBall()
         {
+            isDecision = true;
             yield return new WaitForSeconds(THROW_DELAY);
             //現在投げるボールを取得する。
             var obj = ballHolder.GetCurrentBall();
@@ -150,6 +150,7 @@ namespace BocciaPlayer
             //ボールを次に進める。
             var playerCon = bocciaPlayer.GetComponent<PlayerController>();
             playerCon.isThrowBallNone = ballHolder.UpdateCurrentBallNo();
+            isDecision = false;
         }
 
         public bool IsDecision()

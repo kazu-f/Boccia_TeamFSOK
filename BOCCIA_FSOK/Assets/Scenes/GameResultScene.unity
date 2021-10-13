@@ -1457,8 +1457,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drumRoll: {fileID: 2127094307}
   cymbal: {fileID: 941406477}
-  DRUM_ROLL_LOOP_START: 3.5
-  DRUM_ROLL_LOOP_END: 4
+  DRUM_ROLL_LOOP_START: 2.8
+  DRUM_ROLL_LOOP_END: 2.9
 --- !u!4 &1969553408
 Transform:
   m_ObjectHideFlags: 0
