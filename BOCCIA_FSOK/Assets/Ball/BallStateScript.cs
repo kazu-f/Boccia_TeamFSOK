@@ -14,7 +14,7 @@ public class BallStateScript : MonoBehaviour
     private Rigidbody m_rigidbody;
     private Vector3 m_moveSpeed;
     private float m_borderSpeed = 0.0005f;
-    private bool isThrow = false;
+    private bool IsPhysicsUpdate = false;
 
     private void Awake()
     {
@@ -34,15 +34,20 @@ public class BallStateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isThrow)
+        if (IsPhysicsUpdate)
         {
-            this.StartCoroutine(this.WaitAddForce());
-            return;
+            CalcState();
         }
-
-        CalcState();
     }
 
+    public void LateUpdate()
+    {
+        IsPhysicsUpdate = false;
+    }
+    public void FixedUpdate()
+    {
+        IsPhysicsUpdate = true;
+    }
     private void CalcState()
     {
         if (m_rigidbody == null)
@@ -67,15 +72,6 @@ public class BallStateScript : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitAddForce()
-    {
-        yield return new WaitForFixedUpdate();
-        if((m_rigidbody.velocity.magnitude > 0.0f))
-        {
-            isThrow = false;
-        }
-    }
-
         public BallState GetState()
     {
         return m_state;
@@ -97,13 +93,8 @@ public class BallStateScript : MonoBehaviour
         m_state = BallState.Num;
     }
 
-    public void EnableIsthrow()
+    public bool GetIsPhysicsUpdate()
     {
-        isThrow = true;
-    }
-
-    public bool IsThrowing()
-    {
-        return isThrow;
+        return IsPhysicsUpdate;
     }
 }

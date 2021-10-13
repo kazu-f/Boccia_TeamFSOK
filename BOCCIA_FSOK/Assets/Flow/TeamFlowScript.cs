@@ -166,15 +166,19 @@ public class TeamFlowScript : MonoBehaviour
         m_Jack = m_BallFlow.GetJackBall();
         //ジャックボールのステートを取得
         m_JackState = m_Jack.GetComponent<BallStateScript>().GetState();
-        if (m_JackState == BallState.Move)
+        switch (m_JackState)
         {
-            //ジャックボールが停止していない
-            m_IsMoving = true;
-            return;
-        }
-        else
-        {
-            m_Jack.GetComponent<BallOperateScript>().EndThrowing();
+            case BallState.Move:
+                //ジャックボールが停止していない
+                m_IsMoving = true;
+                return;
+            case BallState.Stop:
+                m_Jack.GetComponent<BallOperateScript>().EndThrowing();
+                break;
+            default:
+                //ジャックボールが停止していない
+                m_IsMoving = true;
+                return;
         }
 
         //ボールを取得

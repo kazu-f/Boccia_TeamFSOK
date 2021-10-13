@@ -100,8 +100,6 @@ public class BallOperateScript : MonoBehaviour
         {
             m_TeamFlow.DecreaseBalls();
         }
-        //投げた。
-        m_StateScript.EnableIsthrow();
         //速度を加算
         m_rigidbody.AddForce(speed);
         //ボールを投げた判定をTeamFlowに送る
