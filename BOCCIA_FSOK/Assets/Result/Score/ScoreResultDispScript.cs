@@ -35,7 +35,7 @@ public class ScoreResultDispScript : MonoBehaviour
     private EnScoreDispState state = EnScoreDispState.enUISlideIn;
     private int EndNum = 0;                             //エンド数。
     private int currentNo = 0;                          //現在スライドインしているスコア。
-    bool isWait = false;                                //待機させるか。
+    //bool isWait = false;                                //待機させるか。
     bool isFinish = false;                              //終了。
     const float WAIT_TIME = 1.0f;                       //演出毎の待機時間。
 
@@ -170,8 +170,8 @@ public class ScoreResultDispScript : MonoBehaviour
         soundController.PlayCymbal();
         if(resultSumText != null) resultSumText.SetActive(true);
         state = EnScoreDispState.enWinLoseEffect;      //ステート進行。
-        //待機状態を解除。
-        isWait = false;
+        ////待機状態を解除。
+        //isWait = false;
     }
 
     /// <summary>
@@ -206,8 +206,8 @@ public class ScoreResultDispScript : MonoBehaviour
         state = EnScoreDispState.enFinish;      //ステート進行。
         //終了フラグを立てる。
         isFinish = true;
-        //待機状態を解除。
-        isWait = false;
+        ////待機状態を解除。
+        //isWait = false;
     }
     //スライドを並べる方向を可視化
     void OnDrawGizmos()
