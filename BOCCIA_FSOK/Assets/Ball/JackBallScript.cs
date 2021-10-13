@@ -86,6 +86,7 @@ public class JackBallScript : IBallScript
         IsThrowing = false;
         if (InArea == false)
         {
+            this.gameObject.GetComponent<BallStateScript>().ResetState();
             this.gameObject.SetActive(false);
         }
     }
