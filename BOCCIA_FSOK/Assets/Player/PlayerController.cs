@@ -10,10 +10,10 @@ namespace BocciaPlayer
         private ThrowBallControler throwBallControler;
         private ThrowAngleController throwAngleController;
         private BallHolderController ballHolderController;
+        private TeamFlowScript TeamFlow;         //次投げるチームの判定。
         private Vector2 m_touchStartPos = new Vector2(0.0f,0.0f);     //触り始めた座標。
 
         public bool isThrowBallNone { get; set; } = false;   //ボールを投げ切ったかどうかのフラグ。trueで投げ切った。
-        private bool isTouch = false;
 
         private void Awake()
         {
@@ -25,6 +25,12 @@ namespace BocciaPlayer
             throwAngleController.enabled = false;
             this.gameObject.SetActive(false);
             this.enabled = false;
+
+            var gameFlow = GameObject.FindGameObjectWithTag("GameFlow");
+            if(gameFlow)
+            {
+                TeamFlow = gameFlow.GetComponent<TeamFlowScript>();
+            }
         }
         // Start is called before the first frame update
         void Start()
@@ -34,8 +40,10 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
-            if (throwBallControler.IsDecision())
+            if (throwBallControler.IsDecision() ||
+                TeamFlow.GetIsMoving())
             {
+                SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
                 return;
             }
             if(touchManager.GetPhase() == TouchInfo.Began)

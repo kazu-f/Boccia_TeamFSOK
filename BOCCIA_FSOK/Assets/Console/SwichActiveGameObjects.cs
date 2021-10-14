@@ -56,14 +56,14 @@ public class SwichActiveGameObjects : MonoBehaviour
             return;
         }
 
-        if (isActive)
-        {
-            Debug.Log("アクティブにする。");
-        }
-        else
-        {
-            Debug.Log("アクティブ解除。");
-        }
+        //if (isActive)
+        //{
+        //    Debug.Log("アクティブにする。");
+        //}
+        //else
+        //{
+        //    Debug.Log("アクティブ解除。");
+        //}
 
 
         foreach (var obj in gameObjects)
