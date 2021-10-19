@@ -13,10 +13,8 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     #endregion
 
     #region Private Fields
-    /// <summary>
-    /// ゲームのバージョン
-    /// </summary>
-    string gameVersion = "1";
+    string gameVersion = "1";       // ゲームのバージョン
+    bool isConnecting;
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -29,11 +27,20 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        progressLabel.SetActive(false);
+        controlPanel.SetActive(true);
     }
 
     #endregion
 
     #region Public Methods
+    [Tooltip("ユーザーが名前を設定できるUI")]
+    [SerializeField]
+    private GameObject controlPanel;
+    [Tooltip("接続が進行中であることをユーザーに知らせるためのUI")]
+    [SerializeField]
+    private GameObject progressLabel;
+
     /// <summary>
     /// 接続する
     /// 既に接続されていたらランダムな部屋に参加
@@ -41,6 +48,8 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     /// </summary>
     public void Connect()
     {
+        progressLabel.SetActive(true);
+        controlPanel.SetActive(false);
         Debug.Log("Photonに接続します。既に接続されていればランダムな部屋に参加します。接続されていなければPhotonサーバーに接続します");
         //接続されているか確認
         if(PhotonNetwork.IsConnected)
@@ -54,6 +63,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
         {
             //接続されていない場合
             //Photoサーバーに接続する
+            isConnecting = PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
             Debug.Log("Photonサーバーに接続します");
@@ -64,11 +74,19 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     #region MonoBehaviourPunCallbacks Callbacks
     public override void OnConnectedToMaster()
     {
+        if(isConnecting)
+        {
+            PhotonNetwork.JoinRandomRoom();
+            isConnecting = false;
+        }
         Debug.Log("OnConnectedToMaster()がPUNによって呼ばれました");
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
+        progressLabel.SetActive(false);
+        controlPanel.SetActive(true);
+        isConnecting = false;
         Debug.LogWarningFormat("OnDisconnected()がPUNによって呼ばれました。原因{0}",cause);
     }
 
@@ -81,6 +99,8 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom()がPUNによって呼ばれました。現在ルームに参加できました。");
+        Debug.Log("ゲームシーンをロードします");
+        PhotonNetwork.LoadLevel("BocciaGameScene");
     }
     #endregion
 
