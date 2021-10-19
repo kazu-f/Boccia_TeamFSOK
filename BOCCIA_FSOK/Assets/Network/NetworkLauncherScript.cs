@@ -100,7 +100,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     {
         Debug.Log("OnJoinedRoom()がPUNによって呼ばれました。現在ルームに参加できました。");
         Debug.Log("ゲームシーンをロードします");
-        PhotonNetwork.LoadLevel("BocciaGameScene");
+        //PhotonNetwork.LoadLevel("BocciaGameScene");
     }
     #endregion
 
