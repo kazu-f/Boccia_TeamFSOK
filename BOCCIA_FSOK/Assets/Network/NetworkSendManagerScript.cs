@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
+public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable,IPunOwnershipCallbacks
 {
     public float f = 0.0f;
     public Vector3 force = Vector3.one;
@@ -70,5 +71,24 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                 photonView.RequestOwnership();
             }
         }
+    }
+
+    //オーナー権限の設定がRequestの時に呼ばれる
+    public void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer)
+    {
+        Debug.Log("オーナー権限がリクエストされました");
+        targetView.TransferOwnership(requestingPlayer);
+    }
+
+    //オーナー権限が移行したときに呼ばれる
+    public void OnOwnershipTransfered(PhotonView targetView, Player previousOwner)
+    {
+        Debug.Log("オーナー権限が移行しました");
+    }
+
+    //オーナー権限の移行が失敗したときに呼ばれる
+    public void OnOwnershipTransferFailed(PhotonView targetView, Player previousOwner)
+    {
+        Debug.LogError("オーナー権限の移行に失敗しました");
     }
 }
