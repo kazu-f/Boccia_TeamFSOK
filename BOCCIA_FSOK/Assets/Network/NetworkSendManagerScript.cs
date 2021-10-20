@@ -7,6 +7,12 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
 {
     public float f = 0.0f;
     public Vector3 force = Vector3.one;
+    private PhotonView photonView = null;
+
+    public void Awake()
+    {
+        photonView = this.gameObject.GetComponent<PhotonView>();
+    }
 
     #region IPunObservable implementation
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -30,10 +36,12 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void Change1()
     {
         f++;
+        RequestOwner();
     }
     public void Change2()
     {
         force *= 2.0f;
+        RequestOwner();
     }
 
     // Start is called before the first frame update
@@ -46,5 +54,21 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     void Update()
     {
         
+    }
+
+    private void RequestOwner()
+    {
+        if(photonView.IsMine == false)
+        {
+            //オーナーじゃないとき
+            if(photonView.OwnershipTransfer != OwnershipOption.Request)
+            {
+                Debug.LogError("OwnershipTransferをRequestに変更してください");
+            }
+            else
+            {
+                photonView.RequestOwnership();
+            }
+        }
     }
 }
