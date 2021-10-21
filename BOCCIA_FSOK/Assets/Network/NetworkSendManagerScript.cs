@@ -6,8 +6,10 @@ using Photon.Realtime;
 
 public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable,IPunOwnershipCallbacks
 {
-    public float f = 0.0f;
-    public Vector3 force = Vector3.one;
+    bool IsSended = false;
+    public float m_f = 0.0f;
+    public Vector3 m_vec = Vector3.one;
+    private Quaternion m_rot = Quaternion.identity;
     private PhotonView photonView = null;
 
     public void Awake()
@@ -18,17 +20,24 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     #region IPunObservable implementation
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if(stream.IsWriting)
+        if (stream.IsWriting)
         {
-            //データを他のプレイヤーに送る
-            stream.SendNext(f);
-            stream.SendNext(force);
+            if (!IsSended)
+            {
+                //まだデータを送っていないとき
+                //データを他のプレイヤーに送る
+                stream.SendNext(m_f);
+                stream.SendNext(m_vec);
+                stream.SendNext(m_rot);
+                IsSended = true;
+            }
         }
         else
         {
             //データを受け取る
-            f = (float)stream.ReceiveNext();
-            force = (Vector3)stream.ReceiveNext();
+            m_f = (float)stream.ReceiveNext();
+            m_vec = (Vector3)stream.ReceiveNext();
+            m_rot = (Quaternion)stream.ReceiveNext();
         }
     }
 
@@ -36,12 +45,12 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
 
     public void Change1()
     {
-        f++;
+        m_f++;
         RequestOwner();
     }
     public void Change2()
     {
-        force *= 2.0f;
+        m_vec *= 2.0f;
         RequestOwner();
     }
 
@@ -90,5 +99,38 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void OnOwnershipTransferFailed(PhotonView targetView, Player previousOwner)
     {
         Debug.LogError("オーナー権限の移行に失敗しました");
+    }
+
+    public void SendVector(Vector3 vec)
+    {
+        m_vec = vec;
+        IsSended = false;
+    }
+
+    public void SendQuaternion(Quaternion rot)
+    {
+        m_rot = rot;
+        IsSended = false;
+    }
+
+    public void SendFloat(float f)
+    {
+        m_f = f;
+        IsSended = false;
+    }
+
+    public Vector3 ReceiveVector()
+    {
+        return m_vec;
+    }
+
+    public Quaternion ReveiveQuaternion()
+    {
+        return m_rot;
+    }
+
+    public float ReceiveFloat()
+    {
+        return m_f;
     }
 }
