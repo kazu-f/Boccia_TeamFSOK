@@ -20,7 +20,7 @@ namespace BocciaPlayer
         private Vector2 m_touchEndPos = new Vector2(0.0f, 0.0f);       //引き切った座標。
         private Vector2 m_endToStart = new Vector2(0.0f, 0.0f);       //開始座標から引き切った座標までのベクトル。
         private Vector2 m_touchPosInScreen = new Vector2(0.0f, 0.0f); //現在のタッチしている座標(スクリーン座標系？)
-        private float m_throwPow = 0.0f;                //投げる力
+        private Vector2 m_throwPow = new Vector2(0.0f,0.0f);                //投げる力
 
         private Vector3 m_force = new Vector3(0.0f, 0.0f, 0.0f);      //初速。
         private Vector3 m_throwPos = new Vector3(0.0f, 0.0f, 0.0f);   //ボールの始点。7
@@ -29,8 +29,8 @@ namespace BocciaPlayer
         private bool isDecision = false;           //投げる力を決定したか。
 
         //定数。
-        //const float FLICK_POWER = 0.005f;       //フリック判定用の定数。
         const float MAX_THROW_POW = 200.0f;
+        const float MAX_ANGLE_POW = 50.0f;
         //インスタンス生成時に呼ばれる。
         private void Awake()
         {
@@ -68,37 +68,25 @@ namespace BocciaPlayer
                     //移動した後の座標。
                     m_touchEndPos = m_touchPosInScreen;
                     m_endToStart = m_touchStartPos - m_touchEndPos;
-                    m_throwPow = m_endToStart.y / throwGauge.GetGaugeSize().y;
-                    m_throwPow = Mathf.Min(1.0f, Mathf.Max(m_throwPow, 0.0f));
+                    m_throwPow.x = m_endToStart.x / throwGauge.GetGaugeSize().x / 1.2f;
+                    m_throwPow.x = Mathf.Min(1.0f, Mathf.Max(m_throwPow.x, -1.0f));
+                    m_throwPow.y = m_endToStart.y / throwGauge.GetGaugeSize().y;
+                    m_throwPow.y = Mathf.Min(1.0f, Mathf.Max(m_throwPow.y, 0.0f));
 
-                    throwGauge.SetThrowPow(m_throwPow);
+                    throwGauge.SetThrowPow(m_throwPow.y);
 
                     CalcThrowForce();
                     throwDummy.SetForce(m_force);
                 }
                 else if (touchManager.GetPhase() == TouchInfo.Ended)
                 {
-                    if (m_throwPow > 0.0f)
+                    if (m_throwPow.y > 0.0f)
                     {
                         //ボールを投げる。
                         StartCoroutine("ThrowBall");
                     }
                 }
             }
-            
-            //if(isDecision)
-            //{
-            //    //Debug.Log("ボールが動いているか。");
-            //    if (currentBallState != null && 
-            //        currentBallState.GetIsPhysicsUpdate())
-            //    {
-            //        if(currentBallState.GetState() != BallState.Move)
-            //        {
-            //            currentBallState = null;
-            //            isDecision = false;
-            //        }
-            //    }
-            //}
         }
         /// <summary>
         /// 始点を計算。
@@ -114,8 +102,9 @@ namespace BocciaPlayer
         void CalcThrowForce()
         {
             m_force = bocciaPlayer.transform.forward;       //プレイヤーの前方向を取る。
-            m_force.x *= MAX_THROW_POW * m_throwPow;
-            m_force.z *= MAX_THROW_POW * m_throwPow;
+            m_force.x *= MAX_THROW_POW * m_throwPow.y;
+            m_force.z *= MAX_THROW_POW * m_throwPow.y;
+            m_force += bocciaPlayer.transform.right * m_throwPow.x * m_throwPow.y * MAX_ANGLE_POW;
             m_force.y = 10.0f;
         }
 
@@ -171,7 +160,8 @@ namespace BocciaPlayer
             //投げる力初期化。
             m_force = Vector3.zero;
             throwDummy.SetForce(m_force);
-            m_throwPow = 0.0f;
+            m_throwPow.x = 0.0f;
+            m_throwPow.y = 0.0f;
             throwGauge.SetThrowPow(0.0f);
         }
 
