@@ -120,7 +120,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
         if(IsJoinedRoom)
         {
             //部屋に参加しているとき
-            if(PhotonNetwork.CountOfPlayersInRooms == maxPlayersPerRoom)
+            if(PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
             {
                 //部屋の人数が最大だとゲームシーンに移行
                 Debug.Log("ゲームシーンをロードします");
