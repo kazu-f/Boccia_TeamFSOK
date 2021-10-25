@@ -128,6 +128,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                     //部屋の人数が最大だとゲームシーンに移行
                     Debug.Log("ゲームシーンをロードします");
                     PhotonNetwork.LoadLevel("BocciaGameScene");
+                    IsGameSceneLoaded = true;
                 }
             }
         }
