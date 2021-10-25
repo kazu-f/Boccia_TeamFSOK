@@ -43,17 +43,6 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
 
     #endregion
 
-    public void Change1()
-    {
-        m_f++;
-        RequestOwner();
-    }
-    public void Change2()
-    {
-        m_vec *= 2.0f;
-        RequestOwner();
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -105,18 +94,21 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         m_vec = vec;
         IsSended = false;
+        RequestOwner();
     }
 
     public void SendQuaternion(Quaternion rot)
     {
         m_rot = rot;
         IsSended = false;
+        RequestOwner();
     }
 
     public void SendFloat(float f)
     {
         m_f = f;
         IsSended = false;
+        RequestOwner();
     }
 
     public Vector3 ReceiveVector()
