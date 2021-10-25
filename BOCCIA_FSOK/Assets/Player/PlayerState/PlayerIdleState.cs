@@ -23,7 +23,8 @@ namespace BocciaPlayer {
         }
         override public void Execute()
         {
-            if (touchManager.GetPhase() == TouchInfo.Began)
+            if (touchManager.IsTouch() &&
+                touchManager.GetPhase() == TouchInfo.Began)
             {
                 m_touchStartPos = touchManager.GetTouchPosInScreen();
                 //ステートを切り替える。

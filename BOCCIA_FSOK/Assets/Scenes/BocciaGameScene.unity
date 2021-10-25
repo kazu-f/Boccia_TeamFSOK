@@ -136,9 +136,33 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2178808268779605786, guid: da458a262dc18fc46a2f090fc33d4831, type: 3}
-      propertyPath: ballCol
-      value: 
-      objectReference: {fileID: 2100000, guid: cfbdb5a52e385d24590ed7e5189d1c4e, type: 2}
+      propertyPath: ballColList.Array.data[1].a
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178808268779605786, guid: da458a262dc18fc46a2f090fc33d4831, type: 3}
+      propertyPath: ballColList.Array.data[1].b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178808268779605786, guid: da458a262dc18fc46a2f090fc33d4831, type: 3}
+      propertyPath: ballColList.Array.data[1].g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178808268779605786, guid: da458a262dc18fc46a2f090fc33d4831, type: 3}
+      propertyPath: ballColList.Array.data[1].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178808268779605786, guid: da458a262dc18fc46a2f090fc33d4831, type: 3}
+      propertyPath: ballColList.Array.data[2].a
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178808268779605786, guid: da458a262dc18fc46a2f090fc33d4831, type: 3}
+      propertyPath: ballColList.Array.data[2].g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178808268779605786, guid: da458a262dc18fc46a2f090fc33d4831, type: 3}
+      propertyPath: ballColList.Array.data[2].r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2178808268779605787, guid: da458a262dc18fc46a2f090fc33d4831, type: 3}
       propertyPath: m_Name
       value: ThrowDummy
