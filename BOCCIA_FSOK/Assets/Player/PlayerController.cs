@@ -13,8 +13,6 @@ namespace BocciaPlayer
         private TeamFlowScript TeamFlow;         //次投げるチームの判定。
         private Vector2 m_touchStartPos = new Vector2(0.0f,0.0f);     //触り始めた座標。
 
-        public bool isThrowBallNone { get; set; } = false;   //ボールを投げ切ったかどうかのフラグ。trueで投げ切った。
-
         private void Awake()
         {
             throwBallControler = this.gameObject.GetComponentInChildren<ThrowBallControler>();
