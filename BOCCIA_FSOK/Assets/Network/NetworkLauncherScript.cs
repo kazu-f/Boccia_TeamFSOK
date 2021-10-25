@@ -16,6 +16,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     string gameVersion = "1";       // ゲームのバージョン
     bool isConnecting;
     bool IsJoinedRoom = false;
+    bool IsGameSceneLoaded = false;
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -117,14 +118,17 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
-        if(IsJoinedRoom)
+        if (IsJoinedRoom)
         {
             //部屋に参加しているとき
-            if(PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
+            if (PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
             {
-                //部屋の人数が最大だとゲームシーンに移行
-                Debug.Log("ゲームシーンをロードします");
-                PhotonNetwork.LoadLevel("BocciaGameScene");
+                if (!IsGameSceneLoaded)
+                {
+                    //部屋の人数が最大だとゲームシーンに移行
+                    Debug.Log("ゲームシーンをロードします");
+                    PhotonNetwork.LoadLevel("BocciaGameScene");
+                }
             }
         }
     }
