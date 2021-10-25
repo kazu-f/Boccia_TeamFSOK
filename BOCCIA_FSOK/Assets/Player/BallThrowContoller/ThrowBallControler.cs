@@ -9,9 +9,8 @@ namespace BocciaPlayer
     {
         TouchManager touchManager;                  //タッチコンソール。
         public BallHolderController ballHolder;     //ボール所有者。
-        private BallStateScript currentBallState = null;    //現在投げるボール状態。
         public GameObject bocciaPlayer;             //プレイヤーオブジェクト。
-        public GameObject throwDummyObj;            //予測線表示オブジェクト。
+        private GameObject throwDummyObj;            //予測線表示オブジェクト。
         private ThrowDummyScript throwDummy;        //予測線表示スクリプト。
         private AudioSource throwSE;                //投げるときのSE。
         //private。
@@ -40,7 +39,8 @@ namespace BocciaPlayer
             throwGauge.gameObject.SetActive(false);
 
             //予測線の処理。
-            throwDummy = throwDummyObj.GetComponent<ThrowDummyScript>();
+            throwDummy = ThrowDummyScript.Instance();
+            throwDummyObj = throwDummy.gameObject;
 
             //SEを取得。
             throwSE = GetComponent<AudioSource>();
@@ -124,8 +124,6 @@ namespace BocciaPlayer
             obj.transform.position = m_throwPos;
             obj.transform.rotation = this.transform.rotation;
 
-            currentBallState = obj.GetComponent<BallStateScript>();
-
             //ボールに投げる力を加える。
             var ballOperate = obj.GetComponent<BallOperateScript>();
 
@@ -137,8 +135,7 @@ namespace BocciaPlayer
             throwDummyObj.SetActive(false);
 
             //ボールを次に進める。
-            var playerCon = bocciaPlayer.GetComponent<PlayerController>();
-            playerCon.isThrowBallNone = ballHolder.UpdateCurrentBallNo();
+            ballHolder.UpdateCurrentBallNo();
             isDecision = false;
         }
 

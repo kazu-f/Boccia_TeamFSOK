@@ -18,11 +18,39 @@ namespace BocciaPlayer
 
 		[SerializeField] private float offsetSpeed;
 		private float offset = 0.0f;
-
+		//ダミー表示に使うオブジェクトのリスト。
 		private List<GameObject> dummySphereList = new List<GameObject>();
 
-        private void Awake()
+		private TeamFlowScript TeamFlow;
+		private BallFlowScript jackFlow;
+		public Material ballCol;
+        [SerializeField] private Color[] ballColList = new Color[3] {
+			new Color(1.0f,1.0f,1.0f,0.5f),
+			new Color(1.0f,0.2f,0.2f,0.5f),
+			new Color(0.2f,0.2f,1.0f,0.5f)
+		};
+
+
+
+		//シングルトン。
+		static private ThrowDummyScript instance;
+
+		//インスタンスを取得。
+		static public ThrowDummyScript Instance()
+        {
+			return instance;
+        }
+
+		private void Awake()
 		{
+			if(instance != null)
+            {
+				Destroy(this.gameObject);
+				Debug.LogWarning("ThrowDummyScriptが複数作成されている。");
+				return;
+			}
+			instance = this;
+
 			dummyObjParent.transform.position = transform.position;
 
 			//弾道予測を表示するための点を生成
@@ -31,9 +59,21 @@ namespace BocciaPlayer
 				var obj = (GameObject)Instantiate(dummyObjPref, dummyObjParent);
 				dummySphereList.Add(obj);
 			}
+
+			var gameFlow = GameObject.FindGameObjectWithTag("GameFlow");
+			if (gameFlow)
+			{
+				TeamFlow = gameFlow.GetComponent<TeamFlowScript>();
+				jackFlow = gameFlow.GetComponent<BallFlowScript>();
+			}
+		}
+		private void OnDestroy()
+		{
+			// 破棄時に、登録した実体の解除を行う
+			if (this == instance) instance = null;
 		}
 
-        void Start()
+		void Start()
 		{
 
 		}
@@ -41,8 +81,6 @@ namespace BocciaPlayer
 		void Update()
 		{
 			offset = Mathf.Repeat(Time.time * offsetSpeed, secInterval);
-			////更新がなければ処理しない。
-			//if (force == oldForce) return;
 			//弾道予測の位置に点を移動
 			for (int i = 0; i < dummyCount; i++)
 			{
@@ -60,8 +98,6 @@ namespace BocciaPlayer
 					dummySphereList[i].transform.position = vec;						
 				}
 			}
-
-			//oldForce = force;
 		}
 
 		/// <summary>
@@ -86,6 +122,24 @@ namespace BocciaPlayer
 			{
 				dummySphereList[i].SetActive(true);
 			}
+			if(!jackFlow.IsPreparedJack())
+            {
+				ballCol.color = ballColList[0];
+			}
+            else
+			{
+				switch (TeamFlow.GetNowTeam())
+				{
+				case Team.Red:
+					ballCol.color = ballColList[1];
+						break;
+
+					case Team.Blue:					
+					ballCol.color = ballColList[2];
+						break;
+				}
+			}
+
         }
 
         public void OnDisable()
