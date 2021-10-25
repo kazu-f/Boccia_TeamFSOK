@@ -100,6 +100,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom()がPUNによって呼ばれました。現在ルームに参加できました。");
+        IsJoinedRoom = true;
     }
     #endregion
 
