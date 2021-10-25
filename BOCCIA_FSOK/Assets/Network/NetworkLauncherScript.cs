@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -17,6 +18,8 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     bool isConnecting;
     bool IsJoinedRoom = false;
     bool IsGameSceneLoaded = false;
+    bool IsUseAI = false;
+    bool IsDisconected = false;
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -90,6 +93,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
         controlPanel.SetActive(true);
         isConnecting = false;
         Debug.LogWarningFormat("OnDisconnected()がPUNによって呼ばれました。原因{0}",cause);
+        IsDisconected = true;
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -102,6 +106,12 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     {
         Debug.Log("OnJoinedRoom()がPUNによって呼ばれました。現在ルームに参加できました。");
         IsJoinedRoom = true;
+    }
+
+    public override void OnLeftRoom()
+    {
+        Debug.Log("OnLeftRoom()がPUNによって呼ばれました。現在ルームから抜けました。");
+        IsJoinedRoom = false;
     }
     #endregion
 
@@ -131,6 +141,37 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                     IsGameSceneLoaded = true;
                 }
             }
+            if(IsUseAI)
+            {
+                //AIを使用するとき
+                //部屋を抜ける
+                Debug.Log("ルームから抜けます");
+                PhotonNetwork.LeaveRoom();
+                //接続を切断する
+                Debug.Log("接続を切断します");
+                PhotonNetwork.Disconnect();
+            }
         }
+
+        if (IsDisconected)
+        {
+            if (IsUseAI)
+            {
+                //接続を切断した後
+                if (!IsGameSceneLoaded)
+                {
+                    //部屋の人数が最大だとゲームシーンに移行
+                    Debug.Log("ゲームシーンをロードします");
+                    SceneManager.LoadScene("BocciaGameScene");
+                    IsGameSceneLoaded = true;
+                }
+            }
+        }
+
+    }
+
+    public void UseAI()
+    {
+        IsUseAI = true;
     }
 }
