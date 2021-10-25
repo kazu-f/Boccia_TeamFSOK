@@ -63,9 +63,27 @@ namespace BocciaPlayer
             m_gaugeImageMat.SetFloat("_ThrowPow", m_throwPow);
         }
 
+        /// <summary>
+        /// ゲージの座標を設定。
+        /// </summary>
+        /// <param name="pos">
+        /// 画面左下を基点にしたスクリーン空間座標。
+        /// <remark>X = 0.0 ～ 1.0</remark>
+        /// <remark>Y = 0.0 ～ 1.0</remark>
+        /// </param>
+        public void SetPosition(Vector2 pos)
+        {
+            var canvasRect = touchManager.GetCavasRect();
+            pos.x -= 0.5f;
+            pos.y -= 0.5f;
+            //画面上の座標に変換。
+            m_gaugeTransform.anchoredPosition = pos * canvasRect.sizeDelta;
+        }
+
         private void OnEnable()
         {
-            m_gaugeTransform.anchoredPosition = touchManager.GetTouchPos();
+            SetPosition(touchManager.GetTouchPosInScreen());
+            //m_gaugeTransform.anchoredPosition = touchManager.GetTouchPos();
         }
         /// <summary>
         /// 投げる力をセット。

@@ -4,31 +4,40 @@ using UnityEngine;
 
 namespace BocciaPlayer
 {
-    public class PlayerController : MonoBehaviour
+    public enum EnPlayerState { 
+        enIdle,     //タッチ入力待ち。
+        enAngle,    //角度を決める処理。
+        enThrow,    //投げる処理。
+        enWait,     //ボールが止まるまで待機。
+        enStop,     //処理停止。
+        enStateNum  //ステートの数。
+    }
+
+    public class PlayerController : IPlayerController
     {
-        private TouchManager touchManager;
-        private ThrowBallControler throwBallControler;
-        private ThrowAngleController throwAngleController;
-        private BallHolderController ballHolderController;
-        private TeamFlowScript TeamFlow;         //次投げるチームの判定。
-        private Vector2 m_touchStartPos = new Vector2(0.0f,0.0f);     //触り始めた座標。
+        private IPlayerState[] playerStateList;
+
+        private IPlayerState currentState = null;
+        private EnPlayerState enCurrentState = EnPlayerState.enStateNum;
 
         private void Awake()
         {
-            throwBallControler = this.gameObject.GetComponentInChildren<ThrowBallControler>();
-            throwAngleController = this.gameObject.GetComponentInChildren<ThrowAngleController>();
-            ballHolderController = this.gameObject.GetComponentInChildren<BallHolderController>();
-            touchManager = TouchManager.GetInstance();
-            throwBallControler.enabled = false;
-            throwAngleController.enabled = false;
-            this.gameObject.SetActive(false);
-            this.enabled = false;
+            InitPlayerScript();
+            //ステート初期化。
+            playerStateList = new IPlayerState[(int)EnPlayerState.enStateNum];
 
-            var gameFlow = GameObject.FindGameObjectWithTag("GameFlow");
-            if(gameFlow)
-            {
-                TeamFlow = gameFlow.GetComponent<TeamFlowScript>();
-            }
+            playerStateList[(int)EnPlayerState.enIdle] = new PlayerIdleState();
+            playerStateList[(int)EnPlayerState.enAngle] = new PlayerThrowAngleState();
+            playerStateList[(int)EnPlayerState.enThrow] = new PlayerThrowBallState();
+            playerStateList[(int)EnPlayerState.enWait] = new PlayerWaitBallState();
+            playerStateList[(int)EnPlayerState.enStop] = new PlayerStopState();
+            playerStateList[(int)EnPlayerState.enIdle].Init(this);
+            playerStateList[(int)EnPlayerState.enAngle].Init(this);
+            playerStateList[(int)EnPlayerState.enThrow].Init(this);
+            playerStateList[(int)EnPlayerState.enWait].Init(this);
+            playerStateList[(int)EnPlayerState.enStop].Init(this);
+
+            currentState = playerStateList[(int)EnPlayerState.enStop];
         }
         // Start is called before the first frame update
         void Start()
@@ -38,49 +47,52 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
-            if (throwBallControler.IsDecision() ||
-                TeamFlow.GetIsMoving())
-            {
-                SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
-                return;
-            }
-            if(touchManager.GetPhase() == TouchInfo.Began)
-            {
-                SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
-                m_touchStartPos = touchManager.GetTouchPosInScreen();
-                //有効化フラグを切り替える。
-                if (m_touchStartPos.y > 0.2f)
-                {
-                    throwBallControler.enabled = true;
-                }
-                else if (m_touchStartPos.y <= 0.2f)
-                {
-                    throwAngleController.enabled = true;
-                }
-            }
-            else if(touchManager.GetPhase() == TouchInfo.None)
-            {
-                throwBallControler.enabled = false;
-                throwAngleController.enabled = false;
-                SwichActiveGameObjects.GetInstance().SwitchGameObject(true);
-            }
+            //ステートを実行。
+            currentState.Execute();
         }
 
-        public void SwitchPlayer(bool isEnable)
+        override public void SwitchPlayer(bool isEnable)
         {
             if(isEnable == true)
             {
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
-                SwichActiveGameObjects.GetInstance().SwitchGameObject(true);
+                ChangeState(EnPlayerState.enIdle);
             }
-            this.enabled = isEnable;
+            else
+            {
+                ChangeState(EnPlayerState.enStop);
+            }
+        }
+
+        /// <summary>
+        /// ステートを変更。
+        /// </summary>
+        /// <param name="enState">ステート変数。</param>
+        public void ChangeState(EnPlayerState enState)
+        {
+            //ステートが変わっていない。
+            if (enCurrentState == enState)
+            {
+                return;
+            }
+            
+            if (currentState != null)
+            {
+                //終了処理。
+                currentState.Leave();
+            }
+            enCurrentState = enState;
+            //ステート変更。
+            currentState = playerStateList[(int)enState];
+            //開始処理。
+            currentState.Enter();
         }
 
         /// <summary>
         /// プレイヤーをリセット。
         /// </summary>
-        public void ResetPlayer()
+        override public void ResetPlayer()
         {
             ballHolderController.ResetBall();
         }

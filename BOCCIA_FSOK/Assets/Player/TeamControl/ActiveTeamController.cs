@@ -20,8 +20,8 @@ public class ActiveTeamController : MonoBehaviour
     public GameObject RedTeamPlayer;        //赤チームプレイヤー。
     public GameObject BlueTeamPlayer;       //青チームプレイヤー。
 
-    private BocciaPlayer.PlayerController RedPlayerCon;
-    private BocciaPlayer.PlayerController BluePlayerCon;
+    private BocciaPlayer.IPlayerController RedPlayerCon;
+    private BocciaPlayer.IPlayerController BluePlayerCon;
 
     Team currentTeam;                              //現在のプレイヤー。
     ThrowTeamState throwState = ThrowTeamState.throwBall;
@@ -29,8 +29,8 @@ public class ActiveTeamController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RedPlayerCon = RedTeamPlayer.GetComponent<BocciaPlayer.PlayerController>();
-        BluePlayerCon = BlueTeamPlayer.GetComponent<BocciaPlayer.PlayerController>();
+        RedPlayerCon = RedTeamPlayer.GetComponent<BocciaPlayer.IPlayerController>();
+        BluePlayerCon = BlueTeamPlayer.GetComponent<BocciaPlayer.IPlayerController>();
         //投げるプレイヤーを切り替え。
         ChangeActivePlayer();
     }
@@ -94,16 +94,12 @@ public class ActiveTeamController : MonoBehaviour
         currentTeam = TeamFlow.GetNowTeam();
         if (currentTeam == Team.Red)
         {
-            RedTeamPlayer.SetActive(true);
             RedPlayerCon.SwitchPlayer(true);
-            BlueTeamPlayer.SetActive(false);
             BluePlayerCon.SwitchPlayer(false);
         }
         else if (currentTeam == Team.Blue)
         {
-            RedTeamPlayer.SetActive(false);
             RedPlayerCon.SwitchPlayer(false);
-            BlueTeamPlayer.SetActive(true);
             BluePlayerCon.SwitchPlayer(true);
         }
     }
@@ -112,10 +108,8 @@ public class ActiveTeamController : MonoBehaviour
     /// </summary>
     void StopThrow()
     {
-        RedTeamPlayer.SetActive(false);
-        RedPlayerCon.enabled = false;
-        BlueTeamPlayer.SetActive(false);
-        BluePlayerCon.enabled = false;
+        RedPlayerCon.SwitchPlayer(false);
+        BluePlayerCon.SwitchPlayer(false);
     }
 
     public void SwichActiveThrow()

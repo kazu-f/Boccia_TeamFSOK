@@ -7,20 +7,18 @@ namespace BocciaPlayer
 {
     public class ThrowAngleController : MonoBehaviour
     {
-        TouchManager touchManager;
         public GameObject angleArrowObj;      //イメージのオブジェクト。
         public GameObject playerCamera;         //カメラ。  
         public GameObject bocciaPlayer;         //プレイヤー。
-        public float angleSpeed = 20.0f;        //回転速度。
+        public float angleSpeed = 90.0f;        //回転速度。
         private Vector3 m_newCamAngle = new Vector3(0, 0, 0);
         private Vector3 m_newPlayerAngle = new Vector3(0, 0, 0);
         private Vector3 m_defaultCamRot = new Vector3(0, 0, 0);
 
-        private const float MAX_ANGLE_Y = 80.0f;
+        private const float MAX_ANGLE_Y = 80.0f;        //回転の制限。
 
         private void Awake()
         {
-            touchManager = TouchManager.GetInstance();
             m_defaultCamRot = playerCamera.transform.eulerAngles;
         }
         // Start is called before the first frame update
@@ -32,24 +30,25 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
-            if (touchManager.IsTouch())
-            {
-                if (touchManager.GetPhase() == TouchInfo.Moved)
-                {
-                    var rotVec = touchManager.GetDeltaPosInScreen();
-                    m_newCamAngle.y += angleSpeed * rotVec.x;
-                    m_newPlayerAngle.y += angleSpeed * rotVec.x;
 
-                    m_newCamAngle.y = AngleTrans(m_newCamAngle.y);
-                    m_newPlayerAngle.y = AngleTrans(m_newPlayerAngle.y);
+        }
+        /// <summary>
+        /// Y軸回転を行う。
+        /// </summary>
+        /// <param name="xSpeed">X方向の回転速度。</param>
+        public void AngleRotation(float xSpeed)
+        {
+            m_newCamAngle.y += angleSpeed * xSpeed;
+            m_newPlayerAngle.y += angleSpeed * xSpeed;
 
-                    m_newCamAngle.y = Mathf.Clamp(m_newCamAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);
-                    m_newPlayerAngle.y = Mathf.Clamp(m_newPlayerAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);
+            m_newCamAngle.y = AngleTrans(m_newCamAngle.y);
+            m_newPlayerAngle.y = AngleTrans(m_newPlayerAngle.y);
 
-                    playerCamera.transform.localEulerAngles = m_newCamAngle;
-                    bocciaPlayer.transform.localEulerAngles = m_newPlayerAngle;
-                }
-            }
+            m_newCamAngle.y = Mathf.Clamp(m_newCamAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);
+            m_newPlayerAngle.y = Mathf.Clamp(m_newPlayerAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);
+
+            playerCamera.transform.localEulerAngles = m_newCamAngle;
+            bocciaPlayer.transform.localEulerAngles = m_newPlayerAngle;
         }
 
         private void OnEnable()
