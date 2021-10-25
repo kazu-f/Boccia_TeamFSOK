@@ -15,6 +15,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     #region Private Fields
     string gameVersion = "1";       // ゲームのバージョン
     bool isConnecting;
+    bool IsJoinedRoom = false;
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -99,15 +100,31 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom()がPUNによって呼ばれました。現在ルームに参加できました。");
-        Debug.Log("ゲームシーンをロードします");
-        //PhotonNetwork.LoadLevel("BocciaGameScene");
     }
     #endregion
 
+    public void JoinRandomRoom()
+    {
+        //接続されているか確認
+        if (PhotonNetwork.IsConnected)
+        {
+            //接続されている場合ランダムな部屋に参加する
+            //失敗した場合はOnJoinRandomFailed関数で通知を受け取り、作成する
+            PhotonNetwork.JoinRandomRoom();
+            Debug.Log("ランダムな部屋に参加します");
+        }
+    }
     private void Update()
     {
-        //PhotonNetwork.JoinRandomRoom();
+        if(IsJoinedRoom)
+        {
+            //部屋に参加しているとき
+            if(PhotonNetwork.CountOfPlayersInRooms == maxPlayersPerRoom)
+            {
+                //部屋の人数が最大だとゲームシーンに移行
+                Debug.Log("ゲームシーンをロードします");
+                PhotonNetwork.LoadLevel("BocciaGameScene");
+            }
+        }
     }
-
-
 }
