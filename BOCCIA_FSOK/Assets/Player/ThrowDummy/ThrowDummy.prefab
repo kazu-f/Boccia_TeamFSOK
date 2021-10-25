@@ -52,6 +52,6 @@ MonoBehaviour:
   offsetSpeed: 0.08
   ballCol: {fileID: 2100000, guid: cfbdb5a52e385d24590ed7e5189d1c4e, type: 2}
   ballColList:
-  - {r: 1, g: 1, b: 1, a: 0.5}
-  - {r: 1, g: 0.2, b: 0.2, a: 0.5}
-  - {r: 0.2, g: 0.2, b: 1, a: 0.5}
+  - {r: 1, g: 1, b: 1, a: 0.2509804}
+  - {r: 1, g: 0, b: 0, a: 0.2509804}
+  - {r: 0, g: 0, b: 1, a: 0.2509804}
