@@ -6,6 +6,7 @@ namespace BocciaPlayer
 {
     public class PlayerMoveButton : MonoBehaviour
     {
+        private PlayerMovePanelSlide planelSlide;
         private bool isForward = false;     //前ボタンを押しているか？
         private bool isBack = false;        //後ボタンを押しているか？
         private bool isRight = false;       //右ボタンを押しているか？
@@ -28,6 +29,9 @@ namespace BocciaPlayer
                 return;
             }
             instance = this;
+
+            //パネル移動スクリプト取得。
+            planelSlide = GetComponent<PlayerMovePanelSlide>();
         }
         private void OnDestroy()
         {
@@ -35,6 +39,12 @@ namespace BocciaPlayer
             {
                 instance = null;
             }
+        }
+
+        //有効かどうか。
+        public bool IsActive()
+        {
+            return !planelSlide.IsMoving() && planelSlide.IsInitedUI();
         }
 
         public bool IsPressAnyButton()
