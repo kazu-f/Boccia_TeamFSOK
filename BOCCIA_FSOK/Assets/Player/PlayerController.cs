@@ -6,6 +6,7 @@ namespace BocciaPlayer
 {
     public enum EnPlayerState { 
         enIdle,     //タッチ入力待ち。
+        enMove,     //移動。
         enAngle,    //角度を決める処理。
         enThrow,    //投げる処理。
         enWait,     //ボールが止まるまで待機。
@@ -19,19 +20,23 @@ namespace BocciaPlayer
 
         private IPlayerState currentState = null;
         private EnPlayerState enCurrentState = EnPlayerState.enStateNum;
+        private Vector3 startPosition = new Vector3();           //開始時点のトランスフォーム。
 
         private void Awake()
         {
+            startPosition = this.gameObject.transform.position;
             InitPlayerScript();
             //ステート初期化。
             playerStateList = new IPlayerState[(int)EnPlayerState.enStateNum];
 
             playerStateList[(int)EnPlayerState.enIdle] = new PlayerIdleState();
+            playerStateList[(int)EnPlayerState.enMove] = new PlayerMoveState();
             playerStateList[(int)EnPlayerState.enAngle] = new PlayerThrowAngleState();
             playerStateList[(int)EnPlayerState.enThrow] = new PlayerThrowBallState();
             playerStateList[(int)EnPlayerState.enWait] = new PlayerWaitBallState();
             playerStateList[(int)EnPlayerState.enStop] = new PlayerStopState();
             playerStateList[(int)EnPlayerState.enIdle].Init(this);
+            playerStateList[(int)EnPlayerState.enMove].Init(this);
             playerStateList[(int)EnPlayerState.enAngle].Init(this);
             playerStateList[(int)EnPlayerState.enThrow].Init(this);
             playerStateList[(int)EnPlayerState.enWait].Init(this);
@@ -55,6 +60,8 @@ namespace BocciaPlayer
         {
             if(isEnable == true)
             {
+                //開始時点のトランスフォームへ移動。
+                this.gameObject.transform.position = startPosition;
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
                 ChangeState(EnPlayerState.enIdle);

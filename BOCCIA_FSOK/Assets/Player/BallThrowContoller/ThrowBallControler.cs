@@ -8,7 +8,9 @@ namespace BocciaPlayer
     public class ThrowBallControler : MonoBehaviour
     {
         public BallHolderController ballHolder;     //ボール所有者。
+        public GameObject armObj;                 //手を表示させるスクリプト。
         public GameObject bocciaPlayer;             //プレイヤーオブジェクト。
+        private ArmScript armScript;                 //手を表示させるスクリプト。
         private GameObject throwDummyObj;            //予測線表示オブジェクト。
         private ThrowDummyScript throwDummy;        //予測線表示スクリプト。
         private AudioSource throwSE;                //投げるときのSE。
@@ -27,6 +29,7 @@ namespace BocciaPlayer
         //インスタンス生成時に呼ばれる。
         private void Awake()
         {
+            armScript = armObj.GetComponent<ArmScript>();
 
             throwGauge = ThrowGaugeScript.GetInstance();
             throwGauge.gameObject.SetActive(false);
@@ -62,6 +65,15 @@ namespace BocciaPlayer
             //ボールを投げる座標を計算。
             CalcPosition();
             throwDummy.SetPosition(m_throwPos);
+            //腕の構え方を切り替える。
+            if(m_throwPosHeight > 0.6f)
+            {
+                armScript.HoldUp();
+            }
+            else
+            {
+                armScript.HoldUp();
+            }
         }
         /// <summary>
         /// 投げる力をセットする。
@@ -165,6 +177,7 @@ namespace BocciaPlayer
         {
             throwGauge.gameObject.SetActive(false);
             throwDummyObj.SetActive(false);
+            armScript.HoldDown();
         }
     }
 }

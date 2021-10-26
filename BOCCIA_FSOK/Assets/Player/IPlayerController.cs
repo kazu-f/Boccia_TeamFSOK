@@ -9,6 +9,7 @@ namespace BocciaPlayer
         protected ThrowBallControler throwBallControler;
         protected ThrowAngleController throwAngleController;
         protected BallHolderController ballHolderController;
+        protected PlayerMoveScript playerMoveScript;
 
         /// <summary>
         /// プレイヤー処理関係のスクリプトを取得してくる。
@@ -18,6 +19,7 @@ namespace BocciaPlayer
             throwBallControler = this.gameObject.GetComponentInChildren<ThrowBallControler>();
             throwAngleController = this.gameObject.GetComponentInChildren<ThrowAngleController>();
             ballHolderController = this.gameObject.GetComponentInChildren<BallHolderController>();
+            playerMoveScript = this.gameObject.GetComponentInChildren<PlayerMoveScript>();
         }
 
         public ThrowBallControler GetThrowBallController()
@@ -31,6 +33,10 @@ namespace BocciaPlayer
         public BallHolderController GetBallHolderController()
         {
             return ballHolderController;
+        }
+        public PlayerMoveScript GetPlayerMoveScript()
+        {
+            return playerMoveScript;
         }
 
         abstract public void ResetPlayer();
