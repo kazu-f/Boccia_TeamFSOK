@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class ArmScript : MonoBehaviour
 {
+    private Vector3 basePos = Vector3.zero;
+    private Vector3 currentPos = Vector3.zero;
+    private float fluctuation = 0.0f;       //—h‚ç‚¬•Ï”B
+    const float WEIGHT = 0.02f;
     private void Awake()
     {
-
+        basePos = this.gameObject.transform.localPosition;
     }
     // Start is called before the first frame update
     void Start()
@@ -17,7 +21,11 @@ public class ArmScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        float time = Time.time;
+        currentPos = basePos;
+        fluctuation = Mathf.Sin(time) * WEIGHT;
+        currentPos.y += fluctuation;
+        this.gameObject.transform.localPosition = currentPos;
     }
 
     /// <summary>
@@ -34,5 +42,13 @@ public class ArmScript : MonoBehaviour
     public void HoldDown()
     {
         this.transform.localEulerAngles = new Vector3(0.0f, 0.0f, 180.0f);
+    }
+    /// <summary>
+    /// —h‚ç‚¬‚ğæ“¾B
+    /// </summary>
+    /// <returns>—h‚ç‚¬•Ï”B</returns>
+    public float GetFluctuation()
+    {
+        return fluctuation;
     }
 }

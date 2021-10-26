@@ -52,7 +52,9 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
-            
+            //ボールを投げる座標を計算。
+            CalcPosition();
+            throwDummy.SetPosition(m_throwPos);
         }
         
         /// <summary>
@@ -82,6 +84,9 @@ namespace BocciaPlayer
         /// <param name="throwPow"></param>
         public void SetThrowPow(Vector2 throwPow)
         {
+            //ボールを投げる座標を計算。
+            CalcPosition();
+            throwDummy.SetPosition(m_throwPos);
             m_throwPow = throwPow;
             throwGauge.SetThrowPow(m_throwPow.y);
             CalcThrowForce();
@@ -101,7 +106,7 @@ namespace BocciaPlayer
         void CalcPosition()
         {
             m_throwPos = this.transform.position;
-            m_throwPos.y *= m_throwPosHeight;
+            m_throwPos.y *= m_throwPosHeight + armScript.GetFluctuation();
         }
         /// <summary>
         /// 初速を計算。
