@@ -6,13 +6,12 @@ public class TitleSceneScript : MonoBehaviour
 {
     private ChangeSceneScript changeScene;  //シーン切り替え制御。
     public TouchManager touchManager;       //タッチ制御。
-    public AudioSource touchSESource;       //タッチ音のソース。
     private AudioSource touchSE;            //タッチ音。
     // Start is called before the first frame update
     void Start()
     {
         changeScene = this.gameObject.GetComponent<ChangeSceneScript>();
-        touchSE = Instantiate(touchSESource);
+        touchSE = this.gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
