@@ -10,8 +10,12 @@ public class PlayerMovePanelSlide : MonoBehaviour
     private RectTransform rectTransform;    //UIのRect。
     private Vector2 inPivot = new Vector2(0.0f,0.5f);                //スライドイン後のピボット位置
     private Vector2 outPivot = new Vector2(1.0f, 0.5f);               //スライドアウト後のピボット位置
+    private Vector2 startPos = new Vector2(0.0f, 0.0f); //スライド開始地点。
+    private Vector2 moveDistance;            // 移動距離および方向
+    float startTime = 0.0f;                     //開始時間。
     private bool isMoving = false;              //スライド中か。
     private bool isInitedUI = false;            //インしている状態か？
+    private bool isExecuteSlideIn = false;             //スライドインをしているか？
 
     private void Awake()
     {
@@ -27,55 +31,59 @@ public class PlayerMovePanelSlide : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        ExecuteSlide();
     }
 
-    // スライドイン（Pauseボタンが押されたときに、これを呼ぶ）
+    // スライドインを開始する。
     public void SlideIn()
     {
-        StartCoroutine(StartSlidePanel(true));
+        StartSlidePanel(true);
     }
 
-    // スライドアウト
+    // スライドアウトを開始する。
     public void SlideOut()
     {
-        StartCoroutine(StartSlidePanel(false));
+        StartSlidePanel(false);
     }
 
-    private IEnumerator StartSlidePanel(bool isSlideIn)
+    private void StartSlidePanel(bool isSlideIn)
     {
-        float startTime = Time.time;    // 開始時間
-        Vector2 startPos = rectTransform.pivot;  // 開始位置
-        Vector2 moveDistance;            // 移動距離および方向
+        startTime = Time.time;    // 開始時間
+        startPos = rectTransform.pivot;  // 開始位置
 
-        isMoving = true;
-        isInitedUI = false;
+        isMoving = true;                //スライドし始める。
+        isInitedUI = false;             //UIが動いている。
+        isExecuteSlideIn = isSlideIn;   //スライドインを実行しているか。
 
         if (isSlideIn)
         {
             moveDistance = (inPivot - startPos);
-
-            while ((Time.time - startTime) < duration)
-            {
-                rectTransform.pivot = startPos + moveDistance * animCurve.Evaluate((Time.time - startTime) / duration);
-                yield return 0;        // 1フレーム後、再開
-            }
-            //スライドインが終わった。
-            isInitedUI = true;
         }
         else
         {
             moveDistance = (outPivot - startPos);
-
-            while ((Time.time - startTime) < duration)
-            {
-                rectTransform.pivot = startPos + moveDistance * animCurve.Evaluate((Time.time - startTime) / duration);
-                yield return 0;        // 1フレーム後、再開
-            }
         }
-        rectTransform.pivot = startPos + moveDistance;
+    }
 
-        isMoving = false;
+    private void ExecuteSlide()
+    {
+        //スライドしていないなら処理しない。
+        if (!isMoving) return;
+
+        //スライド時間に到達していない。。
+        if ((Time.time - startTime) < duration)
+        {
+            rectTransform.pivot = startPos + moveDistance * animCurve.Evaluate((Time.time - startTime) / duration);
+        }
+        else
+        {
+            rectTransform.pivot = startPos + moveDistance;
+
+            //スライドが終わった。
+            isMoving = false;
+            //スライドインが終わったか？
+            isInitedUI = isExecuteSlideIn;
+        }
     }
 
     /// <summary>
@@ -93,5 +101,11 @@ public class PlayerMovePanelSlide : MonoBehaviour
     public bool IsInitedUI()
     {
         return isInitedUI;
+    }
+
+    private void OnEnable()
+    {
+        //有効になった瞬間にもスライドを実行しておく。
+        ExecuteSlide();
     }
 }
