@@ -24,6 +24,7 @@ namespace BocciaPlayer
         private bool isDecision = false;           //投げる力を決定したか。
 
         //定数。
+        const float SWITCH_ARM_BORDER = 0.6f;
         const float MAX_THROW_POW = 200.0f;
         const float MAX_ANGLE_POW = 50.0f;
         //インスタンス生成時に呼ばれる。
@@ -66,13 +67,13 @@ namespace BocciaPlayer
             CalcPosition();
             throwDummy.SetPosition(m_throwPos);
             //腕の構え方を切り替える。
-            if(m_throwPosHeight > 0.6f)
+            if(m_throwPosHeight > SWITCH_ARM_BORDER)
             {
                 armScript.HoldUp();
             }
             else
             {
-                armScript.HoldUp();
+                armScript.HoldDown();
             }
         }
         /// <summary>
