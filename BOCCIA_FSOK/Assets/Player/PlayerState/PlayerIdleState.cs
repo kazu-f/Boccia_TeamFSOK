@@ -6,12 +6,14 @@ namespace BocciaPlayer {
     public class PlayerIdleState : IPlayerState
     {
         private TouchManager touchManager;
+        private PlayerMoveButton moveButton;
         private Vector3 m_touchStartPos;
 
         override public void Init(PlayerController controller)
         {
             m_player = controller;
             touchManager = TouchManager.GetInstance();
+            moveButton = PlayerMoveButton.GetInstance();
         }
         override public void Enter()
         {
@@ -36,6 +38,10 @@ namespace BocciaPlayer {
                 {
                     m_player.ChangeState(EnPlayerState.enAngle);
                 }
+            }
+            else if(moveButton.IsPressAnyButton())
+            {
+
             }
 
         }
