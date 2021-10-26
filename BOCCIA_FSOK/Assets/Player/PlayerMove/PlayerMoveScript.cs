@@ -11,7 +11,7 @@ namespace BocciaPlayer
 
         private void Awake()
         {
-            rigidbody = GetComponent<Rigidbody>();
+            rigidbody = this.gameObject.GetComponentInParent<Rigidbody>();
         }
 
         private void Update()

@@ -20,9 +20,11 @@ namespace BocciaPlayer
 
         private IPlayerState currentState = null;
         private EnPlayerState enCurrentState = EnPlayerState.enStateNum;
+        private Vector3 startPosition = new Vector3();           //開始時点のトランスフォーム。
 
         private void Awake()
         {
+            startPosition = this.gameObject.transform.position;
             InitPlayerScript();
             //ステート初期化。
             playerStateList = new IPlayerState[(int)EnPlayerState.enStateNum];
@@ -58,6 +60,8 @@ namespace BocciaPlayer
         {
             if(isEnable == true)
             {
+                //開始時点のトランスフォームへ移動。
+                this.gameObject.transform.position = startPosition;
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
                 ChangeState(EnPlayerState.enIdle);
