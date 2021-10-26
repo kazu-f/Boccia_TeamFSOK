@@ -24,6 +24,7 @@ namespace BocciaPlayer
             if(instance != null)
             {
                 Debug.LogWarning("PlayerMoveButton‚ª•¡”ì‚ç‚ê‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·B");
+                Destroy(this);
                 return;
             }
             instance = this;
