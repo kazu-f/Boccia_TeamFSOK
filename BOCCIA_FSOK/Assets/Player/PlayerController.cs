@@ -6,6 +6,7 @@ namespace BocciaPlayer
 {
     public enum EnPlayerState { 
         enIdle,     //タッチ入力待ち。
+        enMove,     //移動。
         enAngle,    //角度を決める処理。
         enThrow,    //投げる処理。
         enWait,     //ボールが止まるまで待機。
@@ -27,11 +28,13 @@ namespace BocciaPlayer
             playerStateList = new IPlayerState[(int)EnPlayerState.enStateNum];
 
             playerStateList[(int)EnPlayerState.enIdle] = new PlayerIdleState();
+            playerStateList[(int)EnPlayerState.enMove] = new PlayerMoveState();
             playerStateList[(int)EnPlayerState.enAngle] = new PlayerThrowAngleState();
             playerStateList[(int)EnPlayerState.enThrow] = new PlayerThrowBallState();
             playerStateList[(int)EnPlayerState.enWait] = new PlayerWaitBallState();
             playerStateList[(int)EnPlayerState.enStop] = new PlayerStopState();
             playerStateList[(int)EnPlayerState.enIdle].Init(this);
+            playerStateList[(int)EnPlayerState.enMove].Init(this);
             playerStateList[(int)EnPlayerState.enAngle].Init(this);
             playerStateList[(int)EnPlayerState.enThrow].Init(this);
             playerStateList[(int)EnPlayerState.enWait].Init(this);

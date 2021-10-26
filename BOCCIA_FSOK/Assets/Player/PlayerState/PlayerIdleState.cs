@@ -41,7 +41,7 @@ namespace BocciaPlayer {
             }
             else if(moveButton.IsPressAnyButton())
             {
-
+                m_player.ChangeState(EnPlayerState.enMove);
             }
 
         }
