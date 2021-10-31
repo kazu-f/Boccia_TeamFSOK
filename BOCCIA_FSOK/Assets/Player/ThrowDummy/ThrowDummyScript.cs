@@ -8,9 +8,15 @@ namespace BocciaPlayer
 	{
 		[SerializeField]private GameObject dummyObjPref;        //弾道を表示するための点のプレハブ
 		[SerializeField]private Transform dummyObjParent;       //弾道を表示する点の親オブジェクト
+		[SerializeField]private GameObject ballPrefab;          //ボールのプレファブ。
+		[SerializeField]private PhysicMaterial courtPhysicMat;  //コートの物理マテリアルプレファブ。
+		[SerializeField] private BoxCollider courtBoxCol;		//コートのボックスコライダー。
 
 		private Vector3 force;      //初速のベクトル。
-		[SerializeField] private float mass;			//質量。
+		[SerializeField] private float ballMass;            //ボールの質量。
+		private float courtBounciness;                      //コートの反発係数。
+		private float courtMaxY;                            //コートの上面。
+		private float ballHalfSize;							//ボールのサイズ。
 
 		[SerializeField]private int dummyCount;			//弾道予測の点の数
 		[SerializeField]private float secInterval;      //弾道を表示する間隔の秒数
@@ -66,6 +72,18 @@ namespace BocciaPlayer
 				TeamFlow = gameFlow.GetComponent<TeamFlowScript>();
 				jackFlow = gameFlow.GetComponent<BallFlowScript>();
 			}
+
+			ballHalfSize = dummyObjPref.transform.localScale.y / 2.0f;
+
+			//プレファブからリジッドボディ取得。
+			var RB = ballPrefab.GetComponent<Rigidbody>();
+			ballMass = RB.mass;     //質量を取得。
+			
+			//プレファブから物理マテリアル取得。
+			courtBounciness = courtPhysicMat.bounciness;
+
+			//地面の高さを取得。
+			courtMaxY = courtBoxCol.bounds.max.y;
 		}
 		private void OnDestroy()
 		{
@@ -81,6 +99,15 @@ namespace BocciaPlayer
 		void Update()
 		{
 			offset = Mathf.Repeat(Time.time * offsetSpeed, secInterval);
+			//DummyGround();
+			//DummyNoBounce();
+			DummyBounce();
+		}
+
+		//ゴロでダミーを表示。
+		void DummyGround()
+		{
+			if (!(force.magnitude > 0.0f)) return;
 			//弾道予測の位置に点を移動
 			for (int i = 0; i < dummyCount; i++)
 			{
@@ -88,14 +115,107 @@ namespace BocciaPlayer
 				Vector3 vec = new Vector3();
 				vec = (force * t) + (0.5f * Physics.gravity * Mathf.Pow(t, 2.0f));
 				if (vec.magnitude < DummyGraceDist)
-                {
+				{
 					dummySphereList[i].SetActive(false);
 				}
-                else
+				else
+				{
+					Vector3 resPos = vec + transform.position;
+					dummySphereList[i].SetActive(true);
+					if(resPos.y < courtMaxY)
+                    {
+						resPos.y = courtMaxY;
+					}
+					resPos.y += ballHalfSize;
+					dummySphereList[i].transform.position = resPos;
+				}
+			}
+		}
+		//バウンス無しでダミーを表示。
+		void DummyNoBounce()
+		{
+			if (!(force.magnitude > 0.0f)) return;
+			//弾道予測の位置に点を移動
+			for (int i = 0; i < dummyCount; i++)
+			{
+				var t = (i * secInterval) + offset;
+				Vector3 vec = new Vector3();
+				vec = (force * t) + (0.5f * Physics.gravity * Mathf.Pow(t, 2.0f));
+				if (vec.magnitude < DummyGraceDist)
+				{
+					dummySphereList[i].SetActive(false);
+				}
+				else
 				{
 					vec = vec + transform.position;
 					dummySphereList[i].SetActive(true);
-					dummySphereList[i].transform.position = vec;						
+					vec.y += ballHalfSize;
+					dummySphereList[i].transform.position = vec;
+				}
+			}
+		}
+		//バウンスありでダミーを表示。
+		void DummyBounce()
+		{
+			if (!(force.magnitude > 0.0f)) return;
+			Vector3 pos = transform.position;
+			Vector3 oldPos = transform.position;
+			Vector3 vecForce = force;
+			int count = 0;
+			float BounceOffset = 0.0f;
+
+			while(count < dummyCount)
+			{
+				//弾道予測の位置に点を移動
+				for (int i = 0; count < dummyCount; i++)
+				{
+					Vector3 vec = new Vector3();
+					var t = ((i + 1) * secInterval) + offset + BounceOffset;
+					vec = (vecForce * t) + (0.5f * Physics.gravity * Mathf.Pow(t, 2.0f));
+					if (vec.magnitude < DummyGraceDist
+						&& pos == transform.position)
+					{
+						dummySphereList[count].SetActive(false);
+						oldPos = vec + pos;       //記録しておく。
+					}
+					else
+					{
+						dummySphereList[count].SetActive(true);
+						Vector3 resPos = pos + vec;
+						//コートの上にある。
+						if (resPos.y > courtMaxY)
+						{
+							oldPos = resPos;       //記録しておく。
+							resPos.y += ballHalfSize;
+							dummySphereList[count].transform.position = resPos;
+						}
+						//コートの下にある。
+                        else
+                        {
+							Vector3 vDif = resPos - oldPos;
+							float sum = (Mathf.Abs(resPos.y - courtMaxY) + (oldPos.y - courtMaxY));
+							float weight = 1.0f;
+							if (sum > 0.0f)
+							{
+								weight = Mathf.Abs(resPos.y - courtMaxY) / sum;
+								weight = Mathf.Clamp(weight, 0.0f, 1.0f);
+								resPos -= vDif * weight;
+							}
+							pos = resPos;
+							BounceOffset = secInterval * weight;
+							vecForce += Physics.gravity * (t - secInterval * weight);
+							vecForce *= courtBounciness;
+							vecForce.y *= -1.0f;
+							vec = (vecForce * secInterval * weight) + (0.5f * Physics.gravity * Mathf.Pow(secInterval * weight, 2.0f));
+							resPos = pos + vec;
+							oldPos = resPos;       //記録しておく。
+							resPos.y += ballHalfSize;
+							dummySphereList[count].transform.position = resPos;
+							count++;
+							break;
+						}
+					}
+					count++;
 				}
 			}
 		}
@@ -112,7 +232,7 @@ namespace BocciaPlayer
 		/// </summary>
 		public void SetForce(Vector3 _force)
         {
-			force = _force / mass * Time.fixedDeltaTime;
+			force = _force / ballMass * Time.fixedDeltaTime;
         }
 
         public void OnEnable()

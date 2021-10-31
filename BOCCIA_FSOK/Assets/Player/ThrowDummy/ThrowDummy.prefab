@@ -45,7 +45,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dummyObjPref: {fileID: 25734285750366132, guid: d30241254a58f8f44b855b75fa0eb7f1, type: 3}
   dummyObjParent: {fileID: 2178808268779605789}
-  mass: 0.275
+  ballPrefab: {fileID: 698151124280047581, guid: 1db618dfba427644e87299e3c1e419c3, type: 3}
+  courtPrefab: {fileID: 5947690121208937626, guid: 5f2895e83cb06b14fb28623c66a8fc49, type: 3}
+  courtPhysicMat: {fileID: 13400000, guid: 9b758d24335f01d41a141dea5b82a99a, type: 2}
+  ballMass: 0
   dummyCount: 10
   secInterval: 0.05
   DummyGraceDist: 0.3
