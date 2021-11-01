@@ -107,7 +107,7 @@ namespace BocciaPlayer
         /// </summary>
         void CalcPosition()
         {
-            m_throwPos = this.transform.position;
+            m_throwPos = armScript.GetPosition();
             m_throwPos.y = Mathf.Lerp(m_throwPosHeightMin, m_throwPosHeightMax, m_throwPosHeight + armScript.GetFluctuation());
         }
         /// <summary>

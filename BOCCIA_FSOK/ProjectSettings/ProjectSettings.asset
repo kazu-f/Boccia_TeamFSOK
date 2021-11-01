@@ -147,6 +147,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.DefaultCompany.BOCCIA_FSOK
+    Standalone: com.DefaultCompany.BOCCIAFSOK
     iPhone: com.DefaultCompany.BOCCIAFSOK
   buildNumber:
     Standalone: 0
