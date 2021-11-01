@@ -21,7 +21,7 @@ public class JackPleaseScript : MonoBehaviour
     private Vector3 NowPos = Vector3.zero;      //現在の位置
     private Vector3 NextPos = Vector3.zero;     //次の位置
     private State state = State.start;      //状態
-    private bool SlideStart = true;        //移動スタートフラグ
+    private bool SlideStart = false;        //移動スタートフラグ
     private bool IsMove = true;        //動くかどうかのフラグ
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class JackPleaseScript : MonoBehaviour
     /// <summary>
     /// 現在の位置と次に移動する位置を計算
     /// </summary>
-    public void CalucNowAndNextPos()
+    private void CalucNowAndNextPos()
     {
         switch (state)
         {
@@ -74,11 +74,17 @@ public class JackPleaseScript : MonoBehaviour
         }
     }
 
-    public void ExecuteSlide()
+    private void ExecuteSlide()
     {
         CalucNowAndNextPos();
         if(!IsMove)
         {
+            if (TouchManager.GetInstance().IsTouch())
+            {
+                IsMove = true;
+                NowTime = 0.0f;
+                return;
+            }
             NowTime += Time.deltaTime;
             if(NowTime > StopTime)
             {
@@ -112,5 +118,13 @@ public class JackPleaseScript : MonoBehaviour
             }
             late = 0.0f;
         }
+    }
+
+    public void StartSlide()
+    {
+        SlideStart = true;
+        rect.localPosition = StartPos;
+        state = State.start;
+        late = 0.0f;
     }
 }
