@@ -34,6 +34,8 @@ namespace BocciaPlayer
             //タッチ位置を初期化。
             m_touchStartPos = touchManager.GetTouchPosInScreen();
             m_touchEndPos = touchManager.GetTouchPosInScreen();
+            m_throwPow.x = 0.0f;
+            m_throwPow.y = 0.0f;
             throwBall.StartThrowBall(m_touchStartPos);
             throwBall.enabled = true;
         }

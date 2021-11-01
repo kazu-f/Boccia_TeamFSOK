@@ -271,6 +271,14 @@ PrefabInstance:
       propertyPath: throwDummyObj
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 319442007908028184, guid: cb3aab8e4ec996441b0d2d38bc183170, type: 3}
+      propertyPath: m_throwPosHeightMax
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 319442007908028184, guid: cb3aab8e4ec996441b0d2d38bc183170, type: 3}
+      propertyPath: m_throwPosHeightMin
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4490639244601412695, guid: cb3aab8e4ec996441b0d2d38bc183170, type: 3}
       propertyPath: m_Name
       value: BallThrowController

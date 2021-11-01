@@ -6,7 +6,7 @@ namespace BocciaPlayer
 {
     public class PlayerMoveState : IPlayerState
     {
-        private const float SPEED = 4.0f;
+        private const float SPEED = 0.6f;
         private PlayerMoveButton moveButton = null;
         private PlayerMoveScript playerMove = null;
         private Transform playerTransform = null;
@@ -33,7 +33,7 @@ namespace BocciaPlayer
         override public void Execute()
         {
             moveSpeed = Vector3.zero;
-            if(moveButton.IsPressAnyButton())
+            if(moveButton.IsPressAnyButton() && moveButton.IsActive())
             {
                 Vector3 zMoveSpeed = Vector3.zero;
                 Vector3 xMoveSpeed = Vector3.zero;

@@ -18,12 +18,15 @@ namespace BocciaPlayer
         private Vector2 m_throwPow = new Vector2(0.0f,0.0f);                //投げる力
         private Vector3 m_force = new Vector3(0.0f, 0.0f, 0.0f);      //初速。
         private float m_throwPosHeight = 0.0f;                //ボールを投げる高さの割合。
+        [SerializeField] private float m_throwPosHeightMax = 0.0f;               //投げる地点の高さの最大値。
+        [SerializeField] private float m_throwPosHeightMin = 0.0f;               //投げる地点の高さの最小値。
         private Vector3 m_throwPos = new Vector3(0.0f, 0.0f, 0.0f);   //ボールの始点。
 
         private const float THROW_DELAY = 0.2f;           //投げるまでのディレイの時間。
         private bool isDecision = false;           //投げる力を決定したか。
 
         //定数。
+        const float SWITCH_ARM_BORDER = 0.6f;
         const float MAX_THROW_POW = 200.0f;
         const float MAX_ANGLE_POW = 50.0f;
         //インスタンス生成時に呼ばれる。
@@ -51,7 +54,9 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
-            
+            //ボールを投げる座標を計算。
+            CalcPosition();
+            throwDummy.SetPosition(m_throwPos);
         }
         
         /// <summary>
@@ -66,13 +71,13 @@ namespace BocciaPlayer
             CalcPosition();
             throwDummy.SetPosition(m_throwPos);
             //腕の構え方を切り替える。
-            if(m_throwPosHeight > 0.6f)
+            if(m_throwPosHeight > SWITCH_ARM_BORDER)
             {
                 armScript.HoldUp();
             }
             else
             {
-                armScript.HoldUp();
+                armScript.HoldDown();
             }
         }
         /// <summary>
@@ -81,6 +86,9 @@ namespace BocciaPlayer
         /// <param name="throwPow"></param>
         public void SetThrowPow(Vector2 throwPow)
         {
+            //ボールを投げる座標を計算。
+            CalcPosition();
+            throwDummy.SetPosition(m_throwPos);
             m_throwPow = throwPow;
             throwGauge.SetThrowPow(m_throwPow.y);
             CalcThrowForce();
@@ -100,7 +108,7 @@ namespace BocciaPlayer
         void CalcPosition()
         {
             m_throwPos = this.transform.position;
-            m_throwPos.y *= m_throwPosHeight;
+            m_throwPos.y = Mathf.Lerp(m_throwPosHeightMin, m_throwPosHeightMax, m_throwPosHeight + armScript.GetFluctuation());
         }
         /// <summary>
         /// 初速を計算。
