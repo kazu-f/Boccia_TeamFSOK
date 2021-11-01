@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ArmScript : MonoBehaviour
 {
+    [SerializeField] private Transform throwTransform;
     private Vector3 basePos = Vector3.zero;
     private Vector3 currentPos = Vector3.zero;
     private float fluctuation = 0.0f;       //揺らぎ変数。
@@ -50,5 +51,13 @@ public class ArmScript : MonoBehaviour
     public float GetFluctuation()
     {
         return fluctuation;
+    }
+    /// <summary>
+    /// 腕の座標を取得。
+    /// </summary>
+    /// <returns>座標</returns>
+    public Vector3 GetPosition()
+    {
+        return throwTransform.position;
     }
 }
