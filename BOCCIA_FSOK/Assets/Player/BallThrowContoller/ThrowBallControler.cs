@@ -32,19 +32,21 @@ namespace BocciaPlayer
         //インスタンス生成時に呼ばれる。
         private void Awake()
         {
+            //腕のスクリプト。
             armScript = armObj.GetComponent<ArmScript>();
 
+            //ゲージ表示のスクリプトを取得。
             throwGauge = ThrowGaugeScript.GetInstance();
             throwGauge.gameObject.SetActive(false);
 
-            //予測線の処理。
+            //予測線の処理を取得。
             throwDummy = ThrowDummyScript.Instance();
             throwDummyObj = throwDummy.gameObject;
+            throwDummyObj.SetActive(false);
 
             //SEを取得。
             throwSE = GetComponent<AudioSource>();
 
-            throwDummyObj.SetActive(false);
         }
         // Start is called before the first frame update
         void Start()
@@ -83,16 +85,16 @@ namespace BocciaPlayer
         /// <summary>
         /// 投げる力をセットする。
         /// </summary>
-        /// <param name="throwPow"></param>
+        /// <param name="throwPow">x = -1.0～1.0 , y = 0.0～1.0</param>
         public void SetThrowPow(Vector2 throwPow)
         {
             //ボールを投げる座標を計算。
             CalcPosition();
-            throwDummy.SetPosition(m_throwPos);
+            throwDummy.SetPosition(m_throwPos);     //予測線の開始位置。
             m_throwPow = throwPow;
-            throwGauge.SetThrowPow(m_throwPow.y);
+            throwGauge.SetThrowPow(m_throwPow.y);   //ゲージの位置を設定。
             CalcThrowForce();
-            throwDummy.SetForce(m_force);
+            throwDummy.SetForce(m_force);           //投げる力を設定。
         }
         /// <summary>
         /// 高さを設定。
@@ -130,6 +132,7 @@ namespace BocciaPlayer
         //ボールを投げる。
         public void ThrowBall()
         {
+            //コルーチンを開始。
             StartCoroutine(ThrowCoroutine());
         }
 
@@ -152,10 +155,11 @@ namespace BocciaPlayer
             //ボールに投げる力を加える。
             var ballOperate = obj.GetComponent<BallOperateScript>();
 
-            ballOperate.Throw(m_force);
+            ballOperate.Throw(m_force); //ボールを投げる。
 
-            throwSE.Play();
+            throwSE.Play();     //投げるときのSE。
 
+            //もろもろの処理を停止。
             throwGauge.gameObject.SetActive(false);
             throwDummyObj.SetActive(false);
 
@@ -171,6 +175,7 @@ namespace BocciaPlayer
 
         private void OnEnable()
         {
+            //有効にする。
             throwGauge.gameObject.SetActive(true);
             throwDummyObj.SetActive(true);
             //投げる力初期化。
@@ -183,6 +188,7 @@ namespace BocciaPlayer
 
         private void OnDisable()
         {
+            //色々な処理を無効にする。
             throwGauge.gameObject.SetActive(false);
             throwDummyObj.SetActive(false);
             armScript.HoldDown();

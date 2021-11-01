@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace BocciaPlayer {
+
+    //入力待機中。
     public class PlayerIdleState : IPlayerState
     {
         private TouchManager touchManager;
@@ -28,6 +30,7 @@ namespace BocciaPlayer {
             if (touchManager.IsTouch() &&
                 touchManager.GetPhase() == TouchInfo.Began)
             {
+                //画面のタッチ位置を取得。
                 m_touchStartPos = touchManager.GetTouchPosInScreen();
                 //ステートを切り替える。
                 if (m_touchStartPos.y > 0.2f)
@@ -41,6 +44,7 @@ namespace BocciaPlayer {
             }
             else if(moveButton.IsPressAnyButton())
             {
+                //移動ボタンが押されたら移動ステートに切り替える。
                 m_player.ChangeState(EnPlayerState.enMove);
             }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace BocciaPlayer
 {
+    //何も処理をしないステート。
     public class PlayerStopState : IPlayerState
     {
         override public void Init(PlayerController controller)

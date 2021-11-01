@@ -7,8 +7,8 @@ namespace BocciaPlayer
     public class PlayerThrowAngleState : IPlayerState
     {
         private TouchManager touchManager;
-        private ThrowAngleController angleController;
-        private float xSpeed = 0.0f;
+        private ThrowAngleController angleController;   //向きを変更するスクリプト。
+        private float xSpeed = 0.0f;                    //回転量。
 
         override public void Init(PlayerController controller)
         {
@@ -16,18 +16,23 @@ namespace BocciaPlayer
             touchManager = TouchManager.GetInstance();
             if (m_player)
             {
+                //向きを変更するスクリプトを取得。
                 angleController = m_player.GetThrowAngleController();
             }
+            //向きを変更するスクリプトを無効化。
             angleController.enabled = false;
         }
         override public void Enter()
         {
+            //もろもろuGUIを無効化。
             SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
+            //向きを変更するスクリプトを有効化。
             angleController.enabled = true;
 
         }
         override public void Leave()
         {
+            //向きを変更するスクリプトを無効化。
             angleController.enabled = false;
 
         }
@@ -37,12 +42,13 @@ namespace BocciaPlayer
             {
                 if (touchManager.GetPhase() == TouchInfo.Moved)
                 {
+                    //タッチが移動したら速度を求める。
                     xSpeed = touchManager.GetDeltaPosInScreen().x;
                     angleController.AngleRotation(xSpeed);
                 }
                 else if(touchManager.GetPhase() == TouchInfo.Ended)
                 {
-                    //ステート変更。
+                    //指を離したらステート変更。
                     m_player.ChangeState(EnPlayerState.enIdle);
                 }
             }

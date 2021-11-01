@@ -48,6 +48,8 @@ namespace BocciaPlayer
 
             var canvasRect = touchManager.GetCavasRect();
             m_gaugeTransform = this.gameObject.GetComponent<RectTransform>();
+
+            //ゲージのサイズを計算。
             m_gaugeSize.x = m_gaugeTransform.rect.width * m_gaugeTransform.localScale.x / canvasRect.sizeDelta.x;
             m_gaugeSize.y = m_gaugeTransform.rect.height * m_gaugeTransform.localScale.y / canvasRect.sizeDelta.y;
         }
@@ -82,8 +84,8 @@ namespace BocciaPlayer
 
         private void OnEnable()
         {
+            //画面上の座標を設定。
             SetPosition(touchManager.GetTouchPosInScreen());
-            //m_gaugeTransform.anchoredPosition = touchManager.GetTouchPos();
         }
         /// <summary>
         /// 投げる力をセット。
