@@ -107,7 +107,6 @@ namespace BocciaPlayer
 		//ゴロでダミーを表示。
 		void DummyGround()
 		{
-			if (!(force.magnitude > 0.0f)) return;
 			//弾道予測の位置に点を移動
 			for (int i = 0; i < dummyCount; i++)
 			{
@@ -134,7 +133,6 @@ namespace BocciaPlayer
 		//バウンス無しでダミーを表示。
 		void DummyNoBounce()
 		{
-			if (!(force.magnitude > 0.0f)) return;
 			//弾道予測の位置に点を移動
 			for (int i = 0; i < dummyCount; i++)
 			{
@@ -157,7 +155,6 @@ namespace BocciaPlayer
 		//バウンスありでダミーを表示。
 		void DummyBounce()
 		{
-			if (!(force.magnitude > 0.0f)) return;
 			Vector3 pos = transform.position;
 			Vector3 oldPos = transform.position;
 			Vector3 vecForce = force;
