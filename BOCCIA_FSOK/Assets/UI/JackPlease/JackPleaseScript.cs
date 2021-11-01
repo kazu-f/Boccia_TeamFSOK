@@ -13,6 +13,7 @@ public class JackPleaseScript : MonoBehaviour
     }
     [SerializeField] private float MoveSpeed = 1.0f;
     [SerializeField] private float StopTime = 5.0f;
+    private float NowTime = 0.0f;
     private float late = 0.0f;      //補完率
     private RectTransform rect = null;
     private Vector3 StartPos = Vector3.zero;        //開始位置
@@ -20,6 +21,8 @@ public class JackPleaseScript : MonoBehaviour
     private Vector3 NowPos = Vector3.zero;      //現在の位置
     private Vector3 NextPos = Vector3.zero;     //次の位置
     private State state = State.start;      //状態
+    private bool SlideStart = true;        //移動スタートフラグ
+    private bool IsMove = true;        //動くかどうかのフラグ
     private void Awake()
     {
         rect = this.gameObject.GetComponent<RectTransform>();
@@ -41,7 +44,10 @@ public class JackPleaseScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ExecuteSlide();
+        if (SlideStart)
+        {
+            ExecuteSlide();
+        }
     }
 
     /// <summary>
@@ -71,6 +77,16 @@ public class JackPleaseScript : MonoBehaviour
     public void ExecuteSlide()
     {
         CalucNowAndNextPos();
+        if(!IsMove)
+        {
+            NowTime += Time.deltaTime;
+            if(NowTime > StopTime)
+            {
+                IsMove = true;
+                NowTime = 0.0f;
+            }
+            return;
+        }    
         if (late < 1.0f)
         {
             late += Time.deltaTime * MoveSpeed;
@@ -78,10 +94,13 @@ public class JackPleaseScript : MonoBehaviour
         }
         else
         {
+            //補完率が1を超えた時
+            //つまり次のステートに移行するとき
             switch (state)
             {
                 case State.start:
                     state = State.stop;
+                    IsMove = false;
                     break;
 
                 case State.stop:
@@ -89,7 +108,7 @@ public class JackPleaseScript : MonoBehaviour
                     break;
 
                 default:
-                    break;
+                    return;
             }
             late = 0.0f;
         }
