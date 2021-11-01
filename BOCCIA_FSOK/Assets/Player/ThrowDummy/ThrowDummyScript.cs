@@ -203,10 +203,10 @@ namespace BocciaPlayer
 							}
 							pos = resPos;
 							BounceOffset = secInterval * weight;
-							vecForce += Physics.gravity * (t - secInterval * weight);
+							vecForce += Physics.gravity * (t - BounceOffset);
 							vecForce *= courtBounciness;
 							vecForce.y *= -1.0f;
-							vec = (vecForce * secInterval * weight) + (0.5f * Physics.gravity * Mathf.Pow(secInterval * weight, 2.0f));
+							vec = (vecForce * BounceOffset) + (0.5f * Physics.gravity * Mathf.Pow(BounceOffset, 2.0f));
 							resPos = pos + vec;
 							oldPos = resPos;       //ãLò^ÇµÇƒÇ®Ç≠ÅB
 							resPos.y += ballHalfSize;
