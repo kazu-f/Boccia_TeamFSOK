@@ -67,6 +67,8 @@ public class TeamFlowScript : MonoBehaviour
                 {
                     //次に投げるチームのボールのスプライトを変更
                     m_NextBallImage.GetComponent<ChangeBallSprite>().ChangeSprite(m_NextTeam);
+                    //パドルのスプライトを変更
+                    GameObject.Find("Paddle").GetComponent<PaddleScript>().SetTeam(m_NextTeam);
                     //投げ終わり
                     IsThrow = false;
                     //カメラ変更
