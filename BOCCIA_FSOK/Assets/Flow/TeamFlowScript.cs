@@ -325,6 +325,9 @@ public class TeamFlowScript : MonoBehaviour
         //ボールの数を初期化
         m_RemainBalls = Vector2Int.one;
         m_RemainBalls *= m_Remain;
+        //一番初めなのでジャックプリーズと出す
+        GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
+
         //ログを流す
         NextTeamLog();
     }
