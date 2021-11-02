@@ -35,6 +35,8 @@ public class TeamFlowScript : MonoBehaviour
         m_NextTeam = m_firstTeam;
         //ボールの所持数を増やす
         m_RemainBalls *= m_Remain;
+        //一番初めなのでジャックプリーズと出す
+        GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
         //ログを流す
         NextTeamLog();
     }
@@ -335,6 +337,8 @@ public class TeamFlowScript : MonoBehaviour
     /// </summary>
     public void ChangeJackThrowTeam()
     {
+        //ジャックボールを投げるチームが変わったのでジャックプリーズと出す
+        GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
         //ジャックボールが準備されていないとき
         ChangeNextTeam();
         ChangeFirstTeam();

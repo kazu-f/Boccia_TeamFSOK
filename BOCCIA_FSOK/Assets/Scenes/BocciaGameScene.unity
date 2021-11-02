@@ -1360,6 +1360,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2098662329}
     m_Modifications:
+    - target: {fileID: 4095040064054049146, guid: cb285ecbde985db449392f18479998ea, type: 3}
+      propertyPath: MoveSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5154045796243624352, guid: cb285ecbde985db449392f18479998ea, type: 3}
       propertyPath: m_Name
       value: JackPlease
