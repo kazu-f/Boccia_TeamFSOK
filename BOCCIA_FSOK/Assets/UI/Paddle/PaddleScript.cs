@@ -17,6 +17,7 @@ public class PaddleScript : MonoBehaviour
     [SerializeField] private float StopTime = 1.0f;     //í‚é~ÇµÇƒÇ¢ÇÈéûä‘
     private float NowTime = 0.0f;       //åªç›ÇÃéûä‘
     private bool IsMove = false;        //ìÆÇ≠Ç©Ç«Ç§Ç©ÇÃÉtÉâÉO
+    private bool ScaleStart = false;
     private void Awake()
     {
         image = this.gameObject.GetComponent<Image>();
@@ -26,12 +27,20 @@ public class PaddleScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Color color = image.color;
+        color.a = 0.0f;
+        image.color = color;
     }
 
     // Update is called once per frame
     void Update()
     {
-        LerpPos();
+        if(ScaleStart)
+        {
+            //ìäÇ∞ÇÍÇ»Ç¢ÇÊÇ§Ç…Ç∑ÇÈ
+            GameObject.Find("Players").GetComponent<ActiveTeamController>().StopThrow();
+            LerpPos();
+        }
     }
 
     /// <summary>
@@ -81,5 +90,21 @@ public class PaddleScript : MonoBehaviour
             late = Mathf.Min(late, 1.0f);
             rect.localScale = (late * LastScale) + ((1.0f - late) * DefaultScale);
         }
+        else
+        {
+            //ìäÇ∞ÇÍÇÈÇÊÇ§Ç…Ç∑ÇÈ
+            GameObject.Find("Players").GetComponent<ActiveTeamController>().ChangeActivePlayer();
+            ScaleStart = false;
+            late = 0.0f;
+        }
+    }
+
+    public void PaddleStart()
+    {
+        ScaleStart = true;
+        SetDefault();
+        Color color = image.color;
+        color.a = 1.0f;
+        image.color = color;
     }
 }

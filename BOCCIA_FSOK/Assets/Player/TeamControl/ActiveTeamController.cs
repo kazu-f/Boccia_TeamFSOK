@@ -88,7 +88,7 @@ public class ActiveTeamController : MonoBehaviour
     /// <summary>
     /// 次投げるプレイヤーに有効フラグを切り替える。
     /// </summary>
-    void ChangeActivePlayer()
+    public void ChangeActivePlayer()
     {
         //次に投げるチーム取得。
         currentTeam = TeamFlow.GetNowTeam();
@@ -106,7 +106,7 @@ public class ActiveTeamController : MonoBehaviour
     /// <summary>
     /// プレイヤーを止める。
     /// </summary>
-    void StopThrow()
+    public void StopThrow()
     {
         RedPlayerCon.SwitchPlayer(false);
         BluePlayerCon.SwitchPlayer(false);

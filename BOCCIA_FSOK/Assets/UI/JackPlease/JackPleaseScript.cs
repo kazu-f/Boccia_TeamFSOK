@@ -46,6 +46,8 @@ public class JackPleaseScript : MonoBehaviour
     {
         if (SlideStart)
         {
+            //“Š‚°‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+            GameObject.Find("Players").GetComponent<ActiveTeamController>().StopThrow();
             ExecuteSlide();
         }
     }
@@ -115,6 +117,9 @@ public class JackPleaseScript : MonoBehaviour
                     break;
 
                 default:
+                    //“Š‚°‚ê‚é‚æ‚¤‚É‚·‚é
+                    GameObject.Find("Players").GetComponent<ActiveTeamController>().ChangeActivePlayer();
+                    SlideStart = false;
                     return;
             }
             late = 0.0f;
