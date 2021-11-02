@@ -96,6 +96,7 @@ public class JackPleaseScript : MonoBehaviour
         if (late < 1.0f)
         {
             late += Time.deltaTime * MoveSpeed;
+            late = Mathf.Min(late, 1.0f);
             rect.localPosition = (late * NextPos) + ((1.0f - late) * NowPos);
         }
         else
