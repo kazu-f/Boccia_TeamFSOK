@@ -6,6 +6,7 @@ namespace BocciaPlayer
 {
     public abstract class IPlayerController : MonoBehaviour
     {
+        protected NetworkSendManagerScript netSendManager;        //ネットを使ってデータを送るためのスクリプト。
         protected ThrowBallControler throwBallControler;        //ボールを投げるスクリプト。
         protected ThrowAngleController throwAngleController;    //方向変更スクリプト。
         protected BallHolderController ballHolderController;    //ボール管理スクリプト。
@@ -16,10 +17,18 @@ namespace BocciaPlayer
         /// </summary>
         protected void InitPlayerScript()
         {
+            //子オブジェクトからそれぞれのスクリプトを取得する。
             throwBallControler = this.gameObject.GetComponentInChildren<ThrowBallControler>();
             throwAngleController = this.gameObject.GetComponentInChildren<ThrowAngleController>();
             ballHolderController = this.gameObject.GetComponentInChildren<BallHolderController>();
             playerMoveScript = this.gameObject.GetComponentInChildren<PlayerMoveScript>();
+            //ネットワーク用のオブジェクトを取得。
+            netSendManager = GameObject.FindGameObjectWithTag("Network").GetComponent<NetworkSendManagerScript>();
+
+            if(netSendManager == null)
+            {
+                Debug.Log("NetworkSendManagerが取得できませんでした。");
+            }
         }
 
         //ボールを投げる処理のスクリプト。
@@ -41,6 +50,11 @@ namespace BocciaPlayer
         public PlayerMoveScript GetPlayerMoveScript()
         {
             return playerMoveScript;
+        }
+        //データをネットでやり取りするスクリプト。
+        public NetworkSendManagerScript GetNetSendManager()
+        {
+            return netSendManager;
         }
 
         /// <summary>

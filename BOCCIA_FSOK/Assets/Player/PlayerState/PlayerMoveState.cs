@@ -7,6 +7,7 @@ namespace BocciaPlayer
     public class PlayerMoveState : IPlayerState
     {
         private const float SPEED = 0.6f;
+        private NetworkSendManagerScript netSendManager = null;
         private PlayerMoveButton moveButton = null;
         private PlayerMoveScript playerMove = null;
         private Transform playerTransform = null;
@@ -20,6 +21,7 @@ namespace BocciaPlayer
                 playerMove = m_player.GetPlayerMoveScript();
                 playerMove.enabled = false;
                 playerTransform = m_player.gameObject.transform;
+                netSendManager = m_player.GetNetSendManager();
             }
         }
         override public void Enter()

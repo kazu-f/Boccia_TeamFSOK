@@ -10,6 +10,7 @@ TagManager:
   - GameFlow
   - TouchManager
   - Court
+  - Network
   layers:
   - Default
   - TransparentFX
