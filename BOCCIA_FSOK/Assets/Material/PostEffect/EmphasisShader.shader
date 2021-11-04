@@ -46,21 +46,23 @@ Shader "Hidden/EmphasisShader"
             }
 
             sampler2D _MainTex;
-
+            
+            fixed3 CameraForward;
             fixed4 frag (v2f i) : SV_Target
             {
                 // _CameraDepthNormalsTextureからサンプリング
                 float4 cdn = tex2D(_CameraDepthNormalsTexture, i.uv);
                 // サンプリングした値をDecodeViewNormalStereo()で変換
                 float3 normal = DecodeViewNormalStereo(cdn) * float3(1.0, 1.0, -1.0);
-
+                normal = normalize(normal);
                 fixed4 col = tex2D(_MainTex, i.uv);
                 //カメラの前方向
-                float3 forward = UNITY_MATRIX_V[2].xyz;
-                forward = normalize(forward);
-                if (saturate(dot(normal, forward)) < 0.1)
+                //float3 forward = UNITY_MATRIX_V[2].xyz;
+                float3 forward = CameraForward;
+                //forward = normalize(forward);
+                if (dot(normal, forward) < 0.1)
                 {
-                    fixed red = 1.0;
+                    fixed red = 0.0;
                     fixed green = 0.0;
                     fixed blue = 0.0;
                     fixed alpha = 1.0;

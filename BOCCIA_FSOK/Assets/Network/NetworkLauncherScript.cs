@@ -170,6 +170,18 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
 
     }
 
+    /// <summary>
+    /// 自分がマスタークライアントかどうか
+    /// </summary>
+    /// <returns>マスタークライアントかどうかのフラグ</returns>
+    public bool IsMasterClient()
+    {
+        return PhotonNetwork.LocalPlayer.IsMasterClient;
+    }
+
+    /// <summary>
+    /// 呼び出すと、ネットワークを切断してゲームシーンをロードする
+    /// </summary>
     public void UseAI()
     {
         IsUseAI = true;
