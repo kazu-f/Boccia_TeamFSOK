@@ -85,4 +85,13 @@ public class NetworkManagerScript : MonoBehaviourPunCallbacks
     {
         
     }
+
+    /// <summary>
+    /// サーバータイムをゲット
+    /// </summary>
+    /// <returns>サーバーごとの時間</returns>
+    public double GetServerTime()
+    {
+        return PhotonNetwork.Time;
+    }
 }
