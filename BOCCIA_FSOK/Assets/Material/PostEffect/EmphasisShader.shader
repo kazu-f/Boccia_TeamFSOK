@@ -13,7 +13,7 @@ Shader "Hidden/EmphasisShader"
 
         Pass
         {
-            Tags {"RenderType" = "Opaque"}
+            Tags {"Queue" = "Transparent" "RenderType" = "Transparent"}
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -47,27 +47,12 @@ Shader "Hidden/EmphasisShader"
 
             sampler2D _MainTex;
             
-            fixed3 CameraForward;
             fixed4 frag (v2f i) : SV_Target
             {
-                // _CameraDepthNormalsTextureからサンプリング
-                float4 cdn = tex2D(_CameraDepthNormalsTexture, i.uv);
-                // サンプリングした値をDecodeViewNormalStereo()で変換
-                float3 normal = DecodeViewNormalStereo(cdn) * float3(1.0, 1.0, -1.0);
-                normal = normalize(normal);
                 fixed4 col = tex2D(_MainTex, i.uv);
-                //カメラの前方向
-                //float3 forward = UNITY_MATRIX_V[2].xyz;
-                float3 forward = CameraForward;
-                //forward = normalize(forward);
-                if (dot(normal, forward) < 0.1)
-                {
-                    fixed red = 0.0;
-                    fixed green = 0.0;
-                    fixed blue = 0.0;
-                    fixed alpha = 1.0;
-                    return fixed4(red, green, blue, alpha);
-                }
+                col.xyz += 1;
+                col.xyz *= 0.33;
+                col.a = 1;
                 return col;
             }
             ENDCG
