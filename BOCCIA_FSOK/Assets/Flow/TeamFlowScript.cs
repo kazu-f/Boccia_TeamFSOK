@@ -121,84 +121,60 @@ public class TeamFlowScript : MonoBehaviour
             return true;
         }
 
-        //ここからは一つ以上のボールがあるときの処理
-        int NearestBallNum = 0;
-        float NearestDist = 10000;
+        ////ここからは一つ以上のボールがあるときの処理
+        //int NearestBallNum = 0;
+        //float NearestDist = 10000;
 
-        //float[] m_BallsDist;
-        ////ボールの長さ分の配列を確保
-        //m_BallsDist = new float[m_balls.Length];
-        //Team[] Teams;
-        //Teams = new Team[m_balls.Length];
+        float[] m_BallsDist;
+        //ボールの長さ分の配列を確保
+        m_BallsDist = new float[m_balls.Length];
+        Team[] Teams;
+        Teams = new Team[m_balls.Length];
 
-        ////最も近いボールまでの距離
-        //float[] NearDist;
-        ////赤チームと青チームの最も近いボールの距離を保存しておくので配列のサイズは2
-        //NearDist = new float[2];
-        //NearDist[0] = 10000;
-        //NearDist[1] = 10000;
+        //最も近いボールまでの距離
+        float[] NearDist;
+        //赤チームと青チームの最も近いボールの距離を保存しておくので配列のサイズは2
+        NearDist = new float[2];
+        NearDist[0] = 10000;
+        NearDist[1] = 10000;
 
         for (int ballnum = 0; ballnum < m_balls.Length;ballnum++)
         {
             //チームを取得
-            //Teams[ballnum] = m_balls[ballnum].GetComponent<TeamDivisionScript>().GetTeam();
+            Teams[ballnum] = m_balls[ballnum].GetComponent<TeamDivisionScript>().GetTeam();
             //ボールからジャックボールへの距離
             Vector3 Dir = m_balls[ballnum].GetComponent<Rigidbody>().position - m_JackPos;
             float dist = Dir.magnitude;
+            //ジャックボールまでの距離を代入
+            m_BallsDist[ballnum] = dist;
 
-            //ボールの位置を取得
-            Vector3 BallPos = m_balls[ballnum].GetComponent<Rigidbody>().position;
-            //ジャックボールまでの距離を計算
-            Vector3 Dist = m_JackPos - BallPos;
-            //m_BallsDist[ballnum] = Dist.magnitude;
-            if (dist < NearestDist)
+            //if (dist < NearestDist)
+            //{
+            //    //今回のボールの方がジャックボールに近いので距離と番号を代入
+            //    NearestDist = dist;
+            //    NearestBallNum = ballnum;
+            //}
+            if (Teams[ballnum] == Team.Red)
             {
-                //今回のボールの方がジャックボールに近いので距離と番号を代入
-                NearestDist = dist;
-                NearestBallNum = ballnum;
+                //距離がより近いものを設定する
+                if (m_BallsDist[ballnum] < NearDist[0])
+                {
+                    NearDist[0] = m_BallsDist[ballnum];
+                }
             }
-            //if (Teams[ballnum] == Team.Red)
-            //{
-            //    //距離がより近いものを設定する
-            //    if (m_BallsDist[ballnum] < NearDist[0])
-            //    {
-            //        NearDist[0] = m_BallsDist[ballnum];
-            //    }
-            //}
-            //else
-            //{
-            //    //距離がより近いものを設定する
-            //    if (m_BallsDist[ballnum] < NearDist[1])
-            //    {
-            //        NearDist[1] = m_BallsDist[ballnum];
-            //    }
-            //}
+            else
+            {
+                //距離がより近いものを設定する
+                if (m_BallsDist[ballnum] < NearDist[1])
+                {
+                    NearDist[1] = m_BallsDist[ballnum];
+                }
+            }
 
 
         }
 
-        //if (NearDist[0] < NearDist[1])
-        //{
-        //    m_NextTeam = Team.Blue;
-        //}
-        //else
-        //{
-        //    m_NextTeam = Team.Red;
-        //}
-
-        //float SecondNearDist = Mathf.Max(NearDist[0], NearDist[1]);
-        //for (int ballnum = 0; ballnum < m_balls.Length; ballnum++)
-        //{
-        //    m_balls[ballnum].gameObject.layer = 9;
-        //    if (m_BallsDist[ballnum] < SecondNearDist)
-        //    {
-        //        //もう片方の一番近いボールよりも近い位置にあるのでレイヤーを変える
-        //        m_balls[ballnum].gameObject.layer = 0;
-        //    }
-        //}
-
-        //次に投げるチームを変更
-        if (m_balls[NearestBallNum].GetComponent<TeamDivisionScript>().GetTeam() == Team.Red)
+        if (NearDist[0] < NearDist[1])
         {
             m_NextTeam = Team.Blue;
         }
@@ -206,6 +182,27 @@ public class TeamFlowScript : MonoBehaviour
         {
             m_NextTeam = Team.Red;
         }
+
+        float SecondNearDist = Mathf.Max(NearDist[0], NearDist[1]);
+        for (int ballnum = 0; ballnum < m_balls.Length; ballnum++)
+        {
+            m_balls[ballnum].gameObject.layer = 9;
+            if (m_BallsDist[ballnum] < SecondNearDist)
+            {
+                //もう片方の一番近いボールよりも近い位置にあるのでレイヤーを変える
+                m_balls[ballnum].gameObject.layer = 0;
+            }
+        }
+
+        ////次に投げるチームを変更
+        //if (m_balls[NearestBallNum].GetComponent<TeamDivisionScript>().GetTeam() == Team.Red)
+        //{
+        //    m_NextTeam = Team.Blue;
+        //}
+        //else
+        //{
+        //    m_NextTeam = Team.Red;
+        //}
 
         if (m_RemainBalls.x == 0 && m_RemainBalls.y == 0)
         {

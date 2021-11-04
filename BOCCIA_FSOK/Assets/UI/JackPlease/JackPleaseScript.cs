@@ -47,7 +47,11 @@ public class JackPleaseScript : MonoBehaviour
         if (SlideStart)
         {
             //“Š‚°‚ê‚È‚¢‚æ‚¤‚É‚·‚é
-            GameObject.Find("Players").GetComponent<ActiveTeamController>().StopThrow();
+            var player = GameObject.Find("Players");
+            if (player != null)
+            {
+                player.GetComponent<ActiveTeamController>().StopThrow();
+            }
             ExecuteSlide();
         }
     }
