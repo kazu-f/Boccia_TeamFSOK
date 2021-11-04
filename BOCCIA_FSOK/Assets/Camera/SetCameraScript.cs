@@ -14,7 +14,7 @@ public class SetCameraScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -22,5 +22,14 @@ public class SetCameraScript : MonoBehaviour
     {
         this.gameObject.transform.position = cameratrans.position;
         this.gameObject.transform.rotation = cameratrans.rotation;
+    }
+
+    /// <summary>
+    /// カメラのセット
+    /// </summary>
+    /// <param name="camera">トランスフォーム</param>
+    public void SetTrans(Transform trans)
+    {
+        cameratrans = trans;
     }
 }

@@ -976,7 +976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6740030749738440132, guid: 994f7dd6cc640b04ca5d5aac3a4350df, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 36.72
+      value: -2.08
       objectReference: {fileID: 0}
     - target: {fileID: 6740030749738440132, guid: 994f7dd6cc640b04ca5d5aac3a4350df, type: 3}
       propertyPath: m_LocalPosition.y
@@ -984,7 +984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6740030749738440132, guid: 994f7dd6cc640b04ca5d5aac3a4350df, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 35.09
+      value: -7.73
       objectReference: {fileID: 0}
     - target: {fileID: 6740030749738440132, guid: 994f7dd6cc640b04ca5d5aac3a4350df, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1014,6 +1014,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7187562955307823247, guid: 994f7dd6cc640b04ca5d5aac3a4350df, type: 3}
+      propertyPath: maincamera
+      value: 
+      objectReference: {fileID: 1242310787}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 994f7dd6cc640b04ca5d5aac3a4350df, type: 3}
 --- !u!1 &765730407 stripped

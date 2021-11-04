@@ -8,8 +8,13 @@ public class GameCameraScript : MonoBehaviour
     public GameObject m_MainCamera = null;
     public GameObject m_FollowCamera = null;
     public Vector3 m_CameraPos = Vector3.zero;
+    private SetCameraScript EmphasisCamera = null;
     //public Vector3 m_CameraForward = Vector3.zero;
 
+    private void Awake()
+    {
+        EmphasisCamera = GameObject.Find("EmphasisCamera").GetComponent<SetCameraScript>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +25,14 @@ public class GameCameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (IsFollow)
+        {
+            EmphasisCamera.SetTrans(m_FollowCamera.transform);
+        }
+        else
+        {
+            EmphasisCamera.SetTrans(m_MainCamera.transform);
+        }
     }
 
     /// <summary>
