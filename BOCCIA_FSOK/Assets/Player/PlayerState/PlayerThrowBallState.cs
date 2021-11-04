@@ -6,15 +6,16 @@ namespace BocciaPlayer
 {
     public class PlayerThrowBallState : IPlayerState
     {
-        private TouchManager touchManager;
-        private ThrowBallControler throwBall;
+        private TouchManager touchManager = null;
+        private ThrowBallControler throwBall = null;
+        private NetworkSendManagerScript netSendManager = null;
         //private。
         private Vector2 m_touchStartPos = new Vector2(0.0f, 0.0f);    //触り始めた座標。
         private Vector2 m_touchEndPos = new Vector2(0.0f, 0.0f);      //引き切った座標。
         private Vector2 m_endToStart = new Vector2(0.0f, 0.0f);       //開始座標から引き切った座標までのベクトル。
         private Vector2 m_touchPosInScreen = new Vector2(0.0f, 0.0f); //現在のタッチしている座標(スクリーン座標系？)
         private Vector2 m_throwPow = new Vector2(0.0f, 0.0f);         //投げる力
-        private ThrowGaugeScript throwGauge;
+        private ThrowGaugeScript throwGauge = null;
 
         override public void Init(PlayerController controller)
         {
@@ -24,8 +25,9 @@ namespace BocciaPlayer
             if(m_player)
             {
                 throwBall = m_player.GetThrowBallController();
+                throwBall.enabled = false;
+                netSendManager = m_player.GetNetSendManager();
             }
-            throwBall.enabled = false;
         }
         override public void Enter()
         {
@@ -38,6 +40,8 @@ namespace BocciaPlayer
             m_throwPow.y = 0.0f;
             throwBall.StartThrowBall(m_touchStartPos);
             throwBall.enabled = true;
+            netSendManager.SendThrowGaugePosition(m_touchStartPos);
+            netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
         }
         override public void Leave()
         {
@@ -65,6 +69,8 @@ namespace BocciaPlayer
 
                     //投げる力をセット。
                     throwBall.SetThrowPow(m_throwPow);
+                    netSendManager.SendThrowPow(m_throwPow);
+                    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
                 }
                 else if (touchManager.GetPhase() == TouchInfo.Ended)
                 {
@@ -72,6 +78,7 @@ namespace BocciaPlayer
                     {
                         //ボールを投げる。
                         throwBall.ThrowBall();
+                        netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Throw);
                         //ステート変更。
                         m_player.ChangeState(EnPlayerState.enWait);
                     }

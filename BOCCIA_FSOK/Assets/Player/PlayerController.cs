@@ -16,17 +16,19 @@ namespace BocciaPlayer
 
     public class PlayerController : IPlayerController
     {
-        private IPlayerState[] playerStateList;
+        private IPlayerState[] playerStateList;                 //ステートのリスト。
 
         private IPlayerState currentState = null;
         private EnPlayerState enCurrentState = EnPlayerState.enStateNum;
         private Vector3 startPosition = new Vector3();           //開始時点の座標。
         private Quaternion startRotation = new Quaternion();     //開始時点の回転。
+        private Vector3 oldPosition = new Vector3();           //前フレームの座標。
 
         private void Awake()
         {
             startPosition = this.gameObject.transform.position;
             startRotation = this.gameObject.transform.rotation;
+            oldPosition = startPosition;
             InitPlayerScript();
             //ステート初期化。
             playerStateList = new IPlayerState[(int)EnPlayerState.enStateNum];
@@ -56,6 +58,12 @@ namespace BocciaPlayer
         {
             //ステートを実行。
             currentState.Execute();
+            //座標変化があれば送信。
+            if(oldPosition != this.transform.position)
+            {
+                netSendManager.SendPlayerPos(this.transform.position);
+                oldPosition = this.transform.position;
+            }
         }
 
         override public void SwitchPlayer(bool isEnable)
@@ -63,6 +71,7 @@ namespace BocciaPlayer
             //開始時点のトランスフォームへ移動。
             this.gameObject.transform.position = startPosition;
             this.gameObject.transform.rotation = startRotation;
+            oldPosition = startPosition;
             if (isEnable == true)
             {
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。

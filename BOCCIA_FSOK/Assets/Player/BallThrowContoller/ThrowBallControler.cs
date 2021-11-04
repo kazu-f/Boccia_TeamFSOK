@@ -18,8 +18,8 @@ namespace BocciaPlayer
         private Vector2 m_throwPow = new Vector2(0.0f,0.0f);                //投げる力
         private Vector3 m_force = new Vector3(0.0f, 0.0f, 0.0f);      //初速。
         private float m_throwPosHeight = 0.0f;                //ボールを投げる高さの割合。
-        [SerializeField] private float m_throwPosHeightMax = 0.0f;               //投げる地点の高さの最大値。
-        [SerializeField] private float m_throwPosHeightMin = 0.0f;               //投げる地点の高さの最小値。
+        [SerializeField] private float m_throwPosHeightMax = 1.7f;               //投げる地点の高さの最大値。
+        [SerializeField] private float m_throwPosHeightMin = 0.3f;               //投げる地点の高さの最小値。
         private Vector3 m_throwPos = new Vector3(0.0f, 0.0f, 0.0f);   //ボールの始点。
 
         private const float THROW_DELAY = 0.2f;           //投げるまでのディレイの時間。
@@ -88,9 +88,6 @@ namespace BocciaPlayer
         /// <param name="throwPow">x = -1.0～1.0 , y = 0.0～1.0</param>
         public void SetThrowPow(Vector2 throwPow)
         {
-            //ボールを投げる座標を計算。
-            CalcPosition();
-            throwDummy.SetPosition(m_throwPos);     //予測線の開始位置。
             m_throwPow = throwPow;
             throwGauge.SetThrowPow(m_throwPow.y);   //ゲージの位置を設定。
             CalcThrowForce();
@@ -127,6 +124,13 @@ namespace BocciaPlayer
             right.Normalize();
             m_force += right * m_throwPow.x * m_throwPow.y * MAX_ANGLE_POW;
             m_force.y = 10.0f;
+        }
+        /// <summary>
+        /// 投げる位置を取得。
+        /// </summary>
+        public Vector3 GetThrowPosition()
+        {
+            return m_throwPos;
         }
 
         //ボールを投げる。

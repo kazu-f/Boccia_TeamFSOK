@@ -69,10 +69,12 @@ namespace BocciaPlayer
 			var gameFlow = GameObject.FindGameObjectWithTag("GameFlow");
 			if (gameFlow)
 			{
+				//ボール管理のスクリプト。
 				TeamFlow = gameFlow.GetComponent<TeamFlowScript>();
 				jackFlow = gameFlow.GetComponent<BallFlowScript>();
 			}
 
+			//ボールの半径を取得。
 			ballHalfSize = dummyObjPref.transform.localScale.y / 2.0f;
 
 			//プレファブからリジッドボディ取得。

@@ -7,9 +7,12 @@ using Photon.Realtime;
 public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable,IPunOwnershipCallbacks
 {
     bool IsSended = false;
-    public float m_f = 0.0f;
-    public Vector3 m_vec = Vector3.one;
+    private Vector2 m_throwPower = Vector2.zero;
+    private Vector2 m_throwGaugePosition = Vector2.zero;
+    private Vector3 m_playerPos = Vector3.zero;
+    private Vector3 m_throwPos = Vector3.zero;
     private Quaternion m_rot = Quaternion.identity;
+    private int m_state = 0;                         //決定かどうか。
     private PhotonView photonView = null;
 
     public void Awake()
@@ -26,18 +29,24 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
             {
                 //まだデータを送っていないとき
                 //データを他のプレイヤーに送る
-                stream.SendNext(m_f);
-                stream.SendNext(m_vec);
+                stream.SendNext(m_throwPower);
+                stream.SendNext(m_throwGaugePosition);
+                stream.SendNext(m_playerPos);
+                stream.SendNext(m_throwPos);
                 stream.SendNext(m_rot);
+                stream.SendNext(m_state);
                 IsSended = true;
             }
         }
         else
         {
             //データを受け取る
-            m_f = (float)stream.ReceiveNext();
-            m_vec = (Vector3)stream.ReceiveNext();
+            m_throwPower = (Vector2)stream.ReceiveNext();
+            m_throwGaugePosition = (Vector2)stream.ReceiveNext();
+            m_playerPos = (Vector3)stream.ReceiveNext();
+            m_throwPos = (Vector3)stream.ReceiveNext();
             m_rot = (Quaternion)stream.ReceiveNext();
+            m_state = (int)stream.ReceiveNext();
         }
     }
 
@@ -90,9 +99,30 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         Debug.LogError("オーナー権限の移行に失敗しました");
     }
 
-    public void SendVector(Vector3 vec)
+    public void SendThrowPow(Vector2 vec2)
     {
-        m_vec = vec;
+        m_throwPower = vec2;
+        IsSended = false;
+        RequestOwner();
+    }
+
+    public void SendThrowGaugePosition(Vector2 vec2)
+    {
+        m_throwGaugePosition = vec2;
+        IsSended = false;
+        RequestOwner();
+    }
+
+    public void SendPlayerPos(Vector3 vec)
+    {
+        m_playerPos = vec;
+        IsSended = false;
+        RequestOwner();
+    }
+
+    public void SendThrowPos(Vector3 vec)
+    {
+        m_throwPos = vec;
         IsSended = false;
         RequestOwner();
     }
@@ -104,16 +134,31 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         RequestOwner();
     }
 
-    public void SendFloat(float f)
+    public void SendState(int state)
     {
-        m_f = f;
+        m_state = state;
         IsSended = false;
         RequestOwner();
     }
 
-    public Vector3 ReceiveVector()
+    public Vector2 ReceiveThrowPower()
     {
-        return m_vec;
+        return m_throwPower;
+    }
+
+    public Vector2 ReceiveThrowGaugePos()
+    {
+        return m_throwGaugePosition;
+    }
+
+    public Vector3 ReceivePlayerPos()
+    {
+        return m_playerPos;
+    }
+
+    public Vector3 ReceiveThrowPos()
+    {
+        return m_throwPos;
     }
 
     public Quaternion ReveiveQuaternion()
@@ -121,8 +166,8 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         return m_rot;
     }
 
-    public float ReceiveFloat()
+    public int ReceiveState()
     {
-        return m_f;
+        return m_state;
     }
 }
