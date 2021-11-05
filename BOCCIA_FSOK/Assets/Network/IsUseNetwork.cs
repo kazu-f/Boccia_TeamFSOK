@@ -5,6 +5,7 @@ using UnityEngine;
 public class IsUseNetwork : MonoBehaviour
 {
     private bool isUseAI = true;       //AIを使用するかどうか。
+    private Team playerTeamCol = Team.Red;      //プレイヤーのチームカラー。
 
 
     private void Awake()
@@ -39,4 +40,13 @@ public class IsUseNetwork : MonoBehaviour
         isUseAI = flag;
     }
 
+    public Team GetPlayerCol()
+    {
+        return playerTeamCol;
+    }
+
+    public void SetTeamCol(Team col)
+    {
+        playerTeamCol = col;
+    }
 }
