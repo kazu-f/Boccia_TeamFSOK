@@ -16,7 +16,7 @@ public class JackPleaseScript : MonoBehaviour
     private float NowTime = 0.0f;
     private float late = 0.0f;      //補完率
     private RectTransform rect = null;
-    private Vector3 StartPos = Vector3.zero;        //開始位置
+    [SerializeField]private Vector3 StartPos = Vector3.zero;        //開始位置
     private Vector3 EndPos = Vector3.zero;     //終了位置
     private Vector3 NowPos = Vector3.zero;      //現在の位置
     private Vector3 NextPos = Vector3.zero;     //次の位置
@@ -31,7 +31,7 @@ public class JackPleaseScript : MonoBehaviour
     void Start()
     {
         //最初のポジション
-        StartPos = rect.localPosition;
+        //StartPos = rect.localPosition;
         //最後のポジション
         EndPos = rect.localPosition;
         EndPos.x *= -1.0f;
