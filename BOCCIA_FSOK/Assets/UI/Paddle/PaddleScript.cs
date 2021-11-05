@@ -30,6 +30,7 @@ public class PaddleScript : MonoBehaviour
         Color color = image.color;
         color.a = 0.0f;
         image.color = color;
+        rect.localScale = Vector3.zero;
     }
 
     // Update is called once per frame
