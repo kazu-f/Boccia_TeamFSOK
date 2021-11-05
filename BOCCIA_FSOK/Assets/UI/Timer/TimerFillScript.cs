@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class TimerFillScript : MonoBehaviour
 {
-    [SerializeField] private float Limit = 30.0f;
+    [SerializeField] private int Limit = 30;
     private float NowTime = 0.0f;
     private bool IsStart = false;
     private float late = 1.0f;
@@ -27,7 +27,7 @@ public class TimerFillScript : MonoBehaviour
         if(IsStart)
         {
             NowTime -= Time.deltaTime;
-            //0Š„‚è‚ª”­¶‚µ‚È‚¢‚½‚ß‚ÉÅ’á’l‚ğŒˆ‚ß‚Æ‚­
+            //ˆê‰Å’á’lŒˆ‚ß‚Æ‚­
             NowTime = Mathf.Max(NowTime, -0.01f);
             late = NowTime / Limit;
             CircleImage.fillAmount = late;
@@ -38,6 +38,16 @@ public class TimerFillScript : MonoBehaviour
             //Ø‚èã‚°
             int timenum = Mathf.CeilToInt(NowTime);
             time.text = "" + timenum;
+            if(timenum < Limit/4)
+            {
+                time.color = Color.red;
+                return;
+            }
+            else if(timenum < Limit /2)
+            {
+                time.color = Color.yellow;
+                return;
+            }
         }
     }
 
@@ -46,5 +56,6 @@ public class TimerFillScript : MonoBehaviour
         NowTime = Limit;
         IsStart = true;
         late = 1.0f;
+        time.color = Color.green;
     }
 }

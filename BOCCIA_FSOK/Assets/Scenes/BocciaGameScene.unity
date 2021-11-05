@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c378f9463a69ec14892b23a89ec57d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Limit: 10
+  Limit: 15
   CircleBefore: {fileID: 2065109755}
   time: {fileID: 1705942338}
 --- !u!1 &33022953 stripped
