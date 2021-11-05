@@ -32,9 +32,10 @@ public class JackPleaseScript : MonoBehaviour
     {
         //最初のポジション
         //StartPos = rect.localPosition;
+        StartPos.x = rect.rect.width+50;
         //最後のポジション
-        EndPos = rect.localPosition;
-        EndPos.x *= -1.0f;
+        EndPos = StartPos;
+        EndPos.x = -(rect.rect.width+50);
         //次の位置
         NextPos = StartPos;
         NextPos.x = 0.0f;
