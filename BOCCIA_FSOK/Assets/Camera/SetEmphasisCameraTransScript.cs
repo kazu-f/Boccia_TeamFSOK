@@ -19,6 +19,10 @@ public class SetEmphasisCameraTransScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    }
+
+    private void LateUpdate()
+    {
         EmphasisCamera.gameObject.transform.position = this.gameObject.transform.position;
         EmphasisCamera.gameObject.transform.rotation = this.gameObject.transform.rotation;
         if (IsOrtho)
@@ -31,8 +35,8 @@ public class SetEmphasisCameraTransScript : MonoBehaviour
             //ï¿çsìäâeÇÃéû
             EmphasisCamera.GetComponent<Camera>().fieldOfView = this.gameObject.GetComponent<Camera>().fieldOfView;
         }
-    }
 
+    }
     private void OnEnable()
     {
         IsOrtho = this.gameObject.GetComponent<Camera>().orthographic;
