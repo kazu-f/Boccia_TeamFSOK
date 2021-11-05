@@ -124,6 +124,8 @@ public class EndFlowScript : MonoBehaviour
 
         for (int ballnum = 0; ballnum < m_balls.Length; ballnum++)
         {
+            //レイヤーを切り替え
+            m_balls[ballnum].gameObject.layer = 0;
             //チームを取得
             Teams[ballnum] = m_balls[ballnum].GetComponent<TeamDivisionScript>().GetTeam();
             //ボールの位置を取得
