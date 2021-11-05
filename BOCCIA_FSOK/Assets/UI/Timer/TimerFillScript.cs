@@ -9,11 +9,15 @@ public class TimerFillScript : MonoBehaviour
     private bool IsStart = false;
     private float late = 1.0f;
     [SerializeField]private GameObject CircleBefore = null;
-    private Image CircleImage = null;
+    [SerializeField] private GameObject CircleAfter = null;
+    private Image CircleBeforeImage = null;
+    private Image CircleAfterImage = null;
     [SerializeField] private Text time = null;
+    private bool IsTimeUped = false;
     private void Awake()
     {
-        CircleImage = CircleBefore.GetComponent<Image>();
+        CircleBeforeImage = CircleBefore.GetComponent<Image>();
+        CircleAfterImage = CircleAfter.GetComponent<Image>();
     }
     // Start is called before the first frame update
     void Start()
@@ -30,10 +34,11 @@ public class TimerFillScript : MonoBehaviour
             //àÍâûç≈í·ílåàÇﬂÇ∆Ç≠
             NowTime = Mathf.Max(NowTime, -0.01f);
             late = NowTime / Limit;
-            CircleImage.fillAmount = late;
+            CircleBeforeImage.fillAmount = late;
             if(late < 0.0f)
             {
                 IsStart = false;
+                IsTimeUped = true;
             }
             //êÿÇËè„Ç∞
             int timenum = Mathf.CeilToInt(NowTime);
@@ -41,10 +46,12 @@ public class TimerFillScript : MonoBehaviour
             if(timenum < Limit/4)
             {
                 time.color = Color.red;
+                CircleAfterImage.color = Color.red;
                 return;
             }
             else if(timenum < Limit /2)
             {
+                CircleAfterImage.color = Color.yellow;
                 time.color = Color.yellow;
                 return;
             }
@@ -57,5 +64,12 @@ public class TimerFillScript : MonoBehaviour
         IsStart = true;
         late = 1.0f;
         time.color = Color.green;
+        CircleAfterImage.color = Color.green;
+        IsTimeUped = false;
+    }
+
+    public bool IsTimeUp()
+    {
+        return IsTimeUped;
     }
 }
