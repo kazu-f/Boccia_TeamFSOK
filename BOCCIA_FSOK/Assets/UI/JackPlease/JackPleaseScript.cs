@@ -46,6 +46,7 @@ public class JackPleaseScript : MonoBehaviour
     {
         if (SlideStart)
         {
+            SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
             //“Š‚°‚ê‚È‚¢‚æ‚¤‚É‚·‚é
             var player = GameObject.Find("Players");
             if (player != null)
@@ -123,6 +124,7 @@ public class JackPleaseScript : MonoBehaviour
                 default:
                     //“Š‚°‚ê‚é‚æ‚¤‚É‚·‚é
                     GameObject.Find("Players").GetComponent<ActiveTeamController>().ChangeActivePlayer();
+                    SwichActiveGameObjects.GetInstance().SwitchGameObject(true);
                     SlideStart = false;
                     return;
             }

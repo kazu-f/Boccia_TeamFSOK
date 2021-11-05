@@ -37,8 +37,13 @@ public class PaddleScript : MonoBehaviour
     {
         if(ScaleStart)
         {
+            SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
             //“Š‚°‚ê‚È‚¢‚æ‚¤‚É‚·‚é
-            GameObject.Find("Players").GetComponent<ActiveTeamController>().StopThrow();
+            var player = GameObject.Find("Players");
+            if (player != null)
+            {
+                player.GetComponent<ActiveTeamController>().StopThrow();
+            }
             LerpPos();
         }
     }
@@ -96,6 +101,7 @@ public class PaddleScript : MonoBehaviour
             GameObject.Find("Players").GetComponent<ActiveTeamController>().ChangeActivePlayer();
             ScaleStart = false;
             late = 0.0f;
+            SwichActiveGameObjects.GetInstance().SwitchGameObject(true);
         }
     }
 
