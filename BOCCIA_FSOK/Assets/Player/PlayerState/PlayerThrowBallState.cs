@@ -40,11 +40,16 @@ namespace BocciaPlayer
             m_throwPow.y = 0.0f;
             throwBall.StartThrowBall(m_touchStartPos);
             throwBall.enabled = true;
-            netSendManager.SendThrowGaugePosition(m_touchStartPos);
-            netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
+            if (netSendManager != null)
+            {
+                netSendManager.SendThrowGaugePosition(m_touchStartPos);
+                netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
+            }
         }
         override public void Leave()
         {
+            if (netSendManager != null)
+                netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
             throwBall.enabled = false;
         }
         override public void Execute()
@@ -69,8 +74,11 @@ namespace BocciaPlayer
 
                     //投げる力をセット。
                     throwBall.SetThrowPow(m_throwPow);
-                    netSendManager.SendThrowPow(m_throwPow);
-                    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
+                    if(netSendManager != null)
+                    {
+                        netSendManager.SendThrowPow(m_throwPow);
+                        netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
+                    }
                 }
                 else if (touchManager.GetPhase() == TouchInfo.Ended)
                 {
@@ -78,7 +86,11 @@ namespace BocciaPlayer
                     {
                         //ボールを投げる。
                         throwBall.ThrowBall();
-                        netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Throw);
+                        if (netSendManager != null)
+                        {
+                            netSendManager.SendThrowPos(throwBall.GetThrowPosition());
+                            netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Throw);
+                        }
                         //ステート変更。
                         m_player.ChangeState(EnPlayerState.enWait);
                     }

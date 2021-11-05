@@ -132,6 +132,13 @@ namespace BocciaPlayer
         {
             return m_throwPos;
         }
+        /// <summary>
+        /// 投げる位置を直接設定。
+        /// </summary>
+        public void SetThrowPosition(Vector3 pos)
+        {
+            m_throwPos = pos;
+        }
 
         //ボールを投げる。
         public void ThrowBall()

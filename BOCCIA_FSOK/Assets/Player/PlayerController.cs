@@ -61,7 +61,10 @@ namespace BocciaPlayer
             //À•W•Ï‰»‚ª‚ ‚ê‚Î‘—MB
             if(oldPosition != this.transform.position)
             {
-                netSendManager.SendPlayerPos(this.transform.position);
+                if (netSendManager != null)
+                {
+                    netSendManager.SendPlayerPos(this.transform.position);
+                }
                 oldPosition = this.transform.position;
             }
         }

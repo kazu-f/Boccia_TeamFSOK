@@ -47,7 +47,10 @@ namespace BocciaPlayer
                     //タッチが移動したら速度を求める。
                     xSpeed = touchManager.GetDeltaPosInScreen().x;
                     angleController.AngleRotation(xSpeed);
-                    netSendManager.SendQuaternion(m_player.transform.rotation);
+                    if(netSendManager != null)
+                    {
+                        netSendManager.SendQuaternion(m_player.transform.rotation);
+                    }
                 }
                 else if(touchManager.GetPhase() == TouchInfo.Ended)
                 {

@@ -20,12 +20,32 @@ public class ActiveTeamController : MonoBehaviour
     public GameObject RedTeamPlayer;        //赤チームプレイヤー。
     public GameObject BlueTeamPlayer;       //青チームプレイヤー。
 
-    private BocciaPlayer.IPlayerController RedPlayerCon;
-    private BocciaPlayer.IPlayerController BluePlayerCon;
+    private NetworkLauncherScript netLauncher = null;
+    private BocciaPlayer.IPlayerController RedPlayerCon = null;
+    private BocciaPlayer.IPlayerController BluePlayerCon = null;
 
     Team currentTeam;                              //現在のプレイヤー。
+    Team playerTeamCol;                             //プレイヤーのチームカラー。
     ThrowTeamState throwState = ThrowTeamState.throwBall;
 
+    private void Awake()
+    {
+        var netObj = GameObject.FindGameObjectWithTag("Network");
+        if(netObj != null)
+        {
+            netLauncher = netObj.GetComponent<NetworkLauncherScript>();
+            //ランチャーを取得。
+            if (netLauncher != null)
+            {
+                if(netLauncher.IsMasterClient())
+                {
+
+                }
+            }
+        }
+
+
+    }
     // Start is called before the first frame update
     void Start()
     {
