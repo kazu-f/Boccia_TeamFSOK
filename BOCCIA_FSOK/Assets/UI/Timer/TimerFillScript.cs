@@ -22,7 +22,7 @@ public class TimerFillScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TimerStart();
+
     }
 
     // Update is called once per frame
@@ -68,6 +68,10 @@ public class TimerFillScript : MonoBehaviour
         IsTimeUped = false;
     }
 
+    public void TimerStop()
+    {
+        IsStart = false;
+    }
     public bool IsTimeUp()
     {
         return IsTimeUped;
