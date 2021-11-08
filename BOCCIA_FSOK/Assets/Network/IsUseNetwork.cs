@@ -13,6 +13,7 @@ public class IsUseNetwork : MonoBehaviour
         //AIêÌÇ≈Ç»ÇØÇÍÇŒí«â¡Ç∑ÇÈÅB
         if(!isUseAI)
         {
+            this.gameObject.AddComponent<Photon.Pun.PhotonView>();
             this.gameObject.AddComponent<NetworkManagerScript>();
             this.gameObject.AddComponent<NetworkSendManagerScript>();
         }
