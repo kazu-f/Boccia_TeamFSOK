@@ -10,19 +10,24 @@ public class IsUseNetwork : MonoBehaviour
 
     private void Awake()
     {
-        //AI戦でなければ追加する。
-        if(!isUseAI)
-        {
-            this.gameObject.AddComponent<Photon.Pun.PhotonView>();
-            this.gameObject.AddComponent<NetworkManagerScript>();
-            this.gameObject.AddComponent<NetworkSendManagerScript>();
-        }
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //AI戦でなければ追加する。
+        if (!isUseAI)
+        {
+            this.gameObject.AddComponent<Photon.Pun.PhotonView>();
+            this.gameObject.AddComponent<NetworkManagerScript>();
+            this.gameObject.AddComponent<NetworkSendManagerScript>();
+            Debug.Log("通信対戦を開始。");
+        }
+        else
+        {
+            Debug.Log("AIとの対戦を開始。");
+        }
     }
 
     // Update is called once per frame

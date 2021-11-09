@@ -30,25 +30,36 @@ public class ActiveTeamController : MonoBehaviour
 
     private void Awake()
     {
-        var netObj = GameObject.FindGameObjectWithTag("Network");
-        if(netObj != null)
-        {
-            netLauncher = netObj.GetComponent<NetworkLauncherScript>();
-            //ランチャーを取得。
-            if (netLauncher != null)
-            {
-                if(netLauncher.IsMasterClient())
-                {
-
-                }
-            }
-        }
-
 
     }
     // Start is called before the first frame update
     void Start()
     {
+        var netObj = GameObject.FindGameObjectWithTag("Network");
+        var isUseNetwork = netObj.GetComponent<IsUseNetwork>();
+        if (!isUseNetwork.IsUseAI())
+        {
+            netLauncher = netObj.GetComponent<NetworkLauncherScript>();
+            //ランチャーを取得。
+            if (netLauncher != null)
+            {
+                if (netLauncher.IsMasterClient())
+                {
+                    RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+                    BlueTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
+                }
+                else
+                {
+                    RedTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
+                    BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+                }
+            }
+        }
+        else
+        {
+            RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+            BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+        }
         RedPlayerCon = RedTeamPlayer.GetComponent<BocciaPlayer.IPlayerController>();
         BluePlayerCon = BlueTeamPlayer.GetComponent<BocciaPlayer.IPlayerController>();
         //投げるプレイヤーを切り替え。
