@@ -39,20 +39,15 @@ public class ActiveTeamController : MonoBehaviour
         var isUseNetwork = netObj.GetComponent<IsUseNetwork>();
         if (!isUseNetwork.IsUseAI())
         {
-            netLauncher = netObj.GetComponent<NetworkLauncherScript>();
-            //ÉâÉìÉ`ÉÉÅ[ÇéÊìæÅB
-            if (netLauncher != null)
+            if (isUseNetwork.GetPlayerCol() == Team.Red)
             {
-                if (netLauncher.IsMasterClient())
-                {
-                    RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
-                    BlueTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
-                }
-                else
-                {
-                    RedTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
-                    BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
-                }
+                RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+                BlueTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
+            }
+            else
+            {
+                RedTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
+                BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
             }
         }
         else
