@@ -23,7 +23,7 @@ public class IsUseNetwork : MonoBehaviour
         if (!isUseAI)
         {
             //ネットワーク用のオブジェクトを作成。
-            sendManagerObj = Photon.Pun.PhotonNetwork.Instantiate("SendNetWorkObj",Vector3.zero,Quaternion.identity);
+            sendManagerObj = Photon.Pun.PhotonNetwork.InstantiateRoomObject("SendNetWorkObj",Vector3.zero,Quaternion.identity);
             if(sendManagerObj != null)
             {
                 sendManager = sendManagerObj.GetComponent<NetworkSendManagerScript>();
