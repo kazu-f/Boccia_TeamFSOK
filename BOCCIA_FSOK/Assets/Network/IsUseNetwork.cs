@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IsUseNetwork : MonoBehaviour
 {
-    private GameObject sendManagerObj = null;
+    [SerializeField]private GameObject sendManagerObj = null;
     private NetworkSendManagerScript sendManager = null;
     private NetworkManagerScript networkManager = null;
     private bool isUseAI = true;       //AIを使用するかどうか。
@@ -23,8 +23,7 @@ public class IsUseNetwork : MonoBehaviour
         if (!isUseAI)
         {
             //ネットワーク用のオブジェクトを作成。
-            sendManagerObj = Photon.Pun.PhotonNetwork.InstantiateRoomObject("SendNetWorkObj",Vector3.zero,Quaternion.identity);
-            if(sendManagerObj != null)
+            if (sendManagerObj != null)
             {
                 sendManager = sendManagerObj.GetComponent<NetworkSendManagerScript>();
                 networkManager = sendManagerObj.GetComponent<NetworkManagerScript>();
@@ -34,6 +33,8 @@ public class IsUseNetwork : MonoBehaviour
         }
         else
         {
+            //ネット関係削除。
+            Destroy(sendManager);
             Debug.Log("AIとの対戦を開始。");
         }
     }
