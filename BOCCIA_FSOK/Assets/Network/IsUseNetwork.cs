@@ -19,7 +19,8 @@ public class IsUseNetwork : MonoBehaviour
         //AI戦でなければ追加する。
         if (!isUseAI)
         {
-            this.gameObject.AddComponent<Photon.Pun.PhotonView>();
+            var photonView = this.gameObject.AddComponent<Photon.Pun.PhotonView>();
+            photonView.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;
             this.gameObject.AddComponent<NetworkManagerScript>();
             this.gameObject.AddComponent<NetworkSendManagerScript>();
             Debug.Log("通信対戦を開始。");
