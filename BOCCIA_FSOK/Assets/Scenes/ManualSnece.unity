@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834457b9dc8108d4797aca323e7b35be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameSceneString: BocciaGameScene
+  GameSceneString: ConnectNetScene
 --- !u!1 &1491151048
 GameObject:
   m_ObjectHideFlags: 0

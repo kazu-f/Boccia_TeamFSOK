@@ -21,6 +21,7 @@ namespace BocciaPlayer
         private Quaternion startRotation = new Quaternion();     //開始時点の回転。
         private Vector3 oldPosition = new Vector3();           //前フレームの座標。
         private Quaternion oldRotation = new Quaternion();           //前フレームの座標。
+        private bool isUpdating = false;
 
         private void Awake()
         {
@@ -30,7 +31,6 @@ namespace BocciaPlayer
             InitPlayerScript();
             //ボール投げるスクリプトを切る。
             throwBallControler.enabled = false;
-
         }
         // Start is called before the first frame update
         void Start()
@@ -41,6 +41,7 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
+            if (!isUpdating) return;
             //座標の値が変化した。
             if(oldPosition != netSendManager.ReceivePlayerPos())
             {
@@ -75,6 +76,7 @@ namespace BocciaPlayer
 
         override public void SwitchPlayer(bool isEnable)
         {
+            isUpdating = isEnable;
             //開始時点のトランスフォームへ移動。
             if (isEnable == true)
             {
