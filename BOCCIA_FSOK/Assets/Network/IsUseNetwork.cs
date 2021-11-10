@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class IsUseNetwork : MonoBehaviour
 {
+    private GameObject sendManagerObj = null;
+    private NetworkSendManagerScript sendManager = null;
+    private NetworkManagerScript networkManager = null;
     private bool isUseAI = true;       //AIを使用するかどうか。
     private Team playerTeamCol = Team.Red;      //プレイヤーのチームカラー。
 
@@ -19,10 +22,14 @@ public class IsUseNetwork : MonoBehaviour
         //AI戦でなければ追加する。
         if (!isUseAI)
         {
-            var photonView = this.gameObject.AddComponent<Photon.Pun.PhotonView>();
-            photonView.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;
-            this.gameObject.AddComponent<NetworkManagerScript>();
-            this.gameObject.AddComponent<NetworkSendManagerScript>();
+            //ネットワーク用のオブジェクトを作成。
+            sendManagerObj = Photon.Pun.PhotonNetwork.Instantiate("SendNetWorkObj",Vector3.zero,Quaternion.identity);
+            if(sendManagerObj != null)
+            {
+                sendManager = sendManagerObj.GetComponent<NetworkSendManagerScript>();
+                networkManager = sendManagerObj.GetComponent<NetworkManagerScript>();
+            }
+
             Debug.Log("通信対戦を開始。");
         }
         else
@@ -55,5 +62,10 @@ public class IsUseNetwork : MonoBehaviour
     public void SetTeamCol(Team col)
     {
         playerTeamCol = col;
+    }
+
+    public NetworkSendManagerScript GetSendManager()
+    {
+        return sendManager;
     }
 }

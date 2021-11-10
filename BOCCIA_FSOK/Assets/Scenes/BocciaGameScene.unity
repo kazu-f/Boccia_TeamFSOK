@@ -2111,7 +2111,7 @@ GameObject:
   - component: {fileID: 1557964043}
   - component: {fileID: 1557964042}
   m_Layer: 0
-  m_Name: NetworkData
+  m_Name: IsNetWorkObj
   m_TagString: Network
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
