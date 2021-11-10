@@ -31,6 +31,7 @@ namespace BocciaPlayer
             InitPlayerScript();
             //ボール投げるスクリプトを切る。
             throwBallControler.enabled = false;
+            playerMoveScript.enabled = false;
         }
         // Start is called before the first frame update
         void Start()
@@ -45,8 +46,13 @@ namespace BocciaPlayer
             //座標の値が変化した。
             if(oldPosition != netSendManager.ReceivePlayerPos())
             {
+                playerMoveScript.enabled = true;
                 this.gameObject.transform.position = netSendManager.ReceivePlayerPos();
                 oldPosition = netSendManager.ReceivePlayerPos();
+            }
+            else
+            {
+                playerMoveScript.enabled = false;
             }
             //回転の値が変化した。
             if(oldRotation != netSendManager.ReveiveQuaternion())
