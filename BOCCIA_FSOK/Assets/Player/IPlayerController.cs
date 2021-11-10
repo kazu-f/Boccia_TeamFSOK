@@ -6,7 +6,7 @@ namespace BocciaPlayer
 {
     public abstract class IPlayerController : MonoBehaviour
     {
-        protected NetworkSendManagerScript netSendManager;        //ネットを使ってデータを送るためのスクリプト。
+        protected NetworkSendManagerScript netSendManager;       //ネットを使ってデータを送るためのスクリプト。
         protected ThrowBallControler throwBallControler;        //ボールを投げるスクリプト。
         protected ThrowAngleController throwAngleController;    //方向変更スクリプト。
         protected BallHolderController ballHolderController;    //ボール管理スクリプト。
