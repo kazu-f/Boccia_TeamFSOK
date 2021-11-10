@@ -43,6 +43,11 @@ namespace BocciaPlayer
         void Update()
         {
             if (!isUpdating) return;
+            if(netSendManager == null)
+            {
+                Debug.Log("SendManagerが取得できていない。");
+                isUpdating = false;
+            }
             //座標の値が変化した。
             if(oldPosition != netSendManager.ReceivePlayerPos())
             {

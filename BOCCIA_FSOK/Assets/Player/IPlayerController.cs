@@ -32,7 +32,7 @@ namespace BocciaPlayer
             else
             {
                 netSendManager = isNetwork.GetSendManager();
-                if (netSendManager != null)
+                if (netSendManager == null)
                 {
                     Debug.Log("NetworkSendManager‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B");
                 }                
