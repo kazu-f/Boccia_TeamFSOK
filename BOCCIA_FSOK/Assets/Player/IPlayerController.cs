@@ -23,11 +23,19 @@ namespace BocciaPlayer
             ballHolderController = this.gameObject.GetComponentInChildren<BallHolderController>();
             playerMoveScript = this.gameObject.GetComponentInChildren<PlayerMoveScript>();
             //ネットワーク用のオブジェクトを取得。
-            netSendManager = GameObject.FindGameObjectWithTag("Network").GetComponent<NetworkSendManagerScript>();
+            var isNetwork = GameObject.FindGameObjectWithTag("Network").GetComponent<IsUseNetwork>();
 
-            if(netSendManager == null)
+            if(isNetwork.IsUseAI())
             {
-                Debug.Log("NetworkSendManagerが取得できませんでした。");
+                Debug.Log("AI対戦ではネットワーク関係を使わない。");
+            }
+            else
+            {
+                netSendManager = isNetwork.GetSendManager();
+                if (netSendManager == null)
+                {
+                    Debug.Log("NetworkSendManagerが取得できませんでした。");
+                }                
             }
         }
 

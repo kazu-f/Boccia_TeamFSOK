@@ -7,6 +7,7 @@ namespace BocciaPlayer
     //ボールが止まるまで待機する。
     public class PlayerWaitBallState : IPlayerState
     {
+        NetworkSendManagerScript netSendManager = null;
         TeamFlowScript teamFlow;
         bool isStop = true;
         override public void Init(PlayerController controller)
@@ -16,6 +17,10 @@ namespace BocciaPlayer
             if (gameFlow)
             {
                 teamFlow = gameFlow.GetComponent<TeamFlowScript>();
+            }
+            if (m_player)
+            {
+                netSendManager = m_player.GetNetSendManager();
             }
         }
         override public void Enter()
@@ -28,9 +33,14 @@ namespace BocciaPlayer
         }
         override public void Execute()
         {
-            if(!teamFlow.GetIsMoving())
+            if (!teamFlow.GetIsMoving())
             {
                 isStop = false;
+                //ステートを元に戻す。
+                if (netSendManager != null)
+                {
+                    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
+                }
             }
 
         }

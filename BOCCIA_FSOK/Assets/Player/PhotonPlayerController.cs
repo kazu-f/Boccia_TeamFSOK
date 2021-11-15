@@ -22,6 +22,7 @@ namespace BocciaPlayer
         private Vector3 oldPosition = new Vector3();           //前フレームの座標。
         private Quaternion oldRotation = new Quaternion();           //前フレームの座標。
         private bool isUpdating = false;
+        private bool isThrowing = false;                        //投げて終わったか。
 
         private void Awake()
         {
@@ -31,6 +32,7 @@ namespace BocciaPlayer
             InitPlayerScript();
             //ボール投げるスクリプトを切る。
             throwBallControler.enabled = false;
+            playerMoveScript.enabled = false;
         }
         // Start is called before the first frame update
         void Start()
@@ -42,11 +44,21 @@ namespace BocciaPlayer
         void Update()
         {
             if (!isUpdating) return;
+            if(netSendManager == null)
+            {
+                Debug.Log("SendManagerが取得できていない。");
+                isUpdating = false;
+            }
             //座標の値が変化した。
             if(oldPosition != netSendManager.ReceivePlayerPos())
             {
+                playerMoveScript.enabled = true;
                 this.gameObject.transform.position = netSendManager.ReceivePlayerPos();
                 oldPosition = netSendManager.ReceivePlayerPos();
+            }
+            else
+            {
+                playerMoveScript.enabled = false;
             }
             //回転の値が変化した。
             if(oldRotation != netSendManager.ReveiveQuaternion())
@@ -62,10 +74,12 @@ namespace BocciaPlayer
                 throwBallControler.SetThrowPow(netSendManager.ReceiveThrowPower());
             }
             //ボールを投げた。
-            else if(netSendManager.ReceiveState() == (int)EnPlayerDataState.enPlayerData_Throw)
+            else if(netSendManager.ReceiveState() == (int)EnPlayerDataState.enPlayerData_Throw && !isThrowing)
             {
+                throwBallControler.enabled = true;
                 throwBallControler.SetThrowPosition(netSendManager.ReceiveThrowPos());
                 throwBallControler.ThrowBall();         //ボールを投げる。
+                isThrowing = true;
             }
             else
             {
@@ -82,6 +96,7 @@ namespace BocciaPlayer
             {
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
+                isThrowing = false;
             }
         }
 
