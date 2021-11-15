@@ -145,12 +145,12 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
             }
             if(IsUseAI)
             {
-                //オフラインモードにする
-                PhotonNetwork.OfflineMode = true;
                 //AIを使用するとき
                 //部屋を抜ける
                 Debug.Log("ルームから抜けます");
                 PhotonNetwork.LeaveRoom();
+                //オフラインモードにする
+                PhotonNetwork.OfflineMode = true;
                 //接続を切断する
                 Debug.Log("接続を切断します");
                 PhotonNetwork.Disconnect();
