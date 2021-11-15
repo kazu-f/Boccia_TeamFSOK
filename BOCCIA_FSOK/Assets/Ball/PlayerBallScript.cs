@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public class PlayerBallScript : IBallScript
 {
+    private GameObject FailedFont = null;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        FailedFont=GameObject.Find("FailedSprite");
     }
 
     // Update is called once per frame
@@ -52,6 +56,7 @@ public class PlayerBallScript : IBallScript
     /// </summary>
     public override void InKillArea()
     {
+        FailedFont.SetActive(true);
         InArea = false;
         this.gameObject.SetActive(false);
     }
