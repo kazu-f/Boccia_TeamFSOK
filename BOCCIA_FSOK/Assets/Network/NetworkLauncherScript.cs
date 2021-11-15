@@ -168,6 +168,8 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                 {
                     //オフラインモードにする
                     PhotonNetwork.OfflineMode = true;
+                    //オフライン用の部屋に参加
+                    PhotonNetwork.JoinRandomRoom();
                     //部屋の人数が最大だとゲームシーンに移行
                     Debug.Log("ゲームシーンをロードします");
                     //シーン切り替え時の処理を追加。
