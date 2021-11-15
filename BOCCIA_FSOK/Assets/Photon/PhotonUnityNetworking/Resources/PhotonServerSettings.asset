@@ -42,6 +42,7 @@ MonoBehaviour:
   - Set
   - ThrowBall
   - StartThrowBall
+  - StartThrowBallCoroutine
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
