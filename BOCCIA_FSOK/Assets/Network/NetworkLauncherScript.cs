@@ -20,6 +20,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     bool IsGameSceneLoaded = false;
     bool IsUseAI = false;
     bool IsDisconected = false;
+    bool IsDisconecting = false;
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -128,33 +129,36 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
-        if (IsJoinedRoom)
+        if (!IsDisconecting)
         {
-            //部屋に参加しているとき
-            if (PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
+            if (IsJoinedRoom)
             {
-                if (!IsGameSceneLoaded)
+                //部屋に参加しているとき
+                if (PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
                 {
-                    //部屋の人数が最大だとゲームシーンに移行
-                    Debug.Log("ゲームシーンをロードします");
-                    //シーン切り替え時の処理を追加。
-                    SceneManager.sceneLoaded += SendGameConfig;
-                    PhotonNetwork.LoadLevel("BocciaGameScene");
-                    IsGameSceneLoaded = true;
+                    if (!IsGameSceneLoaded)
+                    {
+                        //部屋の人数が最大だとゲームシーンに移行
+                        Debug.Log("ゲームシーンをロードします");
+                        //シーン切り替え時の処理を追加。
+                        SceneManager.sceneLoaded += SendGameConfig;
+                        PhotonNetwork.LoadLevel("BocciaGameScene");
+                        IsGameSceneLoaded = true;
+                    }
+                }
+                if (IsUseAI)
+                {
+                    //AIを使用するとき
+                    //部屋を抜ける
+                    Debug.Log("ルームから抜けます");
+                    PhotonNetwork.LeaveRoom();
+                    //接続を切断する
+                    Debug.Log("接続を切断します");
+                    PhotonNetwork.Disconnect();
+                    IsDisconecting = true;
                 }
             }
-            if(IsUseAI)
-            {
-                //AIを使用するとき
-                //部屋を抜ける
-                Debug.Log("ルームから抜けます");
-                PhotonNetwork.LeaveRoom();
-                //接続を切断する
-                Debug.Log("接続を切断します");
-                PhotonNetwork.Disconnect();
-            }
         }
-
         if (IsDisconected)
         {
             if (IsUseAI)
@@ -162,6 +166,10 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                 //接続を切断した後
                 if (!IsGameSceneLoaded)
                 {
+                    //オフラインモードにする
+                    PhotonNetwork.OfflineMode = true;
+                    //オフライン用の部屋に参加
+                    PhotonNetwork.JoinRandomRoom();
                     //部屋の人数が最大だとゲームシーンに移行
                     Debug.Log("ゲームシーンをロードします");
                     //シーン切り替え時の処理を追加。
