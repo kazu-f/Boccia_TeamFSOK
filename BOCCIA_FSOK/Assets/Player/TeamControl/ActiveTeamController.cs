@@ -20,7 +20,6 @@ public class ActiveTeamController : MonoBehaviour
     public GameObject RedTeamPlayer;        //赤チームプレイヤー。
     public GameObject BlueTeamPlayer;       //青チームプレイヤー。
 
-    private NetworkLauncherScript netLauncher = null;
     private BocciaPlayer.IPlayerController RedPlayerCon = null;
     private BocciaPlayer.IPlayerController BluePlayerCon = null;
 

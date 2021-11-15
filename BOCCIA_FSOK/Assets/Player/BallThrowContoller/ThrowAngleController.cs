@@ -7,8 +7,8 @@ namespace BocciaPlayer
 {
     public class ThrowAngleController : MonoBehaviour
     {
-        public GameObject angleArrowObj;      //イメージのオブジェクト。
-        public GameObject playerCamera;         //カメラ。  
+        private GameObject angleArrowObj;      //イメージのオブジェクト。
+        private GameObject playerCamera;         //カメラ。  
         public GameObject bocciaPlayer;         //プレイヤー。
         public float angleSpeed = 90.0f;        //回転速度。
         private Vector3 m_newCamAngle = new Vector3(0, 0, 0);
@@ -19,8 +19,18 @@ namespace BocciaPlayer
 
         private void Awake()
         {
+            //カメラを探す。
+            playerCamera = GameObject.FindGameObjectWithTag("MainCamera");
             //カメラの回転の初期値を記録。
             m_defaultCamRot = playerCamera.transform.eulerAngles;
+
+            //インスタンス取得。
+            var arrow = ThrowAngleArrow.GetInstance();
+            if(arrow != null)
+            {
+                //ゲームオブジェクト取得。
+                angleArrowObj = arrow.gameObject;
+            }
         }
         // Start is called before the first frame update
         void Start()

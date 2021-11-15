@@ -7,11 +7,13 @@ namespace BocciaPlayer
     public class PlayerMoveScript : MonoBehaviour
     {
         new private Rigidbody rigidbody = null;
-        [SerializeField]private Camera mainCamera;
+        private GameObject mainCamera;
 
         private void Awake()
         {
             rigidbody = this.gameObject.GetComponentInParent<Rigidbody>();
+            //ƒJƒƒ‰‚ğ’T‚·B
+            mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
 
         private void Update()

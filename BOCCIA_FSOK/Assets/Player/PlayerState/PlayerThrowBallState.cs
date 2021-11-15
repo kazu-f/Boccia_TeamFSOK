@@ -49,6 +49,10 @@ namespace BocciaPlayer
         override public void Leave()
         {
             throwBall.enabled = false;
+            if (netSendManager != null)
+            {
+                netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
+            }
         }
         override public void Execute()
         {
@@ -84,20 +88,20 @@ namespace BocciaPlayer
                     {
                         //ボールを投げる。
                         throwBall.ThrowBall();
-                        if (netSendManager != null)
-                        {
-                            netSendManager.SendThrowPos(throwBall.GetThrowPosition());
-                            netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Throw);
-                        }
+                        //if (netSendManager != null)
+                        //{
+                        //    netSendManager.SendThrowPos(throwBall.GetThrowPosition());
+                        //    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Throw);
+                        //}
                         //ステート変更。
                         m_player.ChangeState(EnPlayerState.enWait);
                     }
                     else
                     {
-                        if (netSendManager != null)
-                        {
-                            netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
-                        }
+                        //if (netSendManager != null)
+                        //{
+                        //    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
+                        //}
                         //ステート変更。
                         m_player.ChangeState(EnPlayerState.enIdle);
                     }

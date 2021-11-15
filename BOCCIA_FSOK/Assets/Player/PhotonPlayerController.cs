@@ -43,7 +43,7 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
-            if (!isUpdating) return;
+            if (!throwBallControler.IsDecision()) return;
             if(netSendManager == null)
             {
                 Debug.Log("SendManager‚ªæ“¾‚Å‚«‚Ä‚¢‚È‚¢B");
