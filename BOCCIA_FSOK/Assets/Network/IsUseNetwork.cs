@@ -34,7 +34,7 @@ public class IsUseNetwork : MonoBehaviour
         else
         {
             //ネット関係削除。
-            Destroy(sendManager);
+            Destroy(sendManagerObj);
             Debug.Log("AIとの対戦を開始。");
         }
     }

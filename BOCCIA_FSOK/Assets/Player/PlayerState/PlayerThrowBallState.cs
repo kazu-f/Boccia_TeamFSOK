@@ -48,8 +48,6 @@ namespace BocciaPlayer
         }
         override public void Leave()
         {
-            if (netSendManager != null)
-                netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
             throwBall.enabled = false;
         }
         override public void Execute()
@@ -96,6 +94,10 @@ namespace BocciaPlayer
                     }
                     else
                     {
+                        if (netSendManager != null)
+                        {
+                            netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
+                        }
                         //ステート変更。
                         m_player.ChangeState(EnPlayerState.enIdle);
                     }

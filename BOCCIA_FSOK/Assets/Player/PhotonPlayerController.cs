@@ -22,6 +22,7 @@ namespace BocciaPlayer
         private Vector3 oldPosition = new Vector3();           //前フレームの座標。
         private Quaternion oldRotation = new Quaternion();           //前フレームの座標。
         private bool isUpdating = false;
+        private bool isThrowing = false;                        //投げて終わったか。
 
         private void Awake()
         {
@@ -73,10 +74,12 @@ namespace BocciaPlayer
                 throwBallControler.SetThrowPow(netSendManager.ReceiveThrowPower());
             }
             //ボールを投げた。
-            else if(netSendManager.ReceiveState() == (int)EnPlayerDataState.enPlayerData_Throw)
+            else if(netSendManager.ReceiveState() == (int)EnPlayerDataState.enPlayerData_Throw && !isThrowing)
             {
+                throwBallControler.enabled = true;
                 throwBallControler.SetThrowPosition(netSendManager.ReceiveThrowPos());
                 throwBallControler.ThrowBall();         //ボールを投げる。
+                isThrowing = true;
             }
             else
             {
@@ -93,6 +96,7 @@ namespace BocciaPlayer
             {
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
+                isThrowing = false;
             }
         }
 
