@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace BocciaPlayer
 {
-    public class ThrowAngleController : MonoBehaviour
+    public class ThrowAngleController : Photon.Pun.MonoBehaviourPun
     {
         private GameObject angleArrowObj;      //イメージのオブジェクト。
         private GameObject playerCamera;         //カメラ。  
@@ -60,8 +60,12 @@ namespace BocciaPlayer
             m_newCamAngle.y = Mathf.Clamp(m_newCamAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);          //カメラの回転の制限。
             m_newPlayerAngle.y = Mathf.Clamp(m_newPlayerAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);    //プレイヤーの回転の制限。
 
-            playerCamera.transform.localEulerAngles = m_newCamAngle;        //カメラの回転を入れる。
-            bocciaPlayer.transform.localEulerAngles = m_newPlayerAngle;     //プレイヤーの回転を入れる。
+            //引数をセット。
+            object[] param = {
+                m_newCamAngle,
+                m_newPlayerAngle
+            };
+            this.photonView.RPC(nameof(SetAngleRPC), Photon.Pun.RpcTarget.All, param);
         }
         /// <summary>
         /// Y軸回転をセットする。
@@ -80,8 +84,23 @@ namespace BocciaPlayer
             m_newCamAngle.y = Mathf.Clamp(m_newCamAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);          //カメラの回転の制限。
             m_newPlayerAngle.y = Mathf.Clamp(m_newPlayerAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);    //プレイヤーの回転の制限。
 
-            playerCamera.transform.localEulerAngles = m_newCamAngle;        //カメラの回転を入れる。
-            bocciaPlayer.transform.localEulerAngles = m_newPlayerAngle;     //プレイヤーの回転を入れる。
+            //引数をセット。
+            object[] param = {
+                m_newCamAngle,
+                m_newPlayerAngle
+            };
+            this.photonView.RPC(nameof(SetAngleRPC), Photon.Pun.RpcTarget.All, param);
+        }
+        /// <summary>
+        /// RPCで呼び出す回転をセットする関数。
+        /// </summary>
+        /// <param name="CamAngle"></param>
+        /// <param name="PlayerAngle"></param
+        [Photon.Pun.PunRPC]
+        public void SetAngleRPC(Vector3 CamAngle,Vector3 PlayerAngle)
+        {
+            playerCamera.transform.localEulerAngles = CamAngle;        //カメラの回転を入れる。
+            bocciaPlayer.transform.localEulerAngles = PlayerAngle;     //プレイヤーの回転を入れる。
         }
 
         //このスクリプトが有効になった時に呼ばれる。

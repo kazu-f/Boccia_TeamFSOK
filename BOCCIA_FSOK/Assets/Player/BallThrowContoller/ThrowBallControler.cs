@@ -143,15 +143,26 @@ namespace BocciaPlayer
         //ボールを投げる。
         public void ThrowBall()
         {
-            var photonView = Photon.Pun.PhotonView.Get(this);
-            photonView.RPC(nameof(StartThrowBallCoroutine), Photon.Pun.RpcTarget.All);
+            object[] param = {
+                m_force,
+                m_throwPos
+            };
+
+            this.photonView.RPC(nameof(SetThrowDataRPC), Photon.Pun.RpcTarget.Others,param);
+            this.photonView.RPC(nameof(ThrowBallRPC), Photon.Pun.RpcTarget.All);
         }
 
         //ボールを投げるコルーチン開始。
         [Photon.Pun.PunRPC]
-        void StartThrowBallCoroutine()
+        void SetThrowDataRPC(Vector3 force,Vector3 throwPos)
         {
-            Debug.Log("RPCを実行。");
+            m_force = force;
+            SetThrowPosition(throwPos);
+        }
+        //ボールを投げるコルーチン開始。
+        [Photon.Pun.PunRPC]
+        void ThrowBallRPC()
+        {
             //コルーチンを開始。
             StartCoroutine(ThrowCoroutine());
         }

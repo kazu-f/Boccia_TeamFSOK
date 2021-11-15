@@ -32,7 +32,7 @@ namespace BocciaPlayer
             InitPlayerScript();
             //ボール投げるスクリプトを切る。
             throwBallControler.enabled = false;
-            playerMoveScript.enabled = false;
+            playerMoveScript.SetIsMove(false);
         }
         // Start is called before the first frame update
         void Start()
@@ -43,43 +43,29 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
-            if (!throwBallControler.IsDecision()) return;
+            if (!isUpdating || throwBallControler.IsDecision()) return;
             if(netSendManager == null)
             {
                 Debug.Log("SendManagerが取得できていない。");
                 isUpdating = false;
             }
             //座標の値が変化した。
-            if(oldPosition != netSendManager.ReceivePlayerPos())
+            if(oldPosition != this.gameObject.transform.position)
             {
-                playerMoveScript.enabled = true;
-                this.gameObject.transform.position = netSendManager.ReceivePlayerPos();
-                oldPosition = netSendManager.ReceivePlayerPos();
+                playerMoveScript.SetIsMove(true);
+                oldPosition = this.gameObject.transform.position;
             }
             else
             {
-                playerMoveScript.enabled = false;
+                playerMoveScript.SetIsMove(false);
             }
-            //回転の値が変化した。
-            if(oldRotation != netSendManager.ReveiveQuaternion())
-            {
-                oldRotation = netSendManager.ReveiveQuaternion();
-                throwAngleController.SetAngle(oldRotation.eulerAngles.y);
-            }
+
             //画面を触っている。
             if(netSendManager.ReceiveState() == (int)EnPlayerDataState.enPlayerData_Gauge)
             {
                 throwBallControler.enabled = true;
                 throwBallControler.StartThrowBall(netSendManager.ReceiveThrowGaugePos());
                 throwBallControler.SetThrowPow(netSendManager.ReceiveThrowPower());
-            }
-            //ボールを投げた。
-            else if(netSendManager.ReceiveState() == (int)EnPlayerDataState.enPlayerData_Throw && !isThrowing)
-            {
-                throwBallControler.enabled = true;
-                throwBallControler.SetThrowPosition(netSendManager.ReceiveThrowPos());
-                throwBallControler.ThrowBall();         //ボールを投げる。
-                isThrowing = true;
             }
             else
             {
@@ -96,7 +82,6 @@ namespace BocciaPlayer
             {
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
-                isThrowing = false;
             }
         }
 

@@ -8,6 +8,7 @@ namespace BocciaPlayer
     {
         new private Rigidbody rigidbody = null;
         private GameObject mainCamera;
+        private bool isMove = false;        //“®‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©B
 
         private void Awake()
         {
@@ -18,12 +19,18 @@ namespace BocciaPlayer
 
         private void Update()
         {
-            mainCamera.transform.position = this.gameObject.transform.position;
+            //“®‚¢‚Ä‚¢‚é‚¾‚¯ƒJƒƒ‰‚ğ“®‚©‚·B
+            if(isMove) mainCamera.transform.position = this.gameObject.transform.position;
         }
 
         public void PlayerMove(Vector3 moveSpeed)
         {
             rigidbody.velocity = moveSpeed;
+        }
+
+        public void SetIsMove(bool flag)
+        {
+            isMove = flag;
         }
     }
 
