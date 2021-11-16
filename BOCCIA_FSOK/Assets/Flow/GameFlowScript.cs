@@ -22,6 +22,7 @@ public class GameFlowScript : MonoBehaviour
     private int currentEndNo = 0;               //現在のエンド数。
 
     private bool waitFlag = false;  //処理を待機する。
+    public bool isFinishGame { get; private set; } = false;
     private const float WAIT_TIME = 2.0f;   //待機時間。
 
     // Start is called before the first frame update
@@ -107,6 +108,7 @@ public class GameFlowScript : MonoBehaviour
     /// </summary>
     private void FinishGame()
     {
+        isFinishGame = true;
         //シーンを切り替える。
         changeScene.ChangeSceneInvoke(false, WAIT_TIME);
         //シーン切り替え時の処理を追加。

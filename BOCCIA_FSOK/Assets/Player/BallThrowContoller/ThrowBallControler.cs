@@ -24,6 +24,7 @@ namespace BocciaPlayer
 
         private const float THROW_DELAY = 0.2f;           //投げるまでのディレイの時間。
         private bool isDecision = false;           //投げる力を決定したか。
+        public bool isMyTeam = false;               //自分のチームかどうか。
 
         //定数。
         const float SWITCH_ARM_BORDER = 0.6f;
@@ -178,6 +179,16 @@ namespace BocciaPlayer
             {
                 yield return null;
             }
+
+            //if(isMyTeam)
+            //{
+            //    //自分チームなら権限をリクエストする。
+            //    var photonV = obj.GetComponent<Photon.Pun.PhotonView>();
+            //    if(photonV != null)
+            //    {
+            //        photonV.RequestOwnership();
+            //    }
+            //}
 
             //ボールの位置を合わせる。
             obj.transform.position = m_throwPos;

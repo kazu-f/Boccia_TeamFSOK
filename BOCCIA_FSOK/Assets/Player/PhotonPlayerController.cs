@@ -30,6 +30,7 @@ namespace BocciaPlayer
             startRotation = this.gameObject.transform.rotation;
             oldPosition = startPosition;
             InitPlayerScript();
+            throwBallControler.isMyTeam = false;
             //ボール投げるスクリプトを切る。
             throwBallControler.enabled = false;
             playerMoveScript.SetIsMove(false);
