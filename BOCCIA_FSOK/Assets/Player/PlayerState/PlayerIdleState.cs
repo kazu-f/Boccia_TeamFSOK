@@ -20,7 +20,6 @@ namespace BocciaPlayer {
         override public void Enter()
         {
             SwichActiveGameObjects.GetInstance().SwitchGameObject(true);
-
         }
         override public void Leave()
         {

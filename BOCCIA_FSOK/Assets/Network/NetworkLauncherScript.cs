@@ -72,6 +72,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
             isConnecting = PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.KeepAliveInBackground = 0.2f;     //アプリポーズの許容時間？。
             Debug.Log("Photonサーバーに接続します");
         }
     }
