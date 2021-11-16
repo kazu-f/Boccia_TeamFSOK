@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace BocciaPlayer
 {
-    public class ThrowBallControler : MonoBehaviour
+    public class ThrowBallControler : Photon.Pun.MonoBehaviourPun
     {
         public BallHolderController ballHolder;     //ボール所有者。
         public GameObject armObj;                 //手を表示させるスクリプト。
@@ -142,6 +142,26 @@ namespace BocciaPlayer
 
         //ボールを投げる。
         public void ThrowBall()
+        {
+            object[] param = {
+                m_force,
+                m_throwPos
+            };
+
+            this.photonView.RPC(nameof(SetThrowDataRPC), Photon.Pun.RpcTarget.Others,param);
+            this.photonView.RPC(nameof(ThrowBallRPC), Photon.Pun.RpcTarget.All);
+        }
+
+        //ボールを投げるコルーチン開始。
+        [Photon.Pun.PunRPC]
+        void SetThrowDataRPC(Vector3 force,Vector3 throwPos)
+        {
+            m_force = force;
+            SetThrowPosition(throwPos);
+        }
+        //ボールを投げるコルーチン開始。
+        [Photon.Pun.PunRPC]
+        void ThrowBallRPC()
         {
             //コルーチンを開始。
             StartCoroutine(ThrowCoroutine());

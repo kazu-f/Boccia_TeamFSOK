@@ -77,7 +77,7 @@ public class TouchManager : MonoBehaviour
         this.m_isTouch = false;
 
         // エディタ
-#if UNITY_EDITOR
+#if (UNITY_EDITOR || UNITY_STANDALONE_WIN)
         // 座標取得
         this.m_touchPos = Input.mousePosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, m_touchPos, canvas.worldCamera, out m_touchPos);
@@ -212,8 +212,8 @@ public class TouchManager : MonoBehaviour
     /// </summary>
     public static bool IsOnUI()
     {
-#if UNITY_EDITOR
-        if(!Input.GetMouseButton(0))
+#if (UNITY_EDITOR || UNITY_STANDALONE_WIN)
+        if (!Input.GetMouseButton(0))
         {
             return false;
         }
@@ -226,7 +226,7 @@ public class TouchManager : MonoBehaviour
 
         PointerEventData pointer = new PointerEventData(EventSystem.current);
 
-#if UNITY_EDITOR
+#if (UNITY_EDITOR || UNITY_STANDALONE_WIN)
         pointer.position = Input.mousePosition;
 #else
         pointer.position = Input.GetTouch(0).position;

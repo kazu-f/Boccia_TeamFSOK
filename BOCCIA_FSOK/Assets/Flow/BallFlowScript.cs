@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallFlowScript : MonoBehaviour
+public class BallFlowScript : Photon.Pun.MonoBehaviourPun
 {
     //シーン上にジャックボールがあるかどうか
     private bool m_IsPreparedJack = false;
@@ -13,9 +13,10 @@ public class BallFlowScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_Jack = Instantiate(JackPrefab);
-        m_Jack.SetActive(false);
-        m_BallOperate = m_Jack.GetComponent<BallOperateScript>();
+        if(photonView.IsMine)
+        {
+            photonView.RPC(nameof(CreateJackBallRPC), Photon.Pun.RpcTarget.AllBuffered, Photon.Pun.PhotonNetwork.AllocateViewID(true));
+        }
     }
 
     // Update is called once per frame
@@ -54,5 +55,25 @@ public class BallFlowScript : MonoBehaviour
 
         m_IsPreparedJack = false;
         m_Jack.SetActive(false);
+    }
+
+    [Photon.Pun.PunRPC]
+    public void CreateJackBallRPC(int viewID)
+    {
+        m_Jack = Instantiate(JackPrefab);
+        m_Jack.SetActive(false);
+        m_BallOperate = m_Jack.GetComponent<BallOperateScript>();
+        //PhotonViewの取得。
+        var photonV = m_Jack.GetComponent<Photon.Pun.PhotonView>();
+        photonV.ViewID = viewID;
+        photonV.ObservedComponents = new List<Component>();
+        var photonTransformView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonTransformView>();
+        photonTransformView.m_SynchronizePosition = true;
+        photonTransformView.m_SynchronizeRotation = true;
+        var photonRigidbodyView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
+        photonV.ObservedComponents.Add(photonTransformView);
+        photonV.ObservedComponents.Add(photonRigidbodyView);
+
+        Debug.Log("JackBallを作成。");
     }
 }

@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 namespace BocciaPlayer
 {
-    public class ThrowAngleController : MonoBehaviour
+    public class ThrowAngleController : Photon.Pun.MonoBehaviourPun
     {
-        public GameObject angleArrowObj;      //イメージのオブジェクト。
-        public GameObject playerCamera;         //カメラ。  
+        private GameObject angleArrowObj;      //イメージのオブジェクト。
+        private GameObject playerCamera;         //カメラ。  
         public GameObject bocciaPlayer;         //プレイヤー。
         public float angleSpeed = 90.0f;        //回転速度。
         private Vector3 m_newCamAngle = new Vector3(0, 0, 0);
@@ -19,8 +19,18 @@ namespace BocciaPlayer
 
         private void Awake()
         {
+            //カメラを探す。
+            playerCamera = GameObject.FindGameObjectWithTag("MainCamera");
             //カメラの回転の初期値を記録。
             m_defaultCamRot = playerCamera.transform.eulerAngles;
+
+            //インスタンス取得。
+            var arrow = ThrowAngleArrow.GetInstance();
+            if(arrow != null)
+            {
+                //ゲームオブジェクト取得。
+                angleArrowObj = arrow.gameObject;
+            }
         }
         // Start is called before the first frame update
         void Start()
@@ -50,8 +60,12 @@ namespace BocciaPlayer
             m_newCamAngle.y = Mathf.Clamp(m_newCamAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);          //カメラの回転の制限。
             m_newPlayerAngle.y = Mathf.Clamp(m_newPlayerAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);    //プレイヤーの回転の制限。
 
-            playerCamera.transform.localEulerAngles = m_newCamAngle;        //カメラの回転を入れる。
-            bocciaPlayer.transform.localEulerAngles = m_newPlayerAngle;     //プレイヤーの回転を入れる。
+            //引数をセット。
+            object[] param = {
+                m_newCamAngle,
+                m_newPlayerAngle
+            };
+            this.photonView.RPC(nameof(SetAngleRPC), Photon.Pun.RpcTarget.All, param);
         }
         /// <summary>
         /// Y軸回転をセットする。
@@ -70,8 +84,23 @@ namespace BocciaPlayer
             m_newCamAngle.y = Mathf.Clamp(m_newCamAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);          //カメラの回転の制限。
             m_newPlayerAngle.y = Mathf.Clamp(m_newPlayerAngle.y, -MAX_ANGLE_Y, MAX_ANGLE_Y);    //プレイヤーの回転の制限。
 
-            playerCamera.transform.localEulerAngles = m_newCamAngle;        //カメラの回転を入れる。
-            bocciaPlayer.transform.localEulerAngles = m_newPlayerAngle;     //プレイヤーの回転を入れる。
+            //引数をセット。
+            object[] param = {
+                m_newCamAngle,
+                m_newPlayerAngle
+            };
+            this.photonView.RPC(nameof(SetAngleRPC), Photon.Pun.RpcTarget.All, param);
+        }
+        /// <summary>
+        /// RPCで呼び出す回転をセットする関数。
+        /// </summary>
+        /// <param name="CamAngle"></param>
+        /// <param name="PlayerAngle"></param
+        [Photon.Pun.PunRPC]
+        public void SetAngleRPC(Vector3 CamAngle,Vector3 PlayerAngle)
+        {
+            playerCamera.transform.localEulerAngles = CamAngle;        //カメラの回転を入れる。
+            bocciaPlayer.transform.localEulerAngles = PlayerAngle;     //プレイヤーの回転を入れる。
         }
 
         //このスクリプトが有効になった時に呼ばれる。
