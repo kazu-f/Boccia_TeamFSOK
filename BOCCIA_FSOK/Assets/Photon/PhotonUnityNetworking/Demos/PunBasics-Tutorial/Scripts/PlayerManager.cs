@@ -10,7 +10,6 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
-
 namespace Photon.Pun.Demo.PunBasics
 {
 	#pragma warning disable 649
@@ -19,7 +18,7 @@ namespace Photon.Pun.Demo.PunBasics
     /// Player manager.
     /// Handles fire Input and Beams.
     /// </summary>
-    public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
+    public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable 
     {
         #region Public Fields
 
@@ -45,7 +44,7 @@ namespace Photon.Pun.Demo.PunBasics
         bool IsFiring;
 
         #endregion
-
+        
         #region MonoBehaviour CallBacks
 
         /// <summary>

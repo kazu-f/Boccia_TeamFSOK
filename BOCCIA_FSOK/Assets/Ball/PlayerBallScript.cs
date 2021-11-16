@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
 public class PlayerBallScript : IBallScript
 {
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -17,7 +17,7 @@ public class PlayerBallScript : IBallScript
     }
 
     /// <summary>
-    /// ƒ{[ƒ‹‚ªƒGƒŠƒA“à‚É“ü‚Á‚½‚Ìˆ—
+    /// ï¿½{ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½Aï¿½ï¿½É“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
     /// </summary>
     public override void InsideVenue()
     {
@@ -25,7 +25,7 @@ public class PlayerBallScript : IBallScript
     }
 
     /// <summary>
-    /// ƒ{[ƒ‹‚ªƒGƒŠƒAŠO‚Éo‚½‚Ìˆ—
+    /// ï¿½{ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½Aï¿½Oï¿½Éoï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
     /// </summary>
     public override void OutsideVenue()
     {
@@ -35,20 +35,21 @@ public class PlayerBallScript : IBallScript
     }
 
     /// <summary>
-    /// ƒ{[ƒ‹‚ª’â~‚µ‚½‚Æ‚«‚Ìˆ—
+    /// ï¿½{ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ìï¿½ï¿½ï¿½
     /// </summary>
     public override void EndThrow()
     {
         IsThrowing = false;
         if (InArea == false)
         {
+
             this.gameObject.GetComponent<BallStateScript>().ResetState();
             this.gameObject.SetActive(false);
         }
     }
 
     /// <summary>
-    /// ƒLƒ‹ƒGƒŠƒA‚É“ü‚Á‚½‚Ìˆ—
+    /// ï¿½Lï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½Aï¿½É“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
     /// </summary>
     public override void InKillArea()
     {

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ManualScript : MonoBehaviour
 {
-    private bool IsPressed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,11 +17,4 @@ public class ManualScript : MonoBehaviour
         
     }
 
-    /// <summary>
-    /// ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
-    /// </summary>
-    public void OnPress()
-    {
-        IsPressed = true;
-    }
 }

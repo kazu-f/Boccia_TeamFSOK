@@ -1,12 +1,28 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &1991007056267916835
+--- !u!114 &8467182600906403874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4569668526166853805}
+  m_GameObject: {fileID: 2358465874934825963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &824550956536536432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2358465874934825963}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
@@ -71,6 +87,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7324876002002402332, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7324876002002402332, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
+      propertyPath: ObservedComponents.Array.data[0]
+      value: 
+      objectReference: {fileID: 824550956536536432}
+    - target: {fileID: 7324876002002402332, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
+      propertyPath: ObservedComponents.Array.data[1]
+      value: 
+      objectReference: {fileID: 8467182600906403874}
     - target: {fileID: 8824630355572602714, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
       propertyPath: ObservedComponents.Array.size
       value: 2
@@ -78,11 +106,11 @@ PrefabInstance:
     - target: {fileID: 8824630355572602714, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
       propertyPath: ObservedComponents.Array.data[1]
       value: 
-      objectReference: {fileID: 1991007056267916835}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
---- !u!1 &4569668526166853805 stripped
+--- !u!1 &2358465874934825963 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2358465874934825963, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4569668526166853805, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
   m_PrefabInstance: {fileID: 2292417317409803078}
   m_PrefabAsset: {fileID: 0}

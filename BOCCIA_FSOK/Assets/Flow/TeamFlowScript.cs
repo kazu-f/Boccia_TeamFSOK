@@ -2,8 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TeamFlowState
+{
+    Move,
+    Stop,
+    Delay,
+    Caluced,
+    Num,
+}
 public class TeamFlowScript : MonoBehaviour
 {
+    public TeamFlowState m_state;
     public Team m_NextTeam = Team.Num;
     private Team m_firstTeam = Team.Red;
     private BallFlowScript m_BallFlow = null;
@@ -19,6 +28,9 @@ public class TeamFlowScript : MonoBehaviour
     private GameObject m_NextBallImage = null;
     [SerializeField] private float AfterEndTime = 3.0f;
     private float AfterNowTime = 0.0f;
+
+    public GameObject m_FailedFont = null;
+    public AudioSource m_FailedSound;
     private void Awake()
     {
         m_BallFlow = GetComponent<BallFlowScript>();
@@ -273,6 +285,10 @@ public class TeamFlowScript : MonoBehaviour
                 }
             }
         }
+
+        m_FailedFont = GameObject.Find("Image");
+        m_FailedFont.GetComponent<FailedMoveScript>().SetDirect();
+        m_FailedSound.Play();
         if (EndAfterTime() == false)
         {
             return;
@@ -459,5 +475,10 @@ public class TeamFlowScript : MonoBehaviour
         {
             return m_RemainBalls.y;
         }
+    }
+
+    public TeamFlowState GetState()
+    {
+        return m_state;
     }
 }

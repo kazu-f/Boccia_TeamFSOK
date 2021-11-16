@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallBoundSound : MonoBehaviour
+public class BallHitScript : MonoBehaviour
 {
-    public AudioSource boundSE;
+    public AudioSource hitSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,17 +13,17 @@ public class BallBoundSound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
     /// <summary>
-    /// 物体と衝突した。
+    /// ボールと衝突した。
     /// </summary>
     /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Court")
+        if (collision.gameObject.tag == "Ball" ||
+            collision.gameObject.tag == "Jack")
         {
-            boundSE.Play();
+            hitSound.Play();
         }
     }
 }
