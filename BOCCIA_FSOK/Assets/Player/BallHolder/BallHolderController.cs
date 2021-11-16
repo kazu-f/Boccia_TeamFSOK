@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BocciaPlayer
 {
-    public class BallHolderController : MonoBehaviour
+    public class BallHolderController : Photon.Pun.MonoBehaviourPun
     {
         public GameObject ballObj;      //ボールのプレファブ。
         public int ballCount = 6;       //チームのボールの数。
@@ -15,14 +15,21 @@ namespace BocciaPlayer
 
         private void Awake()
         {
-            //ボールの配列確保。
-            teamBalls = new GameObject[ballCount];
-            for (int i = 0; i < ballCount; i++)
+            if (photonView.IsMine)
             {
-                //ボールを生成。
-                teamBalls[i] = Instantiate(ballObj);
-                //まだ投げないため有効フラグを消す。
-                teamBalls[i].SetActive(false);
+                //ボールの配列確保。
+                photonView.RPC(nameof(CreateList), Photon.Pun.RpcTarget.AllBuffered);
+
+                for (int i = 0; i < ballCount; i++)
+                {
+                    object[] param = {
+                    i,
+                    Photon.Pun.PhotonNetwork.AllocateViewID(true)
+                    };
+
+                    photonView.RPC(nameof(CreateBallRPC), Photon.Pun.RpcTarget.AllBuffered, param);
+                }
+                Debug.Log("TeamBallを作成。");
             }
 
             gameFlowObj = GameObject.FindGameObjectWithTag("GameFlow");
@@ -88,6 +95,38 @@ namespace BocciaPlayer
                 ballOperate.ResetVar();
             }
 
+        }
+        /// <summary>
+        /// リストの作成を同期。
+        /// </summary>
+        /// <remarks>ボールの作成にリストがないと上手く動作しなくなる?</remarks>
+        [Photon.Pun.PunRPC]
+        public void CreateList()
+        {
+            teamBalls = new GameObject[ballCount];
+        }
+        /// <summary>
+        /// ボールを作成する。
+        /// </summary>
+        /// <param name="ballNo"></param>
+        /// <param name="viewID"></param>
+        [Photon.Pun.PunRPC]
+        public void CreateBallRPC(int ballNo,int viewID)
+        {
+            //ボールを生成。
+            teamBalls[ballNo] = Instantiate(ballObj, Vector3.zero, Quaternion.identity);
+            //まだ投げないため有効フラグを消す。
+            teamBalls[ballNo].SetActive(false);
+            //PhotonViewの取得。
+            var photonV = teamBalls[ballNo].GetComponent<Photon.Pun.PhotonView>();
+            photonV.ViewID = viewID;
+            photonV.ObservedComponents = new List<Component>();
+            var photonTransformView = teamBalls[ballNo].gameObject.GetComponent<Photon.Pun.PhotonTransformView>();
+            photonTransformView.m_SynchronizePosition = true;
+            photonTransformView.m_SynchronizeRotation = true;
+            var photonRigidbodyView = teamBalls[ballNo].gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
+            photonV.ObservedComponents.Add(photonTransformView);
+            photonV.ObservedComponents.Add(photonRigidbodyView);
         }
     }
 }

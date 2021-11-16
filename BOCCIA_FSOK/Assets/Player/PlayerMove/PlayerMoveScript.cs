@@ -7,21 +7,30 @@ namespace BocciaPlayer
     public class PlayerMoveScript : MonoBehaviour
     {
         new private Rigidbody rigidbody = null;
-        [SerializeField]private Camera mainCamera;
+        private GameObject mainCamera;
+        private bool isMove = false;        //動いているかどうか。
 
         private void Awake()
         {
             rigidbody = this.gameObject.GetComponentInParent<Rigidbody>();
+            //カメラを探す。
+            mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
 
         private void Update()
         {
-            mainCamera.transform.position = this.gameObject.transform.position;
+            //動いている時だけカメラを動かす。
+            if(isMove) mainCamera.transform.position = this.gameObject.transform.position;
         }
 
         public void PlayerMove(Vector3 moveSpeed)
         {
             rigidbody.velocity = moveSpeed;
+        }
+
+        public void SetIsMove(bool flag)
+        {
+            isMove = flag;
         }
     }
 

@@ -19,18 +19,18 @@ namespace BocciaPlayer
             if (m_player)
             {
                 playerMove = m_player.GetPlayerMoveScript();
-                playerMove.enabled = false;
+                playerMove.SetIsMove(false);
                 playerTransform = m_player.gameObject.transform;
                 netSendManager = m_player.GetNetSendManager();
             }
         }
         override public void Enter()
         {
-            playerMove.enabled = true;
+            playerMove.SetIsMove(true);
         }
         override public void Leave()
         {
-            playerMove.enabled = false;
+            playerMove.SetIsMove(false);
         }
         override public void Execute()
         {

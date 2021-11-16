@@ -22,7 +22,7 @@ public class IsUseNetwork : MonoBehaviour
         //AI戦でなければ追加する。
         if (!isUseAI)
         {
-            //ネットワーク用のオブジェクトを作成。
+            //ネットワーク用のスクリプト取得。
             if (sendManagerObj != null)
             {
                 sendManager = sendManagerObj.GetComponent<NetworkSendManagerScript>();
@@ -33,8 +33,8 @@ public class IsUseNetwork : MonoBehaviour
         }
         else
         {
-            //ネット関係削除。
-            Destroy(sendManagerObj);
+            ////ネット関係削除。
+            //Destroy(sendManagerObj);
             Debug.Log("AIとの対戦を開始。");
         }
     }

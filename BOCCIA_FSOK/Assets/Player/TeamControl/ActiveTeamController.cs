@@ -20,7 +20,6 @@ public class ActiveTeamController : MonoBehaviour
     public GameObject RedTeamPlayer;        //赤チームプレイヤー。
     public GameObject BlueTeamPlayer;       //青チームプレイヤー。
 
-    private NetworkLauncherScript netLauncher = null;
     private BocciaPlayer.IPlayerController RedPlayerCon = null;
     private BocciaPlayer.IPlayerController BluePlayerCon = null;
 
@@ -41,22 +40,26 @@ public class ActiveTeamController : MonoBehaviour
         {
             if (isUseNetwork.GetPlayerCol() == Team.Red)
             {
-                RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
-                BlueTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
+                RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+                //var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
+                //photonView.RequestOwnership();
+                BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
             }
             else
             {
-                RedTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
-                BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+                RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
+                BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+                //var photonView = BlueTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
+                //photonView.RequestOwnership();
             }
         }
         else
         {
-            RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
-            BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+            RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+            //var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
+            //photonView.RequestOwnership();
+            BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
         }
-        RedPlayerCon = RedTeamPlayer.GetComponent<BocciaPlayer.IPlayerController>();
-        BluePlayerCon = BlueTeamPlayer.GetComponent<BocciaPlayer.IPlayerController>();
         //投げるプレイヤーを切り替え。
         ChangeActivePlayer();
     }
