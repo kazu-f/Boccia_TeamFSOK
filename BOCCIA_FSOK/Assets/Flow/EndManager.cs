@@ -25,7 +25,7 @@ public class EndManager : MonoBehaviour
             case TeamFlowState.Stop:
 
                 break;
-            case TeamFlowState.delay:
+            case TeamFlowState.Delay:
 
                 break;
             case TeamFlowState.Caluced:
