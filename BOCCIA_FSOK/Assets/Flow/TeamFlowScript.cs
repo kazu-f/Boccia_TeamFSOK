@@ -17,6 +17,8 @@ public class TeamFlowScript : MonoBehaviour
     private bool IsThrow = false;
     private int m_Frame = 0;
     private GameObject m_NextBallImage = null;
+    [SerializeField] private float AfterEndTime = 3.0f;
+    private float AfterNowTime = 0.0f;
     private void Awake()
     {
         m_BallFlow = GetComponent<BallFlowScript>();
@@ -241,7 +243,7 @@ public class TeamFlowScript : MonoBehaviour
                 m_IsMoving = true;
                 return;
             case BallState.Stop:
-                m_Jack.GetComponent<BallOperateScript>().EndThrowing();
+                //m_Jack.GetComponent<BallOperateScript>().EndThrowing();
                 break;
             default:
                 //ジャックボールが停止していない
@@ -261,7 +263,7 @@ public class TeamFlowScript : MonoBehaviour
                 //ボールの状態を取得
                 if (m_balls[num].GetComponent<BallStateScript>().GetState() == BallState.Stop)
                 {
-                    m_balls[num].GetComponent<BallOperateScript>().EndThrowing();
+                    //m_balls[num].GetComponent<BallOperateScript>().EndThrowing();
                 }
                 else
                 {
@@ -271,11 +273,34 @@ public class TeamFlowScript : MonoBehaviour
                 }
             }
         }
+        if (EndAfterTime() == false)
+        {
+            return;
+        }
+        //投げ終わり
+        m_Jack.GetComponent<BallOperateScript>().EndThrowing();
+        for (int num = 0; num < m_balls.Length; num++)
+        {
+            m_balls[num].GetComponent<BallOperateScript>().EndThrowing();
+        }
 
         //全てのボールが止まっている
         m_IsMoving = false;
     }
 
+    private bool EndAfterTime()
+    {
+        if(AfterNowTime < AfterEndTime)
+        {
+            AfterNowTime += Time.deltaTime;
+            return false;
+        }
+        else
+        {
+            AfterNowTime = 0.0f;
+            return true;
+        }
+    }
     /// <summary>
     /// ジャックボールの位置を保存
     /// </summary>
