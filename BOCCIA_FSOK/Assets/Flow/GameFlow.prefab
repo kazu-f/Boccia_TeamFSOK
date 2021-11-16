@@ -64,6 +64,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_NextTeam: 3
+  AfterEndTime: 3
+  m_FailedFont: {fileID: 0}
+  m_FailedSound: {fileID: 0}
 --- !u!114 &2338778762464245823
 MonoBehaviour:
   m_ObjectHideFlags: 0
