@@ -11,7 +11,7 @@ public class FailedMoveScript : MonoBehaviour
     private float m_Alpha = 0.0f;
     public float m_SubAlpha;
 
-    public Image m_Image;
+    [SerializeField]private Image m_Image;
 
     bool Direct = false;
     // Start is called before the first frame update
@@ -28,11 +28,10 @@ public class FailedMoveScript : MonoBehaviour
         if (Direct)
         {
             FailedOut();
-            Debug.LogError("Failed");
         }
         var n = m_Image.color;
         m_Image.color = new Color(n.r, n.g, n.b, m_Alpha);
-        Debug.LogError(m_Alpha);
+        //Debug.LogError(m_Alpha);
     }
     private void SetAlpha()
     {

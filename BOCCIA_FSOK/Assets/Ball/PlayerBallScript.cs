@@ -5,9 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PlayerBallScript : IBallScript
 {
-    public GameObject FailedFont = null;
-
-    public AudioSource boundSE;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,10 +42,6 @@ public class PlayerBallScript : IBallScript
         IsThrowing = false;
         if (InArea == false)
         {
-            FailedFont = GameObject.Find("Image");
-            FailedFont.GetComponent<FailedMoveScript>().SetDirect();
-            Debug.LogError("場外");
-            boundSE.Play();
 
             this.gameObject.GetComponent<BallStateScript>().ResetState();
             this.gameObject.SetActive(false);

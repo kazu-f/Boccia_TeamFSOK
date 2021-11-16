@@ -19,6 +19,9 @@ public class TeamFlowScript : MonoBehaviour
     private GameObject m_NextBallImage = null;
     [SerializeField] private float AfterEndTime = 3.0f;
     private float AfterNowTime = 0.0f;
+
+    public GameObject m_FailedFont = null;
+    public AudioSource m_FailedSound;
     private void Awake()
     {
         m_BallFlow = GetComponent<BallFlowScript>();
@@ -273,6 +276,10 @@ public class TeamFlowScript : MonoBehaviour
                 }
             }
         }
+
+        m_FailedFont = GameObject.Find("Image");
+        m_FailedFont.GetComponent<FailedMoveScript>().SetDirect();
+        m_FailedSound.Play();
         if (EndAfterTime() == false)
         {
             return;
