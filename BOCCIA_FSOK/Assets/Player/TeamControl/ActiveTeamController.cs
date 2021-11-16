@@ -41,23 +41,23 @@ public class ActiveTeamController : MonoBehaviour
             if (isUseNetwork.GetPlayerCol() == Team.Red)
             {
                 RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
-                //var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
-                //photonView.RequestOwnership();
+                var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
+                photonView.RequestOwnership();
                 BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
             }
             else
             {
                 RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
                 BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
-                //var photonView = BlueTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
-                //photonView.RequestOwnership();
+                var photonView = BlueTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
+                photonView.RequestOwnership();
             }
         }
         else
         {
             RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
-            //var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
-            //photonView.RequestOwnership();
+            var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
+            photonView.RequestOwnership();
             BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
         }
         //投げるプレイヤーを切り替え。

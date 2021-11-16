@@ -30,6 +30,7 @@ namespace BocciaPlayer
             startRotation = this.gameObject.transform.rotation;
             oldPosition = startPosition;
             InitPlayerScript();
+            throwBallControler.isMyTeam = true;
             //ステート初期化。
             playerStateList = new IPlayerState[(int)EnPlayerState.enStateNum];
 
