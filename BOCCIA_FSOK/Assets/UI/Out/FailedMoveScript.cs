@@ -5,25 +5,34 @@ using UnityEngine.UI;
 
 public class FailedMoveScript : MonoBehaviour
 {
-    private Vector3 m_Pos= new Vector3(0.0f, 60.0f, 0.0f );
+    private Vector3 m_Pos = new Vector3(0.0f, 60.0f, 0.0f);
     private RectTransform m_Rect = null;
 
     private float m_Alpha = 0.0f;
     public float m_SubAlpha;
+
     public Image m_Image;
+
+    bool Direct = false;
     // Start is called before the first frame update
     void Start()
     {
         FontAlphaZero();
         m_Rect = this.gameObject.GetComponent<RectTransform>();
-        this.gameObject.SetActive(false);
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        FailedOut();
+        if (Direct)
+        {
+            FailedOut();
+            Debug.LogError("Failed");
+        }
+        var n = m_Image.color;
+        m_Image.color = new Color(n.r, n.g, n.b, m_Alpha);
+        Debug.LogError(m_Alpha);
     }
     private void SetAlpha()
     {
@@ -31,6 +40,10 @@ public class FailedMoveScript : MonoBehaviour
         m_Image.color = new Color(n.r, n.g, n.b, m_Alpha);
     }
 
+    public void SetDirect()
+    {
+        Direct = true;
+    }
     public void FailedOut()
     {
         //スプライトの移動//////
