@@ -56,6 +56,7 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.Delay:
                 //’x‰„’†
+                
                 if(!m_Delay.IsDelay())
                 {
                     //’x‰„‚ªI—¹‚µ‚½

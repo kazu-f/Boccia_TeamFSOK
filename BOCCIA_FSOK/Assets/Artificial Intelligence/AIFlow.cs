@@ -31,7 +31,7 @@ public class AIFlow : IPlayerController
 
     private void Awake()
     {
-        JackBoll = GameObject.Find("JackBoll");
+        JackBoll = JackBoll.GetComponent<BallFlowScript>().GetJackBall();
         if (JackBoll == null)
         {
             Debug.LogError("JackBollÇ™å©Ç¬Ç©ÇËÇ‹ÇπÇÒÇ≈ÇµÇΩÅB");
@@ -43,7 +43,6 @@ public class AIFlow : IPlayerController
         }
         
         ThrowTrance = this.gameObject.transform;
-        
     }
     // Start is called before the first frame update
     void Start()
