@@ -742,6 +742,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TouchManagerObj
       objectReference: {fileID: 0}
+    - target: {fileID: 4980401370976191468, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 2098662328}
+    - target: {fileID: 4980401370976191468, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
+      propertyPath: canvasRect
+      value: 
+      objectReference: {fileID: 2098662329}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
 --- !u!114 &286309645 stripped
@@ -1312,7 +1320,7 @@ PrefabInstance:
     - target: {fileID: 8747469215499163124, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: ballObj
       value: 
-      objectReference: {fileID: 2820866934817450292, guid: 66250ca2aa4ad9a4d905d2ee1a2c60d2, type: 3}
+      objectReference: {fileID: 225696973357414856, guid: 66250ca2aa4ad9a4d905d2ee1a2c60d2, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
 --- !u!1001 &1034569869
@@ -2935,7 +2943,7 @@ PrefabInstance:
     - target: {fileID: 8747469215499163124, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: ballObj
       value: 
-      objectReference: {fileID: 4569668526166853805, guid: d93db18581deb314987f897d3c0474df, type: 3}
+      objectReference: {fileID: 2358465874934825963, guid: d93db18581deb314987f897d3c0474df, type: 3}
     - target: {fileID: 8747469215499163124, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: jackBallObj
       value: 

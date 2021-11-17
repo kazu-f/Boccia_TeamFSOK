@@ -57,6 +57,8 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
+            //投げるときには更新しない。
+            if (isDecision) return;
             //ボールを投げる座標を計算。
             CalcPosition();
             throwDummy.SetPosition(m_throwPos);
