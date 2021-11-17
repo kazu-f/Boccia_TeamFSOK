@@ -41,6 +41,7 @@ public class AIFlow : IPlayerController
         {
             Debug.LogError("JackBollのリジットボディが見つかりませんでした。");
         }
+       
         ThrowTrance = GameObject.Find("Players").transform;
         
     }
