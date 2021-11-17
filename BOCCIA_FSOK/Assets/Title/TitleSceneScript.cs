@@ -5,11 +5,12 @@ using UnityEngine;
 public class TitleSceneScript : MonoBehaviour
 {
     private ChangeSceneScript changeScene;  //シーン切り替え制御。
-    public TouchManager touchManager;       //タッチ制御。
+    private TouchManager touchManager;       //タッチ制御。
     private AudioSource touchSE;            //タッチ音。
     // Start is called before the first frame update
     void Start()
     {
+        touchManager = TouchManager.GetInstance();
         changeScene = this.gameObject.GetComponent<ChangeSceneScript>();
         touchSE = this.gameObject.GetComponent<AudioSource>();
     }

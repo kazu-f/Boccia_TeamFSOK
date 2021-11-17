@@ -12,6 +12,7 @@ public enum TeamFlowState
     Delay,
     Caluc,
     Caluced,
+    ThrowEnd,
     End,
     Num,
 }
@@ -60,50 +61,50 @@ public class TeamFlowScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (IsThrow)
-        {
-            //ステートを投げた状態にする
-            m_state = TeamFlowState.Throw;
-            ////1フレーム目だとうまくいかないので少し遅延させる
-            //if (m_Frame < 10)
-            //{
-            //    m_Frame++;
-            //    return;
-            //}
+        //if (IsThrow)
+        //{
+        //    //ステートを投げた状態にする
+        //    m_state = TeamFlowState.Throw;
+        //    ////1フレーム目だとうまくいかないので少し遅延させる
+        //    //if (m_Frame < 10)
+        //    //{
+        //    //    m_Frame++;
+        //    //    return;
+        //    //}
 
-            ////ボールを投げた時
-            //IsStopAllBalls();
-            if (m_IsMoving == false)
-            {
-                //if (m_BallFlow.IsPreparedJack() == false)
-                //{
-                //    ChangeJackThrowTeam();
-                //    return;
-                //}
-                //全てのボールが止まっているとき
-                //IsThrow = !CalucNextTeam();
-                //if (CalucNextTeam())
-                //{
-                //    //次に投げるチームのボールのスプライトを変更
-                //    m_NextBallImage.GetComponent<ChangeBallSprite>().ChangeSprite(m_NextTeam);
-                //    //エンドがまだ終わっていないとき
-                //    if (m_GameFlowScript.GetIsEnd() == false)
-                //    {
-                //        //パドルスクリプトを取得
-                //        PaddleScript paddle = GameObject.Find("Paddle").GetComponent<PaddleScript>();
-                //        //パドルのスプライトを変更
-                //        paddle.SetTeam(m_NextTeam);
-                //        paddle.PaddleStart();
-                //    }
-                //    //投げ終わり
-                //    IsThrow = false;
-                //    //カメラ変更
-                //    GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
-                //    m_Frame = 0;
+        //    ////ボールを投げた時
+        //    //IsStopAllBalls();
+        //    if (m_IsMoving == false)
+        //    {
+        //        //if (m_BallFlow.IsPreparedJack() == false)
+        //        //{
+        //        //    ChangeJackThrowTeam();
+        //        //    return;
+        //        //}
+        //        //全てのボールが止まっているとき
+        //        //IsThrow = !CalucNextTeam();
+        //        //if (CalucNextTeam())
+        //        //{
+        //        //    //次に投げるチームのボールのスプライトを変更
+        //        //    m_NextBallImage.GetComponent<ChangeBallSprite>().ChangeSprite(m_NextTeam);
+        //        //    //エンドがまだ終わっていないとき
+        //        //    if (m_GameFlowScript.GetIsEnd() == false)
+        //        //    {
+        //        //        //パドルスクリプトを取得
+        //        //        PaddleScript paddle = GameObject.Find("Paddle").GetComponent<PaddleScript>();
+        //        //        //パドルのスプライトを変更
+        //        //        paddle.SetTeam(m_NextTeam);
+        //        //        paddle.PaddleStart();
+        //        //    }
+        //        //    //投げ終わり
+        //        //    IsThrow = false;
+        //        //    //カメラ変更
+        //        //    GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
+        //        //    m_Frame = 0;
 
-                //}
-            }
-        }
+        //        //}
+        //    }
+        //}
     }
 
     public Team GetNowTeam()

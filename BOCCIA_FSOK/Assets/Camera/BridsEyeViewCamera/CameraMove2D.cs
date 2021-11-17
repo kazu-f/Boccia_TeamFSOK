@@ -7,7 +7,7 @@ public class CameraMove2D : MonoBehaviour
 {
     new public Collider collider;
 
-    public TouchManager touchManager;   //タッチマネージャー。
+    private TouchManager touchManager;   //タッチマネージャー。
     public Slider slider;           //カメラの拡大率のスライダー。
 
     public float moveSpeed = 2.0f;    //カメラのスピード。
@@ -22,6 +22,7 @@ public class CameraMove2D : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        touchManager = TouchManager.GetInstance();
         camera = GetComponent<Camera>();
         position = camera.transform.position;
 

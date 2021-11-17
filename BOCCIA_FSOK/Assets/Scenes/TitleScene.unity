@@ -583,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c129b6f66a41104898ebb8a8ed74c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchManager: {fileID: 1174846515}
+  touchManager: {fileID: 0}
 --- !u!82 &1130834307
 AudioSource:
   m_ObjectHideFlags: 0
@@ -680,17 +680,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1174846515 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4515876688681389763, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
-  m_PrefabInstance: {fileID: 2143874164}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a33b4474ff79a84fae9efc4dbbefabf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1832218724
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,6 +1027,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TouchManagerObj
       objectReference: {fileID: 0}
+    - target: {fileID: 4980401370976191468, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 2046198404}
+    - target: {fileID: 4980401370976191468, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
+      propertyPath: canvasRect
+      value: 
+      objectReference: {fileID: 2046198405}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
 --- !u!1001 &3504472327758253856
