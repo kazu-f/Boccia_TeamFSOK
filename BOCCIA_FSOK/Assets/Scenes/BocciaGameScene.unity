@@ -742,19 +742,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: TouchManagerObj
       objectReference: {fileID: 0}
+    - target: {fileID: 4980401370976191468, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 2098662328}
+    - target: {fileID: 4980401370976191468, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
+      propertyPath: canvasRect
+      value: 
+      objectReference: {fileID: 2098662329}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
---- !u!114 &238604990 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4515876688681389763, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
-  m_PrefabInstance: {fileID: 238604989}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a33b4474ff79a84fae9efc4dbbefabf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &286309645 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2338778764010363088, guid: 36d8230ed8e742e4d8cfc838ed79cf3f, type: 3}
@@ -1159,7 +1156,7 @@ PrefabInstance:
     - target: {fileID: 2573021026033543461, guid: aece206e88d6b104ca006510022428e3, type: 3}
       propertyPath: touchManager
       value: 
-      objectReference: {fileID: 238604990}
+      objectReference: {fileID: 0}
     - target: {fileID: 2573021026033543471, guid: aece206e88d6b104ca006510022428e3, type: 3}
       propertyPath: m_Name
       value: FixedCamera
@@ -1195,7 +1192,7 @@ PrefabInstance:
     - target: {fileID: 668717317917439851, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: touchManager
       value: 
-      objectReference: {fileID: 238604990}
+      objectReference: {fileID: 0}
     - target: {fileID: 1048779767523011100, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: mainCamera
       value: 
@@ -1203,7 +1200,7 @@ PrefabInstance:
     - target: {fileID: 1081671311465322976, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: touchManager
       value: 
-      objectReference: {fileID: 238604990}
+      objectReference: {fileID: 0}
     - target: {fileID: 1146237444483529488, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1303,7 +1300,7 @@ PrefabInstance:
     - target: {fileID: 6822392042498549539, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: touchManager
       value: 
-      objectReference: {fileID: 238604990}
+      objectReference: {fileID: 0}
     - target: {fileID: 8436614249491497031, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: ball
       value: 
@@ -1319,7 +1316,7 @@ PrefabInstance:
     - target: {fileID: 8436614249491497031, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: touchManager
       value: 
-      objectReference: {fileID: 238604990}
+      objectReference: {fileID: 0}
     - target: {fileID: 8747469215499163124, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: ballObj
       value: 
@@ -2788,7 +2785,7 @@ PrefabInstance:
     - target: {fileID: 668717317917439851, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: touchManager
       value: 
-      objectReference: {fileID: 238604990}
+      objectReference: {fileID: 0}
     - target: {fileID: 1048779767523011100, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: mainCamera
       value: 
@@ -2796,7 +2793,7 @@ PrefabInstance:
     - target: {fileID: 1081671311465322976, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: touchManager
       value: 
-      objectReference: {fileID: 238604990}
+      objectReference: {fileID: 0}
     - target: {fileID: 1146237444483529488, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2892,7 +2889,7 @@ PrefabInstance:
     - target: {fileID: 6822392042498549539, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: touchManager
       value: 
-      objectReference: {fileID: 238604990}
+      objectReference: {fileID: 0}
     - target: {fileID: 8436614249491497031, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: ball
       value: 
@@ -2908,7 +2905,7 @@ PrefabInstance:
     - target: {fileID: 8436614249491497031, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: touchManager
       value: 
-      objectReference: {fileID: 238604990}
+      objectReference: {fileID: 0}
     - target: {fileID: 8747469215499163124, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: ballObj
       value: 
