@@ -32,11 +32,11 @@ public class AIFlow : IPlayerController
 
     private void Awake()
     {
+        InitPlayerScript();
     }
     // Start is called before the first frame update
     void Start()
     {
-        InitPlayerScript();
         JackBoll =  GameObject.Find("GameFlow").GetComponent<BallFlowScript>().GetJackBall();
         if (JackBoll == null)
         {

@@ -43,11 +43,13 @@ public class ActiveTeamController : MonoBehaviour
                 RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
                 var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
                 photonView.RequestOwnership();
+
                 BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
             }
-            else
+            else if(isUseNetwork.GetPlayerCol() == Team.Blue)
             {
                 RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
+
                 BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
                 var photonView = BlueTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
                 photonView.RequestOwnership();

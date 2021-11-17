@@ -141,8 +141,8 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                     {
                         //部屋の人数が最大だとゲームシーンに移行
                         Debug.Log("ゲームシーンをロードします");
-                        //シーン切り替え時の処理を追加。
-                        SceneManager.sceneLoaded += SendGameConfig;
+                        ////シーン切り替え時の処理を追加。
+                        //SceneManager.sceneLoaded += SendGameConfig;
                         PhotonNetwork.LoadLevel("BocciaGameScene");
                         IsGameSceneLoaded = true;
                     }
@@ -173,8 +173,8 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                     PhotonNetwork.JoinRandomRoom();
                     //部屋の人数が最大だとゲームシーンに移行
                     Debug.Log("ゲームシーンをロードします");
-                    //シーン切り替え時の処理を追加。
-                    SceneManager.sceneLoaded += SendGameConfig;
+                    ////シーン切り替え時の処理を追加。
+                    //SceneManager.sceneLoaded += SendGameConfig;
                     SceneManager.LoadScene("BocciaGameScene");
                     IsGameSceneLoaded = true;
                 }
@@ -186,42 +186,42 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     /// <summary>
     /// AI対戦かどうか、1Pかどうかなどをゲームシーンへ送信。
     /// </summary>
-    private void SendGameConfig(Scene next, LoadSceneMode mode)
-    {
-        //特定のオブジェクトを探す。
-        foreach (var gameObject in next.GetRootGameObjects())
-        {
-            if (gameObject.tag == "Network")
-            {
-                var useNetworkManager = gameObject.GetComponent<IsUseNetwork>();
-                if(useNetworkManager != null)
-                {
-                    //AIを使用するかどうか。
-                    useNetworkManager.SetUseAI(IsUseAI);
-                    //プレイヤーチームカラーがどっちか。
-                    if(IsUseAI)
-                    {
-                        useNetworkManager.SetTeamCol(Team.Red);
-                    }
-                    else
-                    {
-                        if(IsMasterClient())
-                        {
-                            useNetworkManager.SetTeamCol(Team.Red);
-                        }
-                        else
-                        {
-                            useNetworkManager.SetTeamCol(Team.Blue);
-                        }
-                    }
-                }
-                //中断。
-                break;
-            }
-        }
+    //private void SendGameConfig(Scene next, LoadSceneMode mode)
+    //{
+    //    //特定のオブジェクトを探す。
+    //    foreach (var gameObject in next.GetRootGameObjects())
+    //    {
+    //        if (gameObject.tag == "Network")
+    //        {
+    //            var useNetworkManager = gameObject.GetComponent<IsUseNetwork>();
+    //            if(useNetworkManager != null)
+    //            {
+    //                //AIを使用するかどうか。
+    //                useNetworkManager.SetUseAI(IsUseAI);
+    //                //プレイヤーチームカラーがどっちか。
+    //                if(IsUseAI)
+    //                {
+    //                    useNetworkManager.SetTeamCol(Team.Red);
+    //                }
+    //                else
+    //                {
+    //                    if(IsMasterClient())
+    //                    {
+    //                        useNetworkManager.SetTeamCol(Team.Red);
+    //                    }
+    //                    else
+    //                    {
+    //                        useNetworkManager.SetTeamCol(Team.Blue);
+    //                    }
+    //                }
+    //            }
+    //            //中断。
+    //            break;
+    //        }
+    //    }
 
-        SceneManager.sceneLoaded -= SendGameConfig;
-    }
+    //    SceneManager.sceneLoaded -= SendGameConfig;
+    //}
 
     /// <summary>
     /// 自分がマスタークライアントかどうか
