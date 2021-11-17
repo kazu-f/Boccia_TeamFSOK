@@ -5,6 +5,7 @@ using UnityEngine;
 public enum TeamFlowState
 {
     Start,
+    Wait,
     Throw,
     Move,
     Stop,
@@ -45,6 +46,7 @@ public class TeamFlowScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_state = TeamFlowState.Start;
         //初めに投げるチームを決定
         m_NextTeam = m_firstTeam;
         //ボールの所持数を増やす
@@ -401,9 +403,7 @@ public class TeamFlowScript : MonoBehaviour
         //ボールの数を初期化
         m_RemainBalls = Vector2Int.one;
         m_RemainBalls *= m_Remain;
-        //一番初めなのでジャックプリーズと出す
-        GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
-
+        m_state = TeamFlowState.Start;
         //ログを流す
         NextTeamLog();
     }
