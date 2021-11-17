@@ -58,7 +58,7 @@ public class ActiveTeamController : MonoBehaviour
             RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
             var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
             photonView.RequestOwnership();
-            BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
+            BluePlayerCon = BlueTeamPlayer.AddComponent<AIFlow>();
         }
         //投げるプレイヤーを切り替え。
         ChangeActivePlayer();
