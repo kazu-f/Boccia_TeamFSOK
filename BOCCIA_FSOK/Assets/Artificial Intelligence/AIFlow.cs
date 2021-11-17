@@ -7,10 +7,11 @@ public class AIFlow : IPlayerController
 {
     private TouchInfo info;
     private Transform ThrowTrance;
-    private Vector2 ThrowPower = Vector2.zero;
     private GameObject JackBoll = null;
-    private Rigidbody JackBody = null;
     private Vector3 JackPos = Vector3.zero;
+    private GameObject CurrentTarn = null;
+
+    private int timer = 0;
     /// <summary>
     /// プレイヤーリセット
     /// PlayerControllerと一緒
@@ -31,44 +32,65 @@ public class AIFlow : IPlayerController
 
     private void Awake()
     {
-        JackBoll = JackBoll.GetComponent<BallFlowScript>().GetJackBall();
-        if (JackBoll == null)
-        {
-            Debug.LogError("JackBollが見つかりませんでした。");
-        }
-        JackBody = JackBoll.GetComponent<Rigidbody>();
-        if (JackBody == null)
-        {
-            Debug.LogError("JackBollのリジットボディが見つかりませんでした。");
-        }
-        
-        ThrowTrance = this.gameObject.transform;
     }
     // Start is called before the first frame update
     void Start()
     {
         InitPlayerScript();
+        JackBoll =  GameObject.Find("GameFlow").GetComponent<BallFlowScript>().GetJackBall();
+        if (JackBoll == null)
+        {
+            //Debug.LogError("JackBollが見つかりませんでした。");
+        }
+
+        ThrowTrance = this.gameObject.transform;
+        ;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //ジャックボールの位置
-        JackPos = JackBody.position;
-        //投げたい位置を計算
-        Vector3 TargetPos = JackPos - ThrowTrance.position;
-        //正規化して投げる方向だけにする
-        Vector3 TargetNorm = TargetPos.normalized;
-        //投げるプレイヤーの前方向
-        Vector3 ThrowForward = ThrowTrance.forward;
-        //プレイヤーをジャックボールの方向に向ける
-        ThrowTrance.rotation.SetFromToRotation(ThrowForward, TargetNorm);
-        float angle = Vector3.Dot(ThrowForward, TargetNorm);
-        throwAngleController.SetAngle(angle);
+        if (GameObject.Find("GameFlow").GetComponent<TeamFlowScript>().GetNowTeam() == Team.Blue)
+        {
+            if (!GameObject.Find("GameFlow").GetComponent<BallFlowScript>().IsPreparedJack())
+            {
+                Vector2 throwPow = Vector2.zero;
+                throwPow.y = 1.0f;
+                throwBallControler.SetThrowPow(throwPow);
+                timer++;
+                if (timer > 100)
+                {
+                    //Debug.LogError("ジャックボールを投げます。"+throwPow.x+ throwPow.y);
+                    timer = 0;
+                }
+            }
+            else
+            {
+                //ジャックボールの位置
+                JackPos = JackBoll.transform.position;
+                //投げたい位置を計算
+                Vector3 TargetPos = JackPos - ThrowTrance.position;
+                //正規化して投げる方向だけにする
+                Vector3 TargetNorm = TargetPos.normalized;
+                //投げるプレイヤーの前方向
+                Vector3 ThrowForward = ThrowTrance.forward;
+                //プレイヤーをジャックボールの方向に向ける
+                ThrowTrance.rotation.SetFromToRotation(ThrowForward, TargetNorm);
+                float angle = Vector3.Dot(ThrowForward, TargetNorm);
+                throwAngleController.SetAngle(angle);
 
-        Vector2 throwPow = Vector2.zero;
-        throwPow.y = 1.0f;
-        throwBallControler.SetThrowPow(throwPow);
+                Vector2 throwPow = Vector2.zero;
+                throwPow.y = 1.0f;
+                throwBallControler.SetThrowPow(throwPow);
+
+                timer++;
+                if (timer > 100)
+                {
+                    //Debug.LogError("マイボールを投げます。" + throwPow.x + throwPow.y);
+                    timer = 0;
+                }
+            }
+        }
   }
     public TouchInfo GetPath()
     {
