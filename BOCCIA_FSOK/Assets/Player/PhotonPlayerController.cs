@@ -17,6 +17,7 @@ namespace BocciaPlayer
 
     public class PhotonPlayerController : IPlayerController
     {
+        private SwichActiveGameObjects swichActiveGameObj = null;
         private Vector3 startPosition = new Vector3();           //開始時点の座標。
         private Quaternion startRotation = new Quaternion();     //開始時点の回転。
         private Vector3 oldPosition = new Vector3();           //前フレームの座標。
@@ -34,6 +35,7 @@ namespace BocciaPlayer
             //ボール投げるスクリプトを切る。
             throwBallControler.enabled = false;
             playerMoveScript.SetIsMove(false);
+            swichActiveGameObj = SwichActiveGameObjects.GetInstance();
         }
         // Start is called before the first frame update
         void Start()
@@ -45,7 +47,9 @@ namespace BocciaPlayer
         void Update()
         {
             if (!isUpdating || throwBallControler.IsDecision()) return;
-            if(netSendManager == null)
+            else swichActiveGameObj.SwitchGameObject(false);
+
+            if (netSendManager == null)
             {
                 Debug.Log("SendManagerが取得できていない。");
                 isUpdating = false;
@@ -83,6 +87,7 @@ namespace BocciaPlayer
             {
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
+                swichActiveGameObj.SwitchGameObject(false);
             }
         }
 

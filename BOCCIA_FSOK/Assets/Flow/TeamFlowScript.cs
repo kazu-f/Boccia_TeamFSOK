@@ -2,8 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TeamFlowState
+{
+    Move,
+    Stop,
+    Delay,
+    Caluced,
+    Num,
+}
 public class TeamFlowScript : MonoBehaviour
 {
+    public TeamFlowState m_state;
     public Team m_NextTeam = Team.Num;
     private Team m_firstTeam = Team.Red;
     private BallFlowScript m_BallFlow = null;
@@ -466,5 +475,10 @@ public class TeamFlowScript : MonoBehaviour
         {
             return m_RemainBalls.y;
         }
+    }
+
+    public TeamFlowState GetState()
+    {
+        return m_state;
     }
 }
