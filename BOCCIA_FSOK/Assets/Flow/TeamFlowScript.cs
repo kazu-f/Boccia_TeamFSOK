@@ -4,10 +4,14 @@ using UnityEngine;
 
 public enum TeamFlowState
 {
+    Start,
+    Throw,
     Move,
     Stop,
     Delay,
+    Caluc,
     Caluced,
+    End,
     Num,
 }
 public class TeamFlowScript : MonoBehaviour
@@ -26,11 +30,7 @@ public class TeamFlowScript : MonoBehaviour
     private bool IsThrow = false;
     private int m_Frame = 0;
     private GameObject m_NextBallImage = null;
-    [SerializeField] private float AfterEndTime = 3.0f;
-    private float AfterNowTime = 0.0f;
 
-    public GameObject m_FailedFont = null;
-    public AudioSource m_FailedSound;
     private void Awake()
     {
         m_BallFlow = GetComponent<BallFlowScript>();
@@ -49,8 +49,8 @@ public class TeamFlowScript : MonoBehaviour
         m_NextTeam = m_firstTeam;
         //ボールの所持数を増やす
         m_RemainBalls *= m_Remain;
-        //一番初めなのでジャックプリーズと出す
-        GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
+        ////一番初めなのでジャックプリーズと出す
+        //GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
         //ログを流す
         NextTeamLog();
     }
@@ -60,43 +60,46 @@ public class TeamFlowScript : MonoBehaviour
     {
         if (IsThrow)
         {
-            //1フレーム目だとうまくいかないので少し遅延させる
-            if (m_Frame < 10)
-            {
-                m_Frame++;
-                return;
-            }
-            //ボールを投げた時
-            IsStopAllBalls();
+            //ステートを投げた状態にする
+            m_state = TeamFlowState.Throw;
+            ////1フレーム目だとうまくいかないので少し遅延させる
+            //if (m_Frame < 10)
+            //{
+            //    m_Frame++;
+            //    return;
+            //}
+
+            ////ボールを投げた時
+            //IsStopAllBalls();
             if (m_IsMoving == false)
             {
-                if (m_BallFlow.IsPreparedJack() == false)
-                {
-                    ChangeJackThrowTeam();
-                    return;
-                }
+                //if (m_BallFlow.IsPreparedJack() == false)
+                //{
+                //    ChangeJackThrowTeam();
+                //    return;
+                //}
                 //全てのボールが止まっているとき
                 //IsThrow = !CalucNextTeam();
-                if (CalucNextTeam())
-                {
-                    //次に投げるチームのボールのスプライトを変更
-                    m_NextBallImage.GetComponent<ChangeBallSprite>().ChangeSprite(m_NextTeam);
-                    //エンドがまだ終わっていないとき
-                    if (m_GameFlowScript.GetIsEnd() == false)
-                    {
-                        //パドルスクリプトを取得
-                        PaddleScript paddle = GameObject.Find("Paddle").GetComponent<PaddleScript>();
-                        //パドルのスプライトを変更
-                        paddle.SetTeam(m_NextTeam);
-                        paddle.PaddleStart();
-                    }
-                    //投げ終わり
-                    IsThrow = false;
-                    //カメラ変更
-                    GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
-                    m_Frame = 0;
+                //if (CalucNextTeam())
+                //{
+                //    //次に投げるチームのボールのスプライトを変更
+                //    m_NextBallImage.GetComponent<ChangeBallSprite>().ChangeSprite(m_NextTeam);
+                //    //エンドがまだ終わっていないとき
+                //    if (m_GameFlowScript.GetIsEnd() == false)
+                //    {
+                //        //パドルスクリプトを取得
+                //        PaddleScript paddle = GameObject.Find("Paddle").GetComponent<PaddleScript>();
+                //        //パドルのスプライトを変更
+                //        paddle.SetTeam(m_NextTeam);
+                //        paddle.PaddleStart();
+                //    }
+                //    //投げ終わり
+                //    IsThrow = false;
+                //    //カメラ変更
+                //    GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
+                //    m_Frame = 0;
 
-                }
+                //}
             }
         }
     }
@@ -119,8 +122,8 @@ public class TeamFlowScript : MonoBehaviour
         {
             if (m_RemainBalls.x == 0 && m_RemainBalls.y == 0)
             {
-                m_GameFlowScript.GameEnd();
-                return true;
+                //ボールがなくなったので次に投げるチームを計算しない
+                return false;
             }
 
             if (m_RemainBalls.x == m_RemainBalls.y)
@@ -134,10 +137,6 @@ public class TeamFlowScript : MonoBehaviour
             NextTeamLog();
             return true;
         }
-
-        ////ここからは一つ以上のボールがあるときの処理
-        //int NearestBallNum = 0;
-        //float NearestDist = 10000;
 
         float[] m_BallsDist;
         //ボールの長さ分の配列を確保
@@ -162,12 +161,6 @@ public class TeamFlowScript : MonoBehaviour
             //ジャックボールまでの距離を代入
             m_BallsDist[ballnum] = dist;
 
-            //if (dist < NearestDist)
-            //{
-            //    //今回のボールの方がジャックボールに近いので距離と番号を代入
-            //    NearestDist = dist;
-            //    NearestBallNum = ballnum;
-            //}
             if (Teams[ballnum] == Team.Red)
             {
                 //距離がより近いものを設定する
@@ -208,16 +201,6 @@ public class TeamFlowScript : MonoBehaviour
             }
         }
 
-        ////次に投げるチームを変更
-        //if (m_balls[NearestBallNum].GetComponent<TeamDivisionScript>().GetTeam() == Team.Red)
-        //{
-        //    m_NextTeam = Team.Blue;
-        //}
-        //else
-        //{
-        //    m_NextTeam = Team.Red;
-        //}
-
         if (m_RemainBalls.x == 0 && m_RemainBalls.y == 0)
         {
             //両方投げ終わっているのでゲームエンド
@@ -242,7 +225,7 @@ public class TeamFlowScript : MonoBehaviour
     /// <summary>
     /// 全てのボールが止まっているかどうか判定
     /// </summary>
-    private void IsStopAllBalls()
+    public bool IsStopAllBalls()
     {
         //ジャックボールを取得
         m_Jack = m_BallFlow.GetJackBall();
@@ -253,14 +236,14 @@ public class TeamFlowScript : MonoBehaviour
             case BallState.Move:
                 //ジャックボールが停止していない
                 m_IsMoving = true;
-                return;
+                return !m_IsMoving;
             case BallState.Stop:
                 //m_Jack.GetComponent<BallOperateScript>().EndThrowing();
                 break;
             default:
                 //ジャックボールが停止していない
                 m_IsMoving = true;
-                return;
+                return !m_IsMoving;
         }
 
         //ボールを取得
@@ -281,40 +264,35 @@ public class TeamFlowScript : MonoBehaviour
                 {
                     //止まっていないボールがある
                     m_IsMoving = true;
-                    return;
+                    return !m_IsMoving;
                 }
             }
         }
 
-        m_FailedFont = GameObject.Find("Image");
-        m_FailedFont.GetComponent<FailedMoveScript>().SetDirect();
-        m_FailedSound.Play();
-        if (EndAfterTime() == false)
-        {
-            return;
-        }
-        //投げ終わり
-        m_Jack.GetComponent<BallOperateScript>().EndThrowing();
-        for (int num = 0; num < m_balls.Length; num++)
-        {
-            m_balls[num].GetComponent<BallOperateScript>().EndThrowing();
-        }
-
         //全てのボールが止まっている
         m_IsMoving = false;
+        m_state = TeamFlowState.Stop;
+
+        return !m_IsMoving;
     }
 
-    private bool EndAfterTime()
+    /// <summary>
+    /// ボールを投げ終わる処理を走らせる
+    /// </summary>
+    public void ThrowEnd()
     {
-        if(AfterNowTime < AfterEndTime)
+        //投げ終わり
+        m_Jack.GetComponent<BallOperateScript>().EndThrowing();
+        //ボールを取得
+        GameObject[] m_balls;
+        m_balls = GameObject.FindGameObjectsWithTag("Ball");
+        //ボールを取得できた
+        if (m_balls.Length != 0)
         {
-            AfterNowTime += Time.deltaTime;
-            return false;
-        }
-        else
-        {
-            AfterNowTime = 0.0f;
-            return true;
+            for (int num = 0; num < m_balls.Length; num++)
+            {
+                m_balls[num].GetComponent<BallOperateScript>().EndThrowing();
+            }
         }
     }
     /// <summary>
@@ -440,6 +418,8 @@ public class TeamFlowScript : MonoBehaviour
     public void ThrowBall()
     {
         IsThrow = true;
+        //ステートを投げた状態にする
+        m_state = TeamFlowState.Throw;
     }
 
     /// <summary>
@@ -480,5 +460,30 @@ public class TeamFlowScript : MonoBehaviour
     public TeamFlowState GetState()
     {
         return m_state;
+    }
+
+    public void SetState(TeamFlowState state)
+    {
+        m_state = state;
+    }
+
+    /// <summary>
+    /// 次に投げるチームを情報が必要なクラスにセットする
+    /// </summary>
+    public void SetNextTeam()
+    {
+        //エンドがまだ終わっていないとき
+        if (m_GameFlowScript.GetIsEnd() == false)
+        {
+            //次に投げるチームのボールのスプライトを変更
+            m_NextBallImage.GetComponent<ChangeBallSprite>().ChangeSprite(m_NextTeam);
+            //パドルスクリプトを取得
+            PaddleScript paddle = GameObject.Find("Paddle").GetComponent<PaddleScript>();
+            //パドルのスプライトを変更
+            paddle.SetTeam(m_NextTeam);
+            //パドルの操作を始める
+            paddle.PaddleStart();
+        }
+
     }
 }
