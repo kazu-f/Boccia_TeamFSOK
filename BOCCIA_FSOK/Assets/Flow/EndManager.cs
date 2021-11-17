@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EndManager : MonoBehaviour
 {
-    [SerializeField] TeamFlowScript m_TeamFlow;
-    [SerializeField] EndFlowScript m_EndFlow;
-    [SerializeField] TeamFlowDelayScript m_Delay;
-    [SerializeField] BallFlowScript m_BallFlow;
+    [SerializeField] private TeamFlowScript m_TeamFlow = null;
+    [SerializeField] private EndFlowScript m_EndFlow = null;
+    [SerializeField] private TeamFlowDelayScript m_Delay = null;
+    [SerializeField] private BallFlowScript m_BallFlow = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,12 +64,15 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.Caluc:
+                m_TeamFlow.ThrowEnd();
                 //次に投げるボールを計算する
                 if(m_BallFlow.IsPreparedJack() == false)
                 {
                     //ジャックボールが用意されていないのでジャックボールを投げるのをミスしている
                     //ジャックボールを投げるチームを変更
                     m_TeamFlow.ChangeJackThrowTeam();
+                    //計算ができなかったのでステートをEndにする
+                    m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
                 }
                 else
                 {
@@ -93,6 +96,11 @@ public class EndManager : MonoBehaviour
                 m_TeamFlow.SetNextTeam();
                 //カメラを追従カメラから切り替える
                 GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
+                m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
+                break;
+
+            case TeamFlowState.ThrowEnd:
+
                 break;
 
             case TeamFlowState.End:
