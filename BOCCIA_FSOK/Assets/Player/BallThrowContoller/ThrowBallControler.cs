@@ -148,7 +148,8 @@ namespace BocciaPlayer
         {
             object[] param = {
                 m_force,
-                m_throwPos
+                m_throwPos,
+                this.transform.rotation
             };
 
             this.photonView.RPC(nameof(ThrowBallRPC), Photon.Pun.RpcTarget.All, param);
@@ -156,14 +157,14 @@ namespace BocciaPlayer
 
         //ボールを投げるコルーチン開始。
         [Photon.Pun.PunRPC]
-        void ThrowBallRPC(Vector3 force, Vector3 throwPos)
+        void ThrowBallRPC(Vector3 force, Vector3 throwPos, Quaternion throwRot)
         {
             //コルーチンを開始。
-            StartCoroutine(ThrowCoroutine(force, throwPos));
+            StartCoroutine(ThrowCoroutine(force, throwPos, throwRot));
         }
 
         //ボールを投げる処理。
-        IEnumerator ThrowCoroutine(Vector3 force, Vector3 throwPos)
+        IEnumerator ThrowCoroutine(Vector3 force, Vector3 throwPos, Quaternion throwRot)
         {
             isDecision = true;
             yield return new WaitForSeconds(THROW_DELAY);
@@ -186,7 +187,7 @@ namespace BocciaPlayer
 
             //ボールの位置を合わせる。
             obj.transform.position = throwPos;
-            obj.transform.rotation = this.transform.rotation;
+            obj.transform.rotation = throwRot;
 
             //ボールに投げる力を加える。
             var ballOperate = obj.GetComponent<BallOperateScript>();
