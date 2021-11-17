@@ -41,13 +41,14 @@ public class AIFlow : IPlayerController
         {
             Debug.LogError("JackBollのリジットボディが見つかりませんでした。");
         }
-       
-        ThrowTrance = GameObject.Find("Players").transform;
+        
+        ThrowTrance = this.gameObject.transform;
         
     }
     // Start is called before the first frame update
     void Start()
     {
+        InitPlayerScript();
     }
 
     // Update is called once per frame
@@ -63,6 +64,8 @@ public class AIFlow : IPlayerController
         Vector3 ThrowForward = ThrowTrance.forward;
         //プレイヤーをジャックボールの方向に向ける
         ThrowTrance.rotation.SetFromToRotation(ThrowForward, TargetNorm);
+        float angle = Vector3.Dot(ThrowForward, TargetNorm);
+        throwAngleController.SetAngle(angle);
 
         Vector2 throwPow = Vector2.zero;
         throwPow.y = 1.0f;
