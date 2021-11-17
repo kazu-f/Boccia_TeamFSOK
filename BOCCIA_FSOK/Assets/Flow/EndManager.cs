@@ -23,6 +23,11 @@ public class EndManager : MonoBehaviour
                 //ボールを投げ始めるとき
                 //一番初めなのでジャックプリーズと出す
                 GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
+                m_TeamFlow.SetState(TeamFlowState.Wait);
+                break;
+
+            case TeamFlowState.Wait:
+                //プレイヤーが投げるまで
                 break;
 
             case TeamFlowState.Throw:
