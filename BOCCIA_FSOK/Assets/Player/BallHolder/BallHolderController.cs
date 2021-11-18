@@ -13,6 +13,9 @@ namespace BocciaPlayer
         GameObject gameFlowObj;         //ゲームフローオブジェクト取得。
         BallFlowScript ballFlow;        //ボールフロー。
 
+        private const float LOG_TIME = 10.0f;
+        private float m_currentTime = 0.0f;
+
         private void Awake()
         {
             if (photonView.IsMine)
@@ -34,6 +37,10 @@ namespace BocciaPlayer
 
             gameFlowObj = GameObject.FindGameObjectWithTag("GameFlow");
             ballFlow = gameFlowObj.GetComponent<BallFlowScript>();
+            if (ballFlow == null)
+            {
+                Debug.LogError("ジャックボールフローが見つからない。");
+            }
         }
 
         // Start is called before the first frame update
@@ -44,15 +51,37 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
+            m_currentTime -= Time.deltaTime;
 
+            if (m_currentTime < 0.0f)
+            {
+                if (teamBalls == null)
+                {
+                    Debug.LogError("チームボールが存在しない。");
+                }
+                else
+                {
+                    Debug.Log("チームボールが存在する。");
+                }
+
+                m_currentTime = LOG_TIME;
+            }
         }
 
         //現在使うボールを取得する。
         public GameObject GetCurrentBall()
         {
-            if(!ballFlow.IsPreparedJack())
+            if (ballFlow == null)
+            {
+                Debug.LogError("ジャックボールフローが見つからない。");
+            }
+            if (!ballFlow.IsPreparedJack())
             {
                 var jackBall = ballFlow.GetJackBall();
+                if(jackBall == null)
+                {
+                    Debug.LogError("ジャックボールが見つからない。");
+                }
                 jackBall.SetActive(true);
                 return jackBall;
             }
@@ -127,6 +156,8 @@ namespace BocciaPlayer
             var photonRigidbodyView = teamBalls[ballNo].gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
             photonV.ObservedComponents.Add(photonTransformView);
             photonV.ObservedComponents.Add(photonRigidbodyView);
+
+            Debug.Log(ballNo + "個目のボールを作成。");
         }
     }
 }

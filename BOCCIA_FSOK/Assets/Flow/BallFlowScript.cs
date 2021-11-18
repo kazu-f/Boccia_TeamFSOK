@@ -10,12 +10,20 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
     private GameObject m_Jack = null;
     private BallStateScript m_JackState = null;
     private BallOperateScript m_BallOperate = null;
+
+    private const float LOG_TIME = 10.0f;
+    private float m_currentTime = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
         if(photonView.IsMine)
         {
             photonView.RPC(nameof(CreateJackBallRPC), Photon.Pun.RpcTarget.AllBuffered, Photon.Pun.PhotonNetwork.AllocateViewID(true));
+        }
+        if(m_Jack == null)
+        {
+            Debug.LogError("JackBallはnullです");
         }
     }
 
@@ -35,6 +43,21 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
                 }
             }
         }
+
+        m_currentTime -= Time.deltaTime;
+
+        if(m_currentTime < 0.0f)
+        {
+            if (m_Jack == null)
+            {
+                Debug.LogError("JackBallは存在していない。");
+            }
+            else
+            {
+                Debug.Log("JackBallは存在している。");
+            }
+            m_currentTime = LOG_TIME;
+        }
     }
 
     //シーン上にジャックボールがあるかどうか
@@ -45,6 +68,14 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
 
     public GameObject GetJackBall()
     {
+        if (m_Jack == null)
+        {
+            Debug.LogError("GetJackBall() == null");
+        }
+        else
+        {
+            Debug.Log("JackBallは存在している。");
+        }
         return m_Jack;
     }
 
@@ -74,6 +105,13 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         photonV.ObservedComponents.Add(photonTransformView);
         photonV.ObservedComponents.Add(photonRigidbodyView);
 
-        Debug.Log("JackBallを作成。");
+        if (m_Jack != null)
+        {
+            Debug.Log("JackBallを作成。");
+        }
+        else
+        {
+            Debug.Log("JackBallの作成が失敗。");
+        }
     }
 }
