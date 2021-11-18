@@ -66,4 +66,23 @@ public class IsOpponentExitRoom : MonoBehaviourPunCallbacks
     {
         
     }
+
+    private void OnApplicationPause(bool pause)
+    {
+        if(pause)
+        {
+            //êÿífÇ≥ÇÍÇΩÇ±Ç∆Çí ímÇ∑ÇÈÅB
+            if (opponentExit && !gameFlow.isFinishGame)
+            {
+                opponentExit.SetActive(true);
+            }
+
+            if (PhotonNetwork.IsConnected)
+            {
+                //ïîâÆÇ©ÇÁî≤ÇØÇÈÅB
+                PhotonNetwork.LeaveRoom();
+                PhotonNetwork.Disconnect();
+            }
+        }
+    }
 }

@@ -25,6 +25,8 @@ namespace BocciaPlayer
         }
         override public void Enter()
         {
+            //Ç‡ÇÎÇ‡ÇÎuGUIÇñ≥å¯âªÅB
+            SwichActiveGameObjects.GetInstance().SwitchGameObject(false);
             isStop = true;
         }
         override public void Leave()

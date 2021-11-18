@@ -33,19 +33,23 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        progressLabel.SetActive(false);
-        controlPanel.SetActive(true);
+        connectServer.SetActive(false);
+        waitMatching.SetActive(true);
+        endMatching.SetActive(false);
     }
 
     #endregion
 
     #region Public Methods
-    [Tooltip("ユーザーが名前を設定できるUI")]
+    [Tooltip("マッチング完了を知らせる。")]
     [SerializeField]
-    private GameObject controlPanel;
-    [Tooltip("接続が進行中であることをユーザーに知らせるためのUI")]
+    private GameObject endMatching;
+    [Tooltip("マッチングが進行中であることをユーザーに知らせるためのUI")]
     [SerializeField]
-    private GameObject progressLabel;
+    private GameObject waitMatching;
+    [Tooltip("サーバー接続が進行中であることをユーザーに知らせるためのUI")]
+    [SerializeField]
+    private GameObject connectServer;
 
     /// <summary>
     /// 接続する
@@ -54,8 +58,9 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     /// </summary>
     public void Connect()
     {
-        progressLabel.SetActive(true);
-        controlPanel.SetActive(false);
+        connectServer.SetActive(true);
+        waitMatching.SetActive(false);
+        endMatching.SetActive(false);
         Debug.Log("Photonに接続します。既に接続されていればランダムな部屋に参加します。接続されていなければPhotonサーバーに接続します");
         //接続されているか確認
         if(PhotonNetwork.IsConnected)
@@ -72,7 +77,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
             isConnecting = PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
-            PhotonNetwork.KeepAliveInBackground = 0.2f;     //アプリポーズの許容時間？。
+            PhotonNetwork.KeepAliveInBackground = 0.0f;     //アプリポーズの許容時間？。
             Debug.Log("Photonサーバーに接続します");
         }
     }
@@ -81,7 +86,20 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     #region MonoBehaviourPunCallbacks Callbacks
     public override void OnConnectedToMaster()
     {
-        if(isConnecting)
+        if(!PhotonNetwork.OfflineMode)
+        {
+            connectServer.SetActive(false);
+            waitMatching.SetActive(true);
+            endMatching.SetActive(false);
+        }
+        else
+        {
+            connectServer.SetActive(false);
+            waitMatching.SetActive(false);
+            endMatching.SetActive(true);
+        }
+
+        if (isConnecting)
         {
             PhotonNetwork.JoinRandomRoom();
             isConnecting = false;
@@ -91,11 +109,26 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        progressLabel.SetActive(false);
-        controlPanel.SetActive(true);
+        connectServer.SetActive(false);
+        waitMatching.SetActive(false);
+        endMatching.SetActive(true);
         isConnecting = false;
         Debug.LogWarningFormat("OnDisconnected()がPUNによって呼ばれました。原因{0}",cause);
         IsDisconected = true;
+    }
+
+    //プレイヤーが入室してきた。
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+
+        if(newPlayer.ActorNumber == maxPlayersPerRoom)
+        {
+            //マッチング完了を通知。
+            connectServer.SetActive(false);
+            waitMatching.SetActive(false);
+            endMatching.SetActive(true);
+        }
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -141,8 +174,6 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                     {
                         //部屋の人数が最大だとゲームシーンに移行
                         Debug.Log("ゲームシーンをロードします");
-                        //シーン切り替え時の処理を追加。
-                        SceneManager.sceneLoaded += SendGameConfig;
                         PhotonNetwork.LoadLevel("BocciaGameScene");
                         IsGameSceneLoaded = true;
                     }
@@ -173,54 +204,12 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                     PhotonNetwork.JoinRandomRoom();
                     //部屋の人数が最大だとゲームシーンに移行
                     Debug.Log("ゲームシーンをロードします");
-                    //シーン切り替え時の処理を追加。
-                    SceneManager.sceneLoaded += SendGameConfig;
                     SceneManager.LoadScene("BocciaGameScene");
                     IsGameSceneLoaded = true;
                 }
             }
         }
 
-    }
-
-    /// <summary>
-    /// AI対戦かどうか、1Pかどうかなどをゲームシーンへ送信。
-    /// </summary>
-    private void SendGameConfig(Scene next, LoadSceneMode mode)
-    {
-        //特定のオブジェクトを探す。
-        foreach (var gameObject in next.GetRootGameObjects())
-        {
-            if (gameObject.tag == "Network")
-            {
-                var useNetworkManager = gameObject.GetComponent<IsUseNetwork>();
-                if(useNetworkManager != null)
-                {
-                    //AIを使用するかどうか。
-                    useNetworkManager.SetUseAI(IsUseAI);
-                    //プレイヤーチームカラーがどっちか。
-                    if(IsUseAI)
-                    {
-                        useNetworkManager.SetTeamCol(Team.Red);
-                    }
-                    else
-                    {
-                        if(IsMasterClient())
-                        {
-                            useNetworkManager.SetTeamCol(Team.Red);
-                        }
-                        else
-                        {
-                            useNetworkManager.SetTeamCol(Team.Blue);
-                        }
-                    }
-                }
-                //中断。
-                break;
-            }
-        }
-
-        SceneManager.sceneLoaded -= SendGameConfig;
     }
 
     /// <summary>
