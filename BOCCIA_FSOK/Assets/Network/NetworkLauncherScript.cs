@@ -86,9 +86,19 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     #region MonoBehaviourPunCallbacks Callbacks
     public override void OnConnectedToMaster()
     {
-        connectServer.SetActive(false);
-        waitMatching.SetActive(true);
-        endMatching.SetActive(false);
+        if(!PhotonNetwork.OfflineMode)
+        {
+            connectServer.SetActive(false);
+            waitMatching.SetActive(true);
+            endMatching.SetActive(false);
+        }
+        else
+        {
+            connectServer.SetActive(false);
+            waitMatching.SetActive(false);
+            endMatching.SetActive(true);
+        }
+
         if (isConnecting)
         {
             PhotonNetwork.JoinRandomRoom();
