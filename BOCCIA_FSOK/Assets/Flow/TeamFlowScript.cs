@@ -13,6 +13,7 @@ public enum TeamFlowState
     Caluc,
     Caluced,
     ThrowEnd,
+    ChangeTeam,
     End,
     Num,
 }
