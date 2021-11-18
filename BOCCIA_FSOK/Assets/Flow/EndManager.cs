@@ -24,6 +24,8 @@ public class EndManager : MonoBehaviour
                 //一番初めなのでジャックプリーズと出す
                 GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
                 m_TeamFlow.SetState(TeamFlowState.Wait);
+                //タイマーをスタートする
+                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
                 break;
 
             case TeamFlowState.Wait:
@@ -32,6 +34,8 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.Throw:
                 //ボールを投げた時
+                //タイマーを止める
+                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStop();
                 //ステートをMoveにする
                 m_TeamFlow.SetState(TeamFlowState.Move);
                 break;
@@ -93,17 +97,23 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.Caluced:
                 //次に投げるボールが計算できた時
-                //次に投げるチームをセット
-                m_TeamFlow.SetNextTeam();
                 //カメラを追従カメラから切り替える
                 GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
                 m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
                 break;
 
             case TeamFlowState.ThrowEnd:
-
+                //投げ終わり
+                m_TeamFlow.SetState(TeamFlowState.ChangeTeam);
                 break;
 
+            case TeamFlowState.ChangeTeam:
+                //次に投げるチームをセット
+                m_TeamFlow.SetNextTeam();
+                //タイマースタート
+                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
+                m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
+                break;
             case TeamFlowState.End:
                 //エンドが終わった時
                 //エンドが終わったフラグを立てる
