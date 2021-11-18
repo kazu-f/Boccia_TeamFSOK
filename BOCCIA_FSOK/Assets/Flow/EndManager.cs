@@ -112,8 +112,13 @@ public class EndManager : MonoBehaviour
                 m_TeamFlow.SetNextTeam();
                 //タイマースタート
                 GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
-                m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
+                m_TeamFlow.SetState(TeamFlowState.ChangeEnd);
                 break;
+
+            case TeamFlowState.ChangeEnd:
+                //チーム変え終わった
+                break;
+
             case TeamFlowState.End:
                 //エンドが終わった時
                 //エンドが終わったフラグを立てる
