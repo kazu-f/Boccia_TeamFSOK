@@ -200,8 +200,6 @@ namespace BocciaPlayer
             throwGauge.gameObject.SetActive(false);
             throwDummyObj.SetActive(false);
 
-            //ボールを次に進める。
-            ballHolder.UpdateCurrentBallNo();
             isDecision = false;
         }
 

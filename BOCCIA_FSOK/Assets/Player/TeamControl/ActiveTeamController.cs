@@ -85,7 +85,7 @@ public class ActiveTeamController : MonoBehaviour
 
                 break;
             case ThrowTeamState.waitStopBall:
-                if (!TeamFlow.GetIsMoving())
+                if (TeamFlow.GetState() == TeamFlowState.Wait)
                 {
                     throwState = ThrowTeamState.throwBall;
                     ChangeActivePlayer();
