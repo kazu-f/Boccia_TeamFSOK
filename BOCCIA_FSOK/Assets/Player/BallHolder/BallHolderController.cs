@@ -9,7 +9,6 @@ namespace BocciaPlayer
         public GameObject ballObj;      //ボールのプレファブ。
         public int ballCount = 6;       //チームのボールの数。
         GameObject[] teamBalls;         //ボールの配列。
-        int currentBallNo = 0;          //現在使うボールの番号。
         GameObject gameFlowObj;         //ゲームフローオブジェクト取得。
         BallFlowScript ballFlow;        //ボールフロー。
         TeamFlowScript teamFlow;        //チームフロー。
@@ -19,6 +18,23 @@ namespace BocciaPlayer
 
         private void Awake()
         {
+            gameFlowObj = GameObject.FindGameObjectWithTag("GameFlow");
+            ballFlow = gameFlowObj.GetComponent<BallFlowScript>();
+            if (ballFlow == null)
+            {
+                Debug.LogError("BallFlowScriptが見つからない。");
+            }
+            teamFlow = gameFlowObj.GetComponent<TeamFlowScript>();
+            if (teamFlow == null)
+            {
+                Debug.LogError("TeamFlowScriptが見つからない。");
+            }
+            else
+            {
+                ballCount = teamFlow.m_Remain;
+            }
+
+
             if (photonView.IsMine)
             {
                 //ボールの配列確保。
@@ -34,13 +50,6 @@ namespace BocciaPlayer
                     photonView.RPC(nameof(CreateBallRPC), Photon.Pun.RpcTarget.AllBuffered, param);
                 }
                 Debug.Log("TeamBallを作成。");
-            }
-
-            gameFlowObj = GameObject.FindGameObjectWithTag("GameFlow");
-            ballFlow = gameFlowObj.GetComponent<BallFlowScript>();
-            if (ballFlow == null)
-            {
-                Debug.LogError("ジャックボールフローが見つからない。");
             }
         }
 
@@ -86,33 +95,21 @@ namespace BocciaPlayer
                 jackBall.SetActive(true);
                 return jackBall;
             }
-            if(currentBallNo < ballCount)
+            int currentNo = ballCount - teamFlow.GetRemainBall();
+            if (currentNo < ballCount)
             {
                 //有効にする。
-                teamBalls[currentBallNo].SetActive(true);
-                return teamBalls[currentBallNo];
+                teamBalls[currentNo].SetActive(true);
+                return teamBalls[currentNo];
             }
             return null;
         }
-        /// <summary>
-        /// ボール番号を進める。
-        /// </summary>
-        /// <returns>持っているボールの数を越えたらfalseを返す。</returns>
-        public bool UpdateCurrentBallNo()
-        {
-            if(teamBalls[currentBallNo].activeSelf)
-            {
-                currentBallNo++;
-            }
-            //持っているボールの数を越えていないか？。
-            return currentBallNo < ballCount;
-        }
+
         /// <summary>
         /// ボールをリセットする。
         /// </summary>
         public void ResetBall()
         {
-            currentBallNo = 0;
             for (int i = 0; i < ballCount; i++)
             {
                 //有効フラグを消す。
