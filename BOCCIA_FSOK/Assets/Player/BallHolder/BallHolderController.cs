@@ -170,6 +170,8 @@ namespace BocciaPlayer
             photonV.ObservedComponents.Add(photonTransformView);
             photonV.ObservedComponents.Add(photonRigidbodyView);
 
+            photonV.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;
+
             Debug.Log(ballNo + "ŒÂ–Ú‚Ìƒ{[ƒ‹‚ğì¬B");
         }
     }

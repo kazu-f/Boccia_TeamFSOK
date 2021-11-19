@@ -111,6 +111,8 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         photonV.ObservedComponents.Add(photonTransformView);
         photonV.ObservedComponents.Add(photonRigidbodyView);
 
+        photonV.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;
+
         if (m_Jack != null)
         {
             Debug.Log("JackBallÇçÏê¨ÅB");
