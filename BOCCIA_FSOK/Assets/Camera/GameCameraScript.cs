@@ -35,6 +35,12 @@ public class GameCameraScript : MonoBehaviour
         m_MainCamera.SetActive(!IsFollow);
     }
 
+    public void SetIfFollow(bool flag)
+    {
+        IsFollow = flag;
+        m_FollowCamera.SetActive(IsFollow);
+        m_MainCamera.SetActive(!IsFollow);
+    }
     /// <summary>
     /// 追尾カメラにパラメータをセットする
     /// </summary>

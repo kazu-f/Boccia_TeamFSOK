@@ -438,7 +438,7 @@ public class TeamFlowScript : MonoBehaviour
         //“Š‚°I‚í‚è
         IsThrow = false;
         //ƒJƒƒ‰•ÏX
-        GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
+        GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
         m_Frame = 0;
         m_IsMoving = false;
         NextTeamLog();
