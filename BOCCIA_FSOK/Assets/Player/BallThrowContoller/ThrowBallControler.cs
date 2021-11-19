@@ -175,16 +175,6 @@ namespace BocciaPlayer
                 yield return null;
             }
 
-            //if(isMyTeam)
-            //{
-            //    //自分チームなら権限をリクエストする。
-            //    var photonV = obj.GetComponent<Photon.Pun.PhotonView>();
-            //    if(photonV != null)
-            //    {
-            //        photonV.RequestOwnership();
-            //    }
-            //}
-
             //ボールの位置を合わせる。
             obj.transform.position = throwPos;
             obj.transform.rotation = throwRot;

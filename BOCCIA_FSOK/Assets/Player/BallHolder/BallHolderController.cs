@@ -121,8 +121,23 @@ namespace BocciaPlayer
                 var ballOperate = teamBalls[i].GetComponent<BallOperateScript>();
                 ballOperate.ResetVar();
             }
-
         }
+
+        //ボールの権限をリクエストする。
+        public void RequestOwnerShip()
+        {
+            if (teamBalls == null) return;
+            for (int i = 0; i < ballCount; i++)
+            {
+                var photonV = teamBalls[i].GetComponent<Photon.Pun.PhotonView>();
+                if (photonV != null)
+                {
+                    //リクエスト。
+                    photonV.RequestOwnership();
+                }
+            }
+        }
+
         /// <summary>
         /// リストの作成を同期。
         /// </summary>

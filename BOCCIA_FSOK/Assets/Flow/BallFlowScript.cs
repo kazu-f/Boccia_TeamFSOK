@@ -84,6 +84,16 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         m_Jack.SetActive(false);
     }
 
+    //権限をリクエストする。
+    public void RequestOwnerShip()
+    {
+        var photonV = m_Jack.GetComponent<Photon.Pun.PhotonView>();
+        if(photonV != null)
+        {
+            photonV.RequestOwnership();
+        }
+    }
+
     [Photon.Pun.PunRPC]
     public void CreateJackBallRPC(int viewID)
     {
