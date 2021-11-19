@@ -39,15 +39,13 @@ public class ScoreResultDispScript : MonoBehaviour
     bool isFinish = false;                              //終了。
     const float WAIT_TIME = 1.0f;                       //演出毎の待機時間。
 
-    private void Awake()
+    // Start is called before the first frame update
+    void Start()
     {
         //タッチマネージャーを取得。
         touchManager = TouchManager.GetInstance();
         canvas = touchManager.GetCanvas().gameObject;      //キャンバスを取得。
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
+
         //非表示。
         tapGoTitle.SetActive(false);
         //シーン切り替え制御。
