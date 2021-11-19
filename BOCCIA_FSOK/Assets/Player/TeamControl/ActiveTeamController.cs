@@ -167,6 +167,7 @@ public class ActiveTeamController : MonoBehaviour
     //全部のボールをリクエストする。
     private void RequestOwnerShipBall()
     {
+        Debug.Log("ボールの権限をリクエストする。");
         RedPlayerCon.GetBallHolderController().RequestOwnerShip();
         BluePlayerCon.GetBallHolderController().RequestOwnerShip();
         BallFlow.RequestOwnerShip();
