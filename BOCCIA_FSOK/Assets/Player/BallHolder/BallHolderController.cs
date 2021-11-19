@@ -12,6 +12,7 @@ namespace BocciaPlayer
         int currentBallNo = 0;          //現在使うボールの番号。
         GameObject gameFlowObj;         //ゲームフローオブジェクト取得。
         BallFlowScript ballFlow;        //ボールフロー。
+        TeamFlowScript teamFlow;        //チームフロー。
 
         private const float LOG_TIME = 10.0f;
         private float m_currentTime = 0.0f;
