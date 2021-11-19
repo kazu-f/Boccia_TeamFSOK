@@ -14,6 +14,7 @@ public enum TeamFlowState
     Caluced,
     ThrowEnd,
     ChangeTeam,
+    ChangeEnd,
     End,
     Num,
 }
@@ -27,7 +28,7 @@ public class TeamFlowScript : MonoBehaviour
     private BallState m_JackState = BallState.Num;
     private Vector3 m_JackPos = Vector3.zero;
     private Vector2Int m_RemainBalls = Vector2Int.one;
-    private int m_Remain = 6;
+    public int m_Remain { get; private set; } = 6;
     private EndFlowScript m_GameFlowScript = null;
     private bool m_IsMoving = false;
     private bool IsThrow = false;
@@ -437,7 +438,7 @@ public class TeamFlowScript : MonoBehaviour
         //ìäÇ∞èIÇÌÇË
         IsThrow = false;
         //ÉJÉÅÉâïœçX
-        GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
+        GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
         m_Frame = 0;
         m_IsMoving = false;
         NextTeamLog();

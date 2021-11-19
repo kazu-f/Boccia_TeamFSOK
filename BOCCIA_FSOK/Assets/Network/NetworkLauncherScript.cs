@@ -170,12 +170,16 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                 //部屋に参加しているとき
                 if (PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
                 {
-                    if (!IsGameSceneLoaded)
+                    if (IsMasterClient())
                     {
-                        //部屋の人数が最大だとゲームシーンに移行
-                        Debug.Log("ゲームシーンをロードします");
-                        PhotonNetwork.LoadLevel("BocciaGameScene");
-                        IsGameSceneLoaded = true;
+                        //マスタークライアントなのでシーンをロードします
+                        if (!IsGameSceneLoaded)
+                        {
+                            //部屋の人数が最大だとゲームシーンに移行
+                            Debug.Log("ゲームシーンをロードします");
+                            PhotonNetwork.LoadLevel("BocciaGameScene");
+                            IsGameSceneLoaded = true;
+                        }
                     }
                 }
                 if (IsUseAI)

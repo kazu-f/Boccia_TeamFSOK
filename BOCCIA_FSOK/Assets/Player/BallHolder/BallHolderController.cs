@@ -9,12 +9,32 @@ namespace BocciaPlayer
         public GameObject ballObj;      //ボールのプレファブ。
         public int ballCount = 6;       //チームのボールの数。
         GameObject[] teamBalls;         //ボールの配列。
-        int currentBallNo = 0;          //現在使うボールの番号。
         GameObject gameFlowObj;         //ゲームフローオブジェクト取得。
         BallFlowScript ballFlow;        //ボールフロー。
+        TeamFlowScript teamFlow;        //チームフロー。
+
+        private const float LOG_TIME = 10.0f;
+        private float m_currentTime = 0.0f;
 
         private void Awake()
         {
+            gameFlowObj = GameObject.FindGameObjectWithTag("GameFlow");
+            ballFlow = gameFlowObj.GetComponent<BallFlowScript>();
+            if (ballFlow == null)
+            {
+                Debug.LogError("BallFlowScriptが見つからない。");
+            }
+            teamFlow = gameFlowObj.GetComponent<TeamFlowScript>();
+            if (teamFlow == null)
+            {
+                Debug.LogError("TeamFlowScriptが見つからない。");
+            }
+            else
+            {
+                ballCount = teamFlow.m_Remain;
+            }
+
+
             if (photonView.IsMine)
             {
                 //ボールの配列確保。
@@ -31,9 +51,6 @@ namespace BocciaPlayer
                 }
                 Debug.Log("TeamBallを作成。");
             }
-
-            gameFlowObj = GameObject.FindGameObjectWithTag("GameFlow");
-            ballFlow = gameFlowObj.GetComponent<BallFlowScript>();
         }
 
         // Start is called before the first frame update
@@ -44,45 +61,55 @@ namespace BocciaPlayer
         // Update is called once per frame
         void Update()
         {
+            m_currentTime -= Time.deltaTime;
 
+            if (m_currentTime < 0.0f)
+            {
+                if (teamBalls == null)
+                {
+                    Debug.LogError("チームボールが存在しない。");
+                }
+                else
+                {
+                    Debug.Log("チームボールが存在する。");
+                }
+
+                m_currentTime = LOG_TIME;
+            }
         }
 
         //現在使うボールを取得する。
         public GameObject GetCurrentBall()
         {
-            if(!ballFlow.IsPreparedJack())
+            if (ballFlow == null)
+            {
+                Debug.LogError("ジャックボールフローが見つからない。");
+            }
+            if (!ballFlow.IsPreparedJack())
             {
                 var jackBall = ballFlow.GetJackBall();
+                if(jackBall == null)
+                {
+                    Debug.LogError("ジャックボールが見つからない。");
+                }
                 jackBall.SetActive(true);
                 return jackBall;
             }
-            if(currentBallNo < ballCount)
+            int currentNo = ballCount - teamFlow.GetRemainBall();
+            if (currentNo < ballCount)
             {
                 //有効にする。
-                teamBalls[currentBallNo].SetActive(true);
-                return teamBalls[currentBallNo];
+                teamBalls[currentNo].SetActive(true);
+                return teamBalls[currentNo];
             }
             return null;
         }
-        /// <summary>
-        /// ボール番号を進める。
-        /// </summary>
-        /// <returns>持っているボールの数を越えたらfalseを返す。</returns>
-        public bool UpdateCurrentBallNo()
-        {
-            if(teamBalls[currentBallNo].activeSelf)
-            {
-                currentBallNo++;
-            }
-            //持っているボールの数を越えていないか？。
-            return currentBallNo < ballCount;
-        }
+
         /// <summary>
         /// ボールをリセットする。
         /// </summary>
         public void ResetBall()
         {
-            currentBallNo = 0;
             for (int i = 0; i < ballCount; i++)
             {
                 //有効フラグを消す。
@@ -127,6 +154,8 @@ namespace BocciaPlayer
             var photonRigidbodyView = teamBalls[ballNo].gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
             photonV.ObservedComponents.Add(photonTransformView);
             photonV.ObservedComponents.Add(photonRigidbodyView);
+
+            Debug.Log(ballNo + "個目のボールを作成。");
         }
     }
 }

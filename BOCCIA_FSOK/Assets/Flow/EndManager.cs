@@ -30,6 +30,16 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.Wait:
                 //プレイヤーが投げるまで
+                if(GameObject.Find("Timer").GetComponent<TimerFillScript>().IsTimeUp())
+                {
+                    if(m_BallFlow.IsPreparedJack())
+                    {
+                        //ジャックボールが準備されているとき
+                        //プレイヤーの持ち球を減らす
+                        m_TeamFlow.DecreaseBalls();
+                    }
+                    m_TeamFlow.SetState(TeamFlowState.Caluc);
+                }
                 break;
 
             case TeamFlowState.Throw:
@@ -56,11 +66,11 @@ public class EndManager : MonoBehaviour
                 //遅延を開始させる
                 m_Delay.DelayStart();
                 m_TeamFlow.SetState(TeamFlowState.Delay);
+                m_TeamFlow.ThrowEnd();
                 break;
 
             case TeamFlowState.Delay:
-                //遅延中
-                
+                //遅延中                
                 if(!m_Delay.IsDelay())
                 {
                     //遅延が終了した
@@ -69,7 +79,6 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.Caluc:
-                m_TeamFlow.ThrowEnd();
                 //次に投げるボールを計算する
                 if(m_BallFlow.IsPreparedJack() == false)
                 {
@@ -97,13 +106,13 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.Caluced:
                 //次に投げるボールが計算できた時
-                //カメラを追従カメラから切り替える
-                GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SwitchCamera();
                 m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
                 break;
 
             case TeamFlowState.ThrowEnd:
                 //投げ終わり
+                //カメラを追従カメラから切り替える
+                GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
                 m_TeamFlow.SetState(TeamFlowState.ChangeTeam);
                 break;
 
@@ -112,8 +121,14 @@ public class EndManager : MonoBehaviour
                 m_TeamFlow.SetNextTeam();
                 //タイマースタート
                 GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
-                m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
+                m_TeamFlow.SetState(TeamFlowState.ChangeEnd);
                 break;
+
+            case TeamFlowState.ChangeEnd:
+                //チーム変え終わった
+                m_TeamFlow.SetState(TeamFlowState.Wait);
+                break;
+
             case TeamFlowState.End:
                 //エンドが終わった時
                 //エンドが終わったフラグを立てる
