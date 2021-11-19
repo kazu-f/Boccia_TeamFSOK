@@ -85,4 +85,15 @@ public class IsOpponentExitRoom : MonoBehaviourPunCallbacks
             }
         }
     }
+
+    //ゲームが終わる時にはネットから切断しておく。
+    private void OnDestroy()
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            //部屋から抜ける。
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.Disconnect();
+        }
+    }
 }

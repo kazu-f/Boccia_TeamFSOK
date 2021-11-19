@@ -72,10 +72,6 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         {
             Debug.LogError("GetJackBall() == null");
         }
-        else
-        {
-            Debug.Log("JackBallÇÕë∂ç›ÇµÇƒÇ¢ÇÈÅB");
-        }
         return m_Jack;
     }
 
