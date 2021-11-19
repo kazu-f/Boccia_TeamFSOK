@@ -11,6 +11,8 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     [Tooltip("ルームの最大人数。ルームの人数が最大だと新たにルームを作成します")]
     [SerializeField]
     private byte maxPlayersPerRoom = 2;
+    [SerializeField]
+    private int SendRate = 30;      //1秒間に何回パケットを送信するか
     #endregion
 
     #region Private Fields
@@ -78,6 +80,9 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.KeepAliveInBackground = 0.0f;     //アプリポーズの許容時間？。
+            //1秒間に同期する回数を変更
+            PhotonNetwork.SendRate = SendRate;
+            PhotonNetwork.SerializationRate = SendRate;
             Debug.Log("Photonサーバーに接続します");
         }
     }
