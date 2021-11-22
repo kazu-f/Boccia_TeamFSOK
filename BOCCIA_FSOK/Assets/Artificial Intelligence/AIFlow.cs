@@ -60,7 +60,7 @@ public class AIFlow : IPlayerController
             if (!GameObject.Find("GameFlow").GetComponent<BallFlowScript>().IsPreparedJack())
             {
                 Vector2 throwPow = Vector2.zero;
-                throwPow.y = Random.value % 2;
+                throwPow.y = Random.value;
                 throwBallControler.SetThrowPow(throwPow);
                 throwBallControler.ThrowBall();
                 m_IsEnable = false;
@@ -82,15 +82,18 @@ public class AIFlow : IPlayerController
 
                 Vector2 throwPow = Vector2.one;
                 float dis = TargetPos.magnitude - ThrowTrance.position.magnitude;
+                Debug.Log("プレイヤーとジャックボールの差分" + dis);
                 float ThrowMax = 12.5f - ThrowTrance.position.magnitude;
-                float power = dis / 1.0f;
-                throwPow.y = power;
+                Debug.Log("プレイヤーからコートの最奥まで" + ThrowMax);
+                float power = dis / ThrowMax;
+                Debug.LogError("投げる力。" + throwPow.y);
+                float scat = Random.Range(-0.3f,0.3f);
+                throwPow.y = power+ scat;
                 throwBallControler.SetThrowPow(throwPow);
                 if (!throwBallControler.IsDecision())
                 {
                     throwBallControler.ThrowBall();
                     m_IsEnable = false;
-                    //Debug.LogError("マイボールを投げます。" + throwPow.y);
                 }
             }
         }
