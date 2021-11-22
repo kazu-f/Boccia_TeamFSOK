@@ -105,7 +105,7 @@ public class BallOperateScript : MonoBehaviour
         //ボールを投げた判定をTeamFlowに送る
         m_TeamFlow.ThrowBall();
         //カメラを切り替える
-        m_GameCameraScript.SwitchCamera();
+        m_GameCameraScript.SetIfFollow(true);
         Debug.Log("ボールが動いています");
     }
 

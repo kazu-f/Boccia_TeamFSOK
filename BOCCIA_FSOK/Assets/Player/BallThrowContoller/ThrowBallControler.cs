@@ -23,7 +23,7 @@ namespace BocciaPlayer
         [SerializeField] private float m_throwPosHeightMin = 0.3f;               //投げる地点の高さの最小値。
         private Vector3 m_throwPos = new Vector3(0.0f, 0.0f, 0.0f);   //ボールの始点。
 
-        private const float THROW_DELAY = 1.0f;           //投げるまでのディレイの時間。
+        private const float THROW_DELAY = 0.2f;           //投げるまでのディレイの時間。
         private bool isDecision = false;           //投げる力を決定したか。
         public bool isMyTeam = false;               //自分のチームかどうか。
 
@@ -174,16 +174,16 @@ namespace BocciaPlayer
         {
             isDecision = true;
             //yield return new WaitForSeconds(THROW_DELAY);
-            //現在投げるボールを取得する。
-            var obj = ballHolder.GetCurrentBall();
-            if(obj == null)
-            {
-                yield return null;
-            }
             //カウントが終わっているか？
             while(!serverTimer.IsCountEnd())
             {
                 yield return 0;
+            }
+            //現在投げるボールを取得する。
+            var obj = ballHolder.GetCurrentBall();
+            if (obj == null)
+            {
+                yield return null;
             }
 
             //ボールの位置を合わせる。

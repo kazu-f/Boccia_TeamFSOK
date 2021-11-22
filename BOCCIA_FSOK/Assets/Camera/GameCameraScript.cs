@@ -33,6 +33,7 @@ public class GameCameraScript : MonoBehaviour
         IsFollow = !IsFollow;
         m_FollowCamera.SetActive(IsFollow);
         m_MainCamera.SetActive(!IsFollow);
+        GameObject.Find("SendNetWorkObj").GetComponent<NetworkSendManagerScript>().SendIsCameraFollow(IsFollow);
     }
 
     public void SetIfFollow(bool flag)
@@ -40,6 +41,7 @@ public class GameCameraScript : MonoBehaviour
         IsFollow = flag;
         m_FollowCamera.SetActive(IsFollow);
         m_MainCamera.SetActive(!IsFollow);
+        GameObject.Find("SendNetWorkObj").GetComponent<NetworkSendManagerScript>().SendIsCameraFollow(IsFollow);
     }
     /// <summary>
     /// 追尾カメラにパラメータをセットする
