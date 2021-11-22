@@ -13,16 +13,16 @@ public class EndManager : MonoBehaviour
 
     private void Awake()
     {
+
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
         MyTeamCol = GameObject.Find("IsNetWorkObj").GetComponent<IsUseNetwork>().GetPlayerCol();
         if (MyTeamCol != Team.Red && MyTeamCol != Team.Blue)
         {
             Debug.LogError("チームのカラーが取得できませんでした。ネットワークオブジェが初期化されていない可能性があります");
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-
     }
 
     // Update is called once per frame

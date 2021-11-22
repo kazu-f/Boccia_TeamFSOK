@@ -227,11 +227,11 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 2
   observableSearch: 2
   ObservedComponents:
   - {fileID: 33022955}
-  sceneViewId: 11
+  sceneViewId: 201
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &33022955
@@ -1775,11 +1775,11 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 2
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1242310790}
-  sceneViewId: 10
+  sceneViewId: 202
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!20 &1242310789 stripped
