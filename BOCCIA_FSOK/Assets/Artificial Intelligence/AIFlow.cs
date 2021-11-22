@@ -80,14 +80,18 @@ public class AIFlow : IPlayerController
                 throwAngleController.SetAngle(angle);
 
                 Vector2 throwPow = Vector2.zero;
-                throwPow.y = 1.0f;
+                float power = TargetPos.magnitude / 12.5f;
+                throwPow.y = power;
                 throwBallControler.SetThrowPow(throwPow);
-
+                if (!throwBallControler.IsDecision())
+                {
+                    throwBallControler.ThrowBall();
+                    Debug.LogError("マイボールを投げます。" + throwPow.x + throwPow.y);
+                    timer = 0;
+                }
                 timer++;
                 if (timer > 100)
                 {
-                    //Debug.LogError("マイボールを投げます。" + throwPow.x + throwPow.y);
-                    timer = 0;
                 }
             }
         }
