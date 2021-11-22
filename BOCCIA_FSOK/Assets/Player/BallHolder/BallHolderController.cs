@@ -194,22 +194,21 @@ namespace BocciaPlayer
             photonTransformView.m_SynchronizePosition = true;
             photonTransformView.m_SynchronizeRotation = true;
             photonRigidBodyView.m_SynchronizeVelocity = true;
-            photonRigidBodyView.m_SynchronizeAngularVelocity = true;
 
             photonV.ObservedComponents.Add(photonRigidBodyView);
             photonV.ObservedComponents.Add(photonTransformView);
 
             photonV.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;
 
-            var RB = teamBalls[ballNo].GetComponent<Rigidbody>();
-            if (photonV.IsMine)
-            {
-                RB.isKinematic = false;
-            }
-            else
-            {
-                RB.isKinematic = true;
-            }
+            //var RB = teamBalls[ballNo].GetComponent<Rigidbody>();
+            //if (photonV.IsMine)
+            //{
+            //    RB.isKinematic = false;
+            //}
+            //else
+            //{
+            //    RB.isKinematic = true;
+            //}
 
             Debug.Log(ballNo + "å¬ñ⁄ÇÃÉ{Å[ÉãÇçÏê¨ÅB");
         }
