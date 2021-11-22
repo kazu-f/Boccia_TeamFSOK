@@ -28,7 +28,6 @@ public class AIFlow : IPlayerController
             //プレイヤーが切り替わる時にカメラの位置を合わせる。
             throwAngleController.ChangeCamPos();
             timer = 0;
-            Debug.Log("AIのターンです。");
             m_IsEnable = isEnable;
         }
     }
@@ -41,11 +40,6 @@ public class AIFlow : IPlayerController
     void Start()
     {
         JackBoll = GameObject.Find("GameFlow").GetComponent<BallFlowScript>().GetJackBall();
-        if (JackBoll == null)
-        {
-            //Debug.LogError("JackBollが見つかりませんでした。");
-        }
-
         ThrowTrance = this.gameObject.transform;
     }
 
@@ -54,13 +48,11 @@ public class AIFlow : IPlayerController
     {
         if (!m_IsEnable)
         {
-            Debug.Log("有効フラグがfalseなので返しました。");
             return;
         }
         timer += Time.deltaTime;
         if (timer < 2.0f)
         {
-            Debug.Log("交代してから２秒以内なので返しました。");
             return;
         }
         if (GameObject.Find("GameFlow").GetComponent<TeamFlowScript>().GetNowTeam() == Team.Blue)
@@ -69,7 +61,7 @@ public class AIFlow : IPlayerController
             {
                 Vector2 throwPow = Vector2.zero;
                 throwPow.y = Random.value % 2;
-                Debug.Log(throwPow.y+"の力で投げます。");
+                //Debug.Log(throwPow.y+"の力で投げます。");
                 throwBallControler.SetThrowPow(throwPow);
                 throwBallControler.ThrowBall();
                 m_IsEnable = false;
@@ -99,7 +91,7 @@ public class AIFlow : IPlayerController
                 {
                     throwBallControler.ThrowBall();
                     m_IsEnable = false;
-                    Debug.LogError("マイボールを投げます。" + throwPow.y);
+                    //Debug.LogError("マイボールを投げます。" + throwPow.y);
                 }
             }
         }
