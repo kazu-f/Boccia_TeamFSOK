@@ -72,10 +72,6 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         {
             Debug.LogError("GetJackBall() == null");
         }
-        else
-        {
-            Debug.Log("JackBallは存在している。");
-        }
         return m_Jack;
     }
 
@@ -86,6 +82,37 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
 
         m_IsPreparedJack = false;
         m_Jack.SetActive(false);
+    }
+
+    /// <summary>
+    /// ボールの権限リクエスト等を行う。
+    /// </summary>
+    /// <param name="isRequest">リクエストする側かどうか。</param>
+    public void RequestOwnerShip(bool isRequest)
+    {
+        if(isRequest)
+        {
+            var photonV = m_Jack.GetComponent<Photon.Pun.PhotonView>();
+            if (photonV != null)
+            {
+                photonV.RequestOwnership();
+            }
+        }
+        //リジッドボディ取得。
+        var RB = m_Jack.GetComponent<Rigidbody>();
+        if(RB != null)
+        {
+            //オーナーかどうかで物理演算させるかを切り替える。
+            RB.isKinematic = !isRequest;
+            if (isRequest)
+            {
+                Debug.Log("ボールの物理挙動開始。");
+            }
+            else
+            {
+                Debug.Log("ボールの物理挙動停止。");
+            }
+        }
     }
 
     [Photon.Pun.PunRPC]
@@ -99,11 +126,16 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         photonV.ViewID = viewID;
         photonV.ObservedComponents = new List<Component>();
         var photonTransformView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonTransformView>();
+        var photonRigidBodyView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
         photonTransformView.m_SynchronizePosition = true;
         photonTransformView.m_SynchronizeRotation = true;
-        var photonRigidbodyView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
+        photonRigidBodyView.m_SynchronizeVelocity = true;
+        photonRigidBodyView.m_SynchronizeAngularVelocity = true;
+
+        photonV.ObservedComponents.Add(photonRigidBodyView);
         photonV.ObservedComponents.Add(photonTransformView);
-        photonV.ObservedComponents.Add(photonRigidbodyView);
+
+        photonV.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;
 
         if (m_Jack != null)
         {
@@ -112,6 +144,16 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         else
         {
             Debug.Log("JackBallの作成が失敗。");
+        }
+
+        var RB = m_Jack.GetComponent<Rigidbody>();
+        if (photonV.IsMine)
+        {
+            RB.isKinematic = false;
+        }
+        else
+        {
+            RB.isKinematic = true;
         }
     }
 }

@@ -36,9 +36,11 @@ public class ActiveTeamController : MonoBehaviour
     {
         var netObj = GameObject.FindGameObjectWithTag("Network");
         var isUseNetwork = netObj.GetComponent<IsUseNetwork>();
+
+        playerTeamCol = isUseNetwork.GetPlayerCol();
         if (!isUseNetwork.IsUseAI())
         {
-            if (isUseNetwork.GetPlayerCol() == Team.Red)
+            if (playerTeamCol == Team.Red)
             {
                 RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PlayerController>();
                 var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
@@ -46,7 +48,7 @@ public class ActiveTeamController : MonoBehaviour
 
                 BluePlayerCon = BlueTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
             }
-            else if(isUseNetwork.GetPlayerCol() == Team.Blue)
+            else if(playerTeamCol == Team.Blue)
             {
                 RedPlayerCon = RedTeamPlayer.AddComponent<BocciaPlayer.PhotonPlayerController>();
 
@@ -155,5 +157,21 @@ public class ActiveTeamController : MonoBehaviour
             ChangeActivePlayer();
             this.gameObject.SetActive(true);
         }
+    }
+
+    //全部のボールをリクエストする。
+    private void RequestOwnerShipBall(bool isRequest)
+    {
+        if (isRequest)
+        {
+            Debug.Log("ボールの権限をリクエストする。");
+        }
+        else
+        {
+            Debug.Log("ボールの物理挙動を無効にする。");
+        }
+        RedPlayerCon.GetBallHolderController().RequestOwnerShip(isRequest);
+        BluePlayerCon.GetBallHolderController().RequestOwnerShip(isRequest);
+        BallFlow.RequestOwnerShip(isRequest);
     }
 }

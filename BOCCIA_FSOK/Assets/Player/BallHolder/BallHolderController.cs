@@ -121,8 +121,49 @@ namespace BocciaPlayer
                 var ballOperate = teamBalls[i].GetComponent<BallOperateScript>();
                 ballOperate.ResetVar();
             }
+        }
+
+        /// <summary>
+        /// ボールの権限リクエスト等を行う。
+        /// </summary>
+        /// <param name="isRequest">リクエストする側かどうか。</param>
+        public void RequestOwnerShip(bool isRequest)
+        {
+            if (teamBalls == null) return;
+            for (int i = 0; i < ballCount; i++)
+            {
+                if (isRequest)
+                {
+                    var photonV = teamBalls[i].GetComponent<Photon.Pun.PhotonView>();
+                    if (photonV != null)
+                    {
+                        //リクエスト。
+                        photonV.RequestOwnership();
+                    }
+                }
+                //リジッドボディ取得。
+                var RB = teamBalls[i].GetComponent<Rigidbody>();
+                if (RB != null)
+                {
+                    //オーナーかどうかで物理演算させるかを切り替える。
+                    RB.isKinematic = !isRequest;
+                }
+
+                if(i == ballCount - 1)
+                {
+                    if (isRequest)
+                    {
+                        Debug.Log("ボールの物理挙動開始。");
+                    }
+                    else
+                    {
+                        Debug.Log("ボールの物理挙動停止。");
+                    }
+                }
+            }
 
         }
+
         /// <summary>
         /// リストの作成を同期。
         /// </summary>
@@ -149,11 +190,26 @@ namespace BocciaPlayer
             photonV.ViewID = viewID;
             photonV.ObservedComponents = new List<Component>();
             var photonTransformView = teamBalls[ballNo].gameObject.GetComponent<Photon.Pun.PhotonTransformView>();
+            var photonRigidBodyView = teamBalls[ballNo].gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
             photonTransformView.m_SynchronizePosition = true;
             photonTransformView.m_SynchronizeRotation = true;
-            var photonRigidbodyView = teamBalls[ballNo].gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
+            photonRigidBodyView.m_SynchronizeVelocity = true;
+            photonRigidBodyView.m_SynchronizeAngularVelocity = true;
+
+            photonV.ObservedComponents.Add(photonRigidBodyView);
             photonV.ObservedComponents.Add(photonTransformView);
-            photonV.ObservedComponents.Add(photonRigidbodyView);
+
+            photonV.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;
+
+            var RB = teamBalls[ballNo].GetComponent<Rigidbody>();
+            if (photonV.IsMine)
+            {
+                RB.isKinematic = false;
+            }
+            else
+            {
+                RB.isKinematic = true;
+            }
 
             Debug.Log(ballNo + "個目のボールを作成。");
         }

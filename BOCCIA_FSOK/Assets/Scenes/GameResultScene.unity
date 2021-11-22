@@ -329,17 +329,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16731184}
   m_CullTransparentMesh: 1
---- !u!114 &310663108 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4515876688681389763, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
-  m_PrefabInstance: {fileID: 839322279}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a33b4474ff79a84fae9efc4dbbefabf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &464203760
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,6 +802,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TouchManagerObj
       objectReference: {fileID: 0}
+    - target: {fileID: 4980401370976191468, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 464203763}
+    - target: {fileID: 4980401370976191468, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
+      propertyPath: canvasRect
+      value: 
+      objectReference: {fileID: 464203764}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 074b83a9ffdcb184090057d74e6d2e04, type: 3}
 --- !u!1001 &877849972
@@ -1261,7 +1258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 464203760}
-  touchManager: {fileID: 310663108}
+  touchManager: {fileID: 0}
   soundController: {fileID: 1969553407}
   scoreScript: {fileID: 963010236}
   resultPrefab: {fileID: 459506140328854914, guid: 02e02101dd8dfd14580b2864ebe42ab7, type: 3}

@@ -16,8 +16,8 @@ public class ScoreResultDispScript : MonoBehaviour
     }
 
 
-    [SerializeField] private GameObject canvas;         //キャンバス。
-    [SerializeField] private TouchManager touchManager;         //キャンバス。
+    private GameObject canvas;         //キャンバス。
+    private TouchManager touchManager;         //キャンバス。
     [SerializeField] private ResultSoundController soundController;         //サウンドコントロール。
     public GameScore.GameScoreScript scoreScript;      //スコアを記録しているスクリプト。
     public GameObject resultPrefab;                     //リザルトのプレファブ。
@@ -42,6 +42,10 @@ public class ScoreResultDispScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //タッチマネージャーを取得。
+        touchManager = TouchManager.GetInstance();
+        canvas = touchManager.GetCanvas().gameObject;      //キャンバスを取得。
+
         //非表示。
         tapGoTitle.SetActive(false);
         //シーン切り替え制御。
