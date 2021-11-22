@@ -89,13 +89,14 @@ public class ServerTimerScript : MonoBehaviourPun
         {
             return 0.0f;
         }
-        float left = unchecked(endTime - PhotonNetwork.ServerTimestamp) * 1000;
-        if(left < 0.0f)
+        double left = unchecked(endTime - PhotonNetwork.ServerTimestamp);
+        left /= 1000;
+        if (left < 0.0f)
         {
             //カウントが終了した。
             isCount = false;
             left = 0.0f;
         }
-        return left;
+        return (float)left;
     }
 }

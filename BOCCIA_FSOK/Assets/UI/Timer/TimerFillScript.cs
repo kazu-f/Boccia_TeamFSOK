@@ -6,8 +6,8 @@ using Photon.Pun;
 using Photon.Realtime;
 public class TimerFillScript : MonoBehaviour
 {
-    [SerializeField] private double Limit = 30.0;
-    private double NowTime = 0.0f;
+    [SerializeField] private float Limit = 30.0f;
+    private float NowTime = 0.0f;
     private bool IsStart = false;
     private float late = 1.0f;
     [SerializeField]private GameObject CircleBefore = null;
@@ -16,25 +16,17 @@ public class TimerFillScript : MonoBehaviour
     private Image CircleAfterImage = null;
     [SerializeField] private Text time = null;
     private bool IsTimeUped = false;
-    private double StartTime = 0.0;
+    private ServerTimerScript ServerTimer = null;
     private void Awake()
     {
         CircleBeforeImage = CircleBefore.GetComponent<Image>();
         CircleAfterImage = CircleAfter.GetComponent<Image>();
-        
-        if (PhotonNetwork.IsMasterClient)
-        {
-            //カウントダウンのスタート時間をセット
-            var properties = new ExitGames.Client.Photon.Hashtable();
-            properties.Add("StartTime", PhotonNetwork.Time);
-            PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
-        }
+        ServerTimer = this.gameObject.GetComponent<ServerTimerScript>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        //現在のルームから開始時間を取得
-        StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
+        ServerTimer.SetCountTimeSecond(Limit);
     }
 
     // Update is called once per frame
@@ -42,22 +34,17 @@ public class TimerFillScript : MonoBehaviour
     {
         if (IsStart)
         {
-            //経過時間を求める
-            double elapsedTime = PhotonNetwork.Time - StartTime;
-            //リミットから経過時間を引いて現在の時間を求める
-            NowTime = Limit - elapsedTime;
             //NowTime -= Time.deltaTime;
-            //一応最低値決めとく
-            NowTime = Mathf.Max((float)NowTime, -0.01f);
-            late = (float)NowTime / (float)Limit;
+            NowTime = ServerTimer.CountLeft();
+            late = NowTime / Limit;
             CircleBeforeImage.fillAmount = late;
-            if (late < 0.0f)
+            if (late <= 0.0f)
             {
                 IsStart = false;
                 IsTimeUped = true;
             }
             //切り上げ
-            int timenum = Mathf.CeilToInt((float)NowTime);
+            int timenum = Mathf.CeilToInt(NowTime);
             time.text = "" + timenum;
             if (timenum < Limit / 4)
             {
@@ -76,15 +63,7 @@ public class TimerFillScript : MonoBehaviour
 
     public void TimerStart()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            //カウントダウンのスタート時間をセット
-            var properties = new ExitGames.Client.Photon.Hashtable();
-            properties.Add("StartTime", PhotonNetwork.Time);
-            PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
-        }
-        //現在のルームから開始時間を取得
-        StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
+        ServerTimer.SetCountTimeSecond(Limit);
         NowTime = Limit;
         IsStart = true;
         late = 1.0f;
