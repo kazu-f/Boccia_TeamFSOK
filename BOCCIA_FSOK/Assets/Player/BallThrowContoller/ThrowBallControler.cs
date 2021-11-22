@@ -15,6 +15,7 @@ namespace BocciaPlayer
         private ThrowDummyScript throwDummy;        //予測線表示スクリプト。
         private AudioSource throwSE;                //投げるときのSE。
         private ThrowGaugeScript throwGauge;
+        private ServerTimerScript serverTimer;      //カウントを行うためのスクリプト。
         private Vector2 m_throwPow = new Vector2(0.0f,0.0f);                //投げる力
         private Vector3 m_force = new Vector3(0.0f, 0.0f, 0.0f);      //初速。
         private float m_throwPosHeight = 0.0f;                //ボールを投げる高さの割合。
@@ -47,6 +48,9 @@ namespace BocciaPlayer
 
             //SEを取得。
             throwSE = GetComponent<AudioSource>();
+
+            //カウントを行うスクリプト取得。
+            serverTimer = bocciaPlayer.GetComponent<ServerTimerScript>();
 
         }
         // Start is called before the first frame update
@@ -152,6 +156,8 @@ namespace BocciaPlayer
                 this.transform.rotation
             };
 
+            //カウントする。
+            serverTimer.SetCountTimeSecond(THROW_DELAY);
             this.photonView.RPC(nameof(ThrowBallRPC), Photon.Pun.RpcTarget.All, param);
         }
 
@@ -167,12 +173,17 @@ namespace BocciaPlayer
         IEnumerator ThrowCoroutine(Vector3 force, Vector3 throwPos, Quaternion throwRot)
         {
             isDecision = true;
-            yield return new WaitForSeconds(THROW_DELAY);
+            //yield return new WaitForSeconds(THROW_DELAY);
             //現在投げるボールを取得する。
             var obj = ballHolder.GetCurrentBall();
             if(obj == null)
             {
                 yield return null;
+            }
+            //カウントが終わっているか？
+            while(!serverTimer.IsCountEnd())
+            {
+                yield return 0;
             }
 
             //ボールの位置を合わせる。
