@@ -14,7 +14,7 @@ using Photon.Realtime;
 public class ServerTimerScript : MonoBehaviourPun
 {
     private int endTime = 0;    //カウント終了時刻
-    bool isCount = false;       //カウントを行っているか。
+    public bool isCount { get; private set; } = false;       //カウントを行っているか。
 
     // Start is called before the first frame update
     void Start()
