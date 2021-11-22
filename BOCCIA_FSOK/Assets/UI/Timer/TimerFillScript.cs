@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-
-public class TimerFillScript : MonoBehaviourPun
+using Photon.Realtime;
+public class TimerFillScript : MonoBehaviour
 {
     [SerializeField] private double Limit = 30.0;
     private double NowTime = 0.0f;
@@ -22,7 +22,7 @@ public class TimerFillScript : MonoBehaviourPun
         CircleBeforeImage = CircleBefore.GetComponent<Image>();
         CircleAfterImage = CircleAfter.GetComponent<Image>();
         
-        if(PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             //カウントダウンのスタート時間をセット
             var properties = new ExitGames.Client.Photon.Hashtable();
@@ -33,10 +33,8 @@ public class TimerFillScript : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("StartTime", out object obj);
         //現在のルームから開始時間を取得
-        //StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
-        StartTime = (double)obj;
+        StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
     }
 
     // Update is called once per frame
@@ -85,10 +83,8 @@ public class TimerFillScript : MonoBehaviourPun
             properties.Add("StartTime", PhotonNetwork.Time);
             PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
         }
-        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("StartTime", out object obj);
         //現在のルームから開始時間を取得
-        //StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
-        StartTime = (double)obj;
+        StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
         NowTime = Limit;
         IsStart = true;
         late = 1.0f;
