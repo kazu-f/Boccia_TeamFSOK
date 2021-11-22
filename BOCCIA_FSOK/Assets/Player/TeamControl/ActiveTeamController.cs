@@ -116,11 +116,6 @@ public class ActiveTeamController : MonoBehaviour
 
         //プレイヤーの有効フラグ切り替え。
         ChangeActivePlayer();
-        //自分のチームになったらボールの管理をリクエスト。
-        if(TeamFlow.GetNowTeam() == playerTeamCol)
-        {
-            RequestOwnerShipBall();
-        }
     }
 
     /// <summary>
@@ -165,11 +160,18 @@ public class ActiveTeamController : MonoBehaviour
     }
 
     //全部のボールをリクエストする。
-    private void RequestOwnerShipBall()
+    private void RequestOwnerShipBall(bool isRequest)
     {
-        Debug.Log("ボールの権限をリクエストする。");
-        RedPlayerCon.GetBallHolderController().RequestOwnerShip();
-        BluePlayerCon.GetBallHolderController().RequestOwnerShip();
-        BallFlow.RequestOwnerShip();
+        if (isRequest)
+        {
+            Debug.Log("ボールの権限をリクエストする。");
+        }
+        else
+        {
+            Debug.Log("ボールの物理挙動を無効にする。");
+        }
+        RedPlayerCon.GetBallHolderController().RequestOwnerShip(isRequest);
+        BluePlayerCon.GetBallHolderController().RequestOwnerShip(isRequest);
+        BallFlow.RequestOwnerShip(isRequest);
     }
 }
