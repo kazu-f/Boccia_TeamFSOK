@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
-public class TimerFillScript : MonoBehaviour
+public class TimerFillScript : MonoBehaviourPun
 {
     [SerializeField] private double Limit = 30.0;
     private double NowTime = 0.0f;
