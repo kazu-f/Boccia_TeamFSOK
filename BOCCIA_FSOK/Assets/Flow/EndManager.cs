@@ -8,10 +8,20 @@ public class EndManager : MonoBehaviour
     [SerializeField] private EndFlowScript m_EndFlow = null;
     [SerializeField] private TeamFlowDelayScript m_Delay = null;
     [SerializeField] private BallFlowScript m_BallFlow = null;
+    private Team MyTeamCol = Team.Num;
+
+    private void Awake()
+    {
+        MyTeamCol = GameObject.Find("IsNetWorkObj").GetComponent<IsUseNetwork>().GetPlayerCol();
+        if (MyTeamCol != Team.Red && MyTeamCol != Team.Blue)
+        {
+            Debug.LogError("チームのカラーが取得できませんでした。ネットワークオブジェが初期化されていない可能性があります");
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
