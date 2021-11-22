@@ -34,12 +34,18 @@ public class TimerFillScript : MonoBehaviour
     {
         if (IsStart)
         {
+            if(ServerTimer.isCount == false)
+            {
+                return;
+            }
             //NowTime -= Time.deltaTime;
             NowTime = ServerTimer.CountLeft();
             late = NowTime / Limit;
             CircleBeforeImage.fillAmount = late;
             if (late <= 0.0f)
             {
+                //タイムアップ
+                Debug.Log("タイムアップ");
                 IsStart = false;
                 IsTimeUped = true;
             }
