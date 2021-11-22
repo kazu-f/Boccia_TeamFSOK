@@ -22,7 +22,7 @@ public class TimerFillScript : MonoBehaviour
         CircleBeforeImage = CircleBefore.GetComponent<Image>();
         CircleAfterImage = CircleAfter.GetComponent<Image>();
         
-        if (PhotonNetwork.IsMasterClient)
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             //カウントダウンのスタート時間をセット
             var properties = new ExitGames.Client.Photon.Hashtable();
