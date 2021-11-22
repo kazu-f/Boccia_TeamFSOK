@@ -10,8 +10,8 @@ public class AIFlow : IPlayerController
     private GameObject JackBoll = null;
     private Vector3 JackPos = Vector3.zero;
     private GameObject CurrentTarn = null;
-
-    private int timer = 0;
+    private bool m_IsEnable = false;
+    private float timer = 0.0f;
     /// <summary>
     /// プレイヤーリセット
     /// PlayerControllerと一緒
@@ -27,6 +27,8 @@ public class AIFlow : IPlayerController
         {
             //プレイヤーが切り替わる時にカメラの位置を合わせる。
             throwAngleController.ChangeCamPos();
+            timer = 0;
+            m_IsEnable = isEnable;
         }
     }
 
@@ -37,32 +39,31 @@ public class AIFlow : IPlayerController
     // Start is called before the first frame update
     void Start()
     {
-        JackBoll =  GameObject.Find("GameFlow").GetComponent<BallFlowScript>().GetJackBall();
-        if (JackBoll == null)
-        {
-            //Debug.LogError("JackBollが見つかりませんでした。");
-        }
-
+        JackBoll = GameObject.Find("GameFlow").GetComponent<BallFlowScript>().GetJackBall();
         ThrowTrance = this.gameObject.transform;
-        ;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!m_IsEnable)
+        {
+            return;
+        }
+        timer += Time.deltaTime;
+        if (timer < 2.0f)
+        {
+            return;
+        }
         if (GameObject.Find("GameFlow").GetComponent<TeamFlowScript>().GetNowTeam() == Team.Blue)
         {
             if (!GameObject.Find("GameFlow").GetComponent<BallFlowScript>().IsPreparedJack())
             {
                 Vector2 throwPow = Vector2.zero;
-                throwPow.y = 1.0f;
+                throwPow.y = Random.value % 2;
                 throwBallControler.SetThrowPow(throwPow);
-                timer++;
-                if (timer > 100)
-                {
-                    //Debug.LogError("ジャックボールを投げます。"+throwPow.x+ throwPow.y);
-                    timer = 0;
-                }
+                throwBallControler.ThrowBall();
+                m_IsEnable = false;
             }
             else
             {
@@ -76,22 +77,24 @@ public class AIFlow : IPlayerController
                 Vector3 ThrowForward = ThrowTrance.forward;
                 //プレイヤーをジャックボールの方向に向ける
                 ThrowTrance.rotation.SetFromToRotation(ThrowForward, TargetNorm);
-                float angle = Vector3.Dot(ThrowForward, TargetNorm);
+                float angle = Vector3.Dot(-ThrowForward, TargetNorm);
                 throwAngleController.SetAngle(angle);
 
-                Vector2 throwPow = Vector2.zero;
-                throwPow.y = 1.0f;
+                Vector2 throwPow = Vector2.one;
+                float dis = TargetPos.magnitude - ThrowTrance.position.magnitude;
+                float ThrowMax = 12.5f - ThrowTrance.position.magnitude;
+                float power = dis / 1.0f;
+                throwPow.y = power;
                 throwBallControler.SetThrowPow(throwPow);
-
-                timer++;
-                if (timer > 100)
+                if (!throwBallControler.IsDecision())
                 {
-                    //Debug.LogError("マイボールを投げます。" + throwPow.x + throwPow.y);
-                    timer = 0;
+                    throwBallControler.ThrowBall();
+                    m_IsEnable = false;
+                    //Debug.LogError("マイボールを投げます。" + throwPow.y);
                 }
             }
         }
-  }
+    }
     public TouchInfo GetPath()
     {
         return info;
@@ -101,5 +104,5 @@ public class AIFlow : IPlayerController
     {
         //投げる値はテキトー
         return 1.0f;
-    } 
+    }
 }
