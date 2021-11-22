@@ -61,7 +61,6 @@ public class AIFlow : IPlayerController
             {
                 Vector2 throwPow = Vector2.zero;
                 throwPow.y = Random.value % 2;
-                //Debug.Log(throwPow.y+"ÇÃóÕÇ≈ìäÇ∞Ç‹Ç∑ÅB");
                 throwBallControler.SetThrowPow(throwPow);
                 throwBallControler.ThrowBall();
                 m_IsEnable = false;
