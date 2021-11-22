@@ -190,8 +190,13 @@ namespace BocciaPlayer
             photonV.ViewID = viewID;
             photonV.ObservedComponents = new List<Component>();
             var photonTransformView = teamBalls[ballNo].gameObject.GetComponent<Photon.Pun.PhotonTransformView>();
+            var photonRigidBodyView = teamBalls[ballNo].gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
             photonTransformView.m_SynchronizePosition = true;
             photonTransformView.m_SynchronizeRotation = true;
+            photonRigidBodyView.m_SynchronizeVelocity = true;
+            photonRigidBodyView.m_SynchronizeAngularVelocity = true;
+
+            photonV.ObservedComponents.Add(photonRigidBodyView);
             photonV.ObservedComponents.Add(photonTransformView);
 
             photonV.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;
