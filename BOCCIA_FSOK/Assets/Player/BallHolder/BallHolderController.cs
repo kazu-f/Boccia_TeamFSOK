@@ -194,7 +194,6 @@ namespace BocciaPlayer
             photonTransformView.m_SynchronizePosition = true;
             photonTransformView.m_SynchronizeRotation = true;
             photonRigidBodyView.m_SynchronizeVelocity = true;
-            photonRigidBodyView.m_SynchronizeAngularVelocity = true;
 
             photonV.ObservedComponents.Add(photonRigidBodyView);
             photonV.ObservedComponents.Add(photonTransformView);

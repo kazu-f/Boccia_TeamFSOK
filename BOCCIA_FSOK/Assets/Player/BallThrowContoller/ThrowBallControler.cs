@@ -174,16 +174,16 @@ namespace BocciaPlayer
         {
             isDecision = true;
             //yield return new WaitForSeconds(THROW_DELAY);
-            //現在投げるボールを取得する。
-            var obj = ballHolder.GetCurrentBall();
-            if(obj == null)
-            {
-                yield return null;
-            }
             //カウントが終わっているか？
             while(!serverTimer.IsCountEnd())
             {
                 yield return 0;
+            }
+            //現在投げるボールを取得する。
+            var obj = ballHolder.GetCurrentBall();
+            if (obj == null)
+            {
+                yield return null;
             }
 
             //ボールの位置を合わせる。

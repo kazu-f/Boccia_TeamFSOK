@@ -76,6 +76,7 @@ public class TimerFillScript : MonoBehaviour
         time.color = Color.green;
         CircleAfterImage.color = Color.green;
         IsTimeUped = false;
+        Debug.Log("タイマーを開始する。");
     }
 
     public void TimerStop()

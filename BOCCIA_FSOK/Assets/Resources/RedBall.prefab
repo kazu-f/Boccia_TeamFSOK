@@ -1,21 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &8467182600906403874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2358465874934825963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
 --- !u!114 &1040747327662773294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32,6 +16,22 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 0
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &8467182600906403874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2358465874934825963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1001 &2292417317409803078
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -88,17 +88,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7324876002002402332, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7324876002002402332, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
       propertyPath: ObservedComponents.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7324876002002402332, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
       propertyPath: ObservedComponents.Array.data[0]
       value: 
-      objectReference: {fileID: 8467182600906403874}
+      objectReference: {fileID: 1040747327662773294}
     - target: {fileID: 7324876002002402332, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
       propertyPath: ObservedComponents.Array.data[1]
       value: 
-      objectReference: {fileID: 1040747327662773294}
+      objectReference: {fileID: 8467182600906403874}
     - target: {fileID: 8824630355572602714, guid: 749ea1691d61b3f40b01da76e2de3241, type: 3}
       propertyPath: ObservedComponents.Array.size
       value: 2

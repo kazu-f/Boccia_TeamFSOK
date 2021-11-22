@@ -40,17 +40,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8359767797057495123, guid: c15fff35ac36b8c488e2c34ba94f07bb, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8359767797057495123, guid: c15fff35ac36b8c488e2c34ba94f07bb, type: 3}
       propertyPath: ObservedComponents.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8359767797057495123, guid: c15fff35ac36b8c488e2c34ba94f07bb, type: 3}
       propertyPath: ObservedComponents.Array.data[0]
       value: 
-      objectReference: {fileID: 4974640373509035846}
+      objectReference: {fileID: -2178506255760966901}
     - target: {fileID: -8359767797057495123, guid: c15fff35ac36b8c488e2c34ba94f07bb, type: 3}
       propertyPath: ObservedComponents.Array.data[1]
       value: 
-      objectReference: {fileID: -2178506255760966901}
+      objectReference: {fileID: 4974640373509035846}
     - target: {fileID: 225696973357414856, guid: c15fff35ac36b8c488e2c34ba94f07bb, type: 3}
       propertyPath: m_Name
       value: BlueBall
