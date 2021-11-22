@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class EndManager : MonoBehaviour
 {
@@ -27,6 +28,25 @@ public class EndManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!PhotonNetwork.OfflineMode)
+        {
+            if (MyTeamCol != m_TeamFlow.GetNowTeam())
+            {
+                //SendManagerの取得
+                NetworkSendManagerScript manager = GameObject.Find("SendNetWorkObj").GetComponent<NetworkSendManagerScript>();
+                var IsFollow = manager.ReceiveIsCameraFollow();
+                //追従カメラかどうかをマスタークライアントに合わせる
+                GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(IsFollow);
+                var NextTeam = manager.ReceiveNextTeam();
+                //次のチームをマスタークライアントに合わせる
+                if (NextTeam != Team.Num)
+                {
+                    m_TeamFlow.SetNextTeam(NextTeam);
+                    m_TeamFlow.SetNextTeamForClass();
+                }
+                return;
+            }
+        }
         switch (m_TeamFlow.GetState())
         {
             case TeamFlowState.Start:
@@ -128,7 +148,7 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.ChangeTeam:
                 //次に投げるチームをセット
-                m_TeamFlow.SetNextTeam();
+                m_TeamFlow.SetNextTeamForClass();
                 //タイマースタート
                 GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
                 m_TeamFlow.SetState(TeamFlowState.ChangeEnd);

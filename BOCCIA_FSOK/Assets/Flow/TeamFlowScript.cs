@@ -470,10 +470,14 @@ public class TeamFlowScript : MonoBehaviour
         m_state = state;
     }
 
+    public void SetNextTeam(Team team)
+    {
+        m_NextTeam = team;
+    }
     /// <summary>
     /// 次に投げるチームを情報が必要なクラスにセットする
     /// </summary>
-    public void SetNextTeam()
+    public void SetNextTeamForClass()
     {
         //エンドがまだ終わっていないとき
         if (m_GameFlowScript.GetIsEnd() == false)
