@@ -46,6 +46,7 @@ public class ServerTimerScript : MonoBehaviourPun
     /// <param name="count"></param>
     public void SetCountTime(int count)
     {
+        if (!photonView.IsMine) return;
         int end = PhotonNetwork.ServerTimestamp + count;
         photonView.RPC(nameof(SetCount), RpcTarget.All, end);
     }
@@ -55,6 +56,7 @@ public class ServerTimerScript : MonoBehaviourPun
     /// <param name="count"></param>
     public void SetCountTimeSecond(float count)
     {
+        if (!photonView.IsMine) return;
         int end = PhotonNetwork.ServerTimestamp + (int)(count * 1000.0f);
         photonView.RPC(nameof(SetCount), RpcTarget.All, end);
     }
