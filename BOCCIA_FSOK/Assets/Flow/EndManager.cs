@@ -28,25 +28,6 @@ public class EndManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PhotonNetwork.OfflineMode)
-        {
-            if (MyTeamCol != m_TeamFlow.GetNowTeam())
-            {
-                //SendManagerの取得
-                NetworkSendManagerScript manager = GameObject.Find("SendNetWorkObj").GetComponent<NetworkSendManagerScript>();
-                var IsFollow = manager.ReceiveIsCameraFollow();
-                //追従カメラかどうかをマスタークライアントに合わせる
-                GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(IsFollow);
-                var NextTeam = manager.ReceiveNextTeam();
-                //次のチームをマスタークライアントに合わせる
-                if (NextTeam != Team.Num)
-                {
-                    m_TeamFlow.SetNextTeam(NextTeam);
-                    m_TeamFlow.SetNextTeamForClass();
-                }
-                return;
-            }
-        }
         switch (m_TeamFlow.GetState())
         {
             case TeamFlowState.Start:
@@ -125,7 +106,6 @@ public class EndManager : MonoBehaviour
                     {
                         //計算ができたのでステートをCalucedにする
                         m_TeamFlow.SetState(TeamFlowState.Caluced);
-                        GameObject.Find("SendNetWorkObj").GetComponent<NetworkSendManagerScript>().SendNextTeam(m_TeamFlow.GetNowTeam());
                     }
                     else
                     {
