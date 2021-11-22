@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using Photon.Realtime;
+
 public class TimerFillScript : MonoBehaviourPun
 {
     [SerializeField] private double Limit = 30.0;
@@ -33,8 +33,10 @@ public class TimerFillScript : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("StartTime", out object obj);
         //現在のルームから開始時間を取得
-        StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
+        //StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
+        StartTime = (double)obj;
     }
 
     // Update is called once per frame
@@ -83,8 +85,10 @@ public class TimerFillScript : MonoBehaviourPun
             properties.Add("StartTime", PhotonNetwork.Time);
             PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
         }
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("StartTime", out object obj);
         //現在のルームから開始時間を取得
-        StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
+        //StartTime = (double)PhotonNetwork.CurrentRoom.CustomProperties["StartTime"];
+        StartTime = (double)obj;
         NowTime = Limit;
         IsStart = true;
         late = 1.0f;
