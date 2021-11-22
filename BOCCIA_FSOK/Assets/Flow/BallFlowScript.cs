@@ -146,14 +146,14 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
             Debug.Log("JackBallÇÃçÏê¨Ç™é∏îsÅB");
         }
 
-        var RB = m_Jack.GetComponent<Rigidbody>();
-        if (photonV.IsMine)
-        {
-            RB.isKinematic = false;
-        }
-        else
-        {
-            RB.isKinematic = true;
-        }
+        //var RB = m_Jack.GetComponent<Rigidbody>();
+        //if (photonV.IsMine)
+        //{
+        //    RB.isKinematic = false;
+        //}
+        //else
+        //{
+        //    RB.isKinematic = true;
+        //}
     }
 }
