@@ -147,6 +147,7 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.ChangeTeam:
+                GameObject.Find("SendNetWorkObj").GetComponent<NetworkSendManagerScript>().SendNextTeam(m_TeamFlow.GetNowTeam());
                 //次に投げるチームをセット
                 m_TeamFlow.SetNextTeamForClass();
                 //タイマースタート
