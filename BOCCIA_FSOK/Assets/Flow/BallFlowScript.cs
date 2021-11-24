@@ -126,12 +126,11 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         photonV.ViewID = viewID;
         photonV.ObservedComponents = new List<Component>();
         var photonTransformView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonTransformView>();
-        var photonRigidBodyView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
+        var ballState = m_Jack.gameObject.GetComponent<BallStateScript>();
         photonTransformView.m_SynchronizePosition = true;
         photonTransformView.m_SynchronizeRotation = true;
-        photonRigidBodyView.m_SynchronizeVelocity = true;
 
-        photonV.ObservedComponents.Add(photonRigidBodyView);
+        photonV.ObservedComponents.Add(ballState);
         photonV.ObservedComponents.Add(photonTransformView);
 
         photonV.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;

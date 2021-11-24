@@ -77,7 +77,6 @@ public class EndManager : MonoBehaviour
                 //’x‰„‚ğŠJn‚³‚¹‚é
                 m_Delay.DelayStart();
                 m_TeamFlow.SetState(TeamFlowState.Delay);
-                m_TeamFlow.ThrowEnd();
                 break;
 
             case TeamFlowState.Delay:
@@ -86,6 +85,7 @@ public class EndManager : MonoBehaviour
                 {
                     //’x‰„‚ªI—¹‚µ‚½
                     m_TeamFlow.SetState(TeamFlowState.Caluc);
+                    m_TeamFlow.ThrowEnd();
                 }
                 break;
 

@@ -12,7 +12,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     [SerializeField]
     private byte maxPlayersPerRoom = 2;
     [SerializeField]
-    private int SendRate = 30;      //1秒間に何回パケットを送信するか
+    private int SendRate = 15;      //1秒間に何回パケットを送信するか
     #endregion
 
     #region Private Fields
