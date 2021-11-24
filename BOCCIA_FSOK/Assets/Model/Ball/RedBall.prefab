@@ -272,7 +272,6 @@ GameObject:
   - component: {fileID: -3709627144031105444}
   - component: {fileID: 3154304619793962672}
   - component: {fileID: -2036738363497738921}
-  - component: {fileID: 7324876002002402332}
   - component: {fileID: 1464600633136945332}
   m_Layer: 0
   m_Name: RedBall
@@ -438,29 +437,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KillTime: 1
-  FailedFont: {fileID: 8786286701965864776, guid: a3ec749e227af874ea953b1ae8b51cb7, type: 3}
---- !u!114 &7324876002002402332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4569668526166853805}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!114 &1464600633136945332
 MonoBehaviour:
   m_ObjectHideFlags: 0

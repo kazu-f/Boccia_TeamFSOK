@@ -25,7 +25,8 @@ public class ActiveTeamController : MonoBehaviour
 
     Team currentTeam;                              //現在のプレイヤー。
     Team playerTeamCol;                             //プレイヤーのチームカラー。
-    ThrowTeamState throwState = ThrowTeamState.throwBall;
+    ThrowTeamState throwState = ThrowTeamState.waitStopBall;
+    bool isUseAI = false;
 
     private void Awake()
     {
@@ -63,6 +64,7 @@ public class ActiveTeamController : MonoBehaviour
             var photonView = RedTeamPlayer.GetComponent<Photon.Pun.PhotonView>();
             photonView.RequestOwnership();
             BluePlayerCon = BlueTeamPlayer.AddComponent<AIFlow>();
+            isUseAI = true;
         }
         //投げるプレイヤーを切り替え。
         ChangeActivePlayer();
@@ -91,6 +93,7 @@ public class ActiveTeamController : MonoBehaviour
                 {
                     throwState = ThrowTeamState.throwBall;
                     ChangeActivePlayer();
+                    RequestOwnerShipBall(playerTeamCol == currentTeam);
                 }
 
                 break;
@@ -109,7 +112,7 @@ public class ActiveTeamController : MonoBehaviour
     public void RestartGame()
     {
         //ボールを投げる。
-        throwState = ThrowTeamState.throwBall;
+        throwState = ThrowTeamState.waitStopBall;
         //プレイヤーのリセット。
         RedPlayerCon.ResetPlayer();
         BluePlayerCon.ResetPlayer();
@@ -162,6 +165,11 @@ public class ActiveTeamController : MonoBehaviour
     //全部のボールをリクエストする。
     private void RequestOwnerShipBall(bool isRequest)
     {
+        //AIなら権限のやり取り不要。
+        if(isUseAI)
+        {
+            return;
+        }
         if (isRequest)
         {
             Debug.Log("ボールの権限をリクエストする。");

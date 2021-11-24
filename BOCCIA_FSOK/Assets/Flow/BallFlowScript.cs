@@ -125,7 +125,7 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         var photonV = m_Jack.GetComponent<Photon.Pun.PhotonView>();
         photonV.ViewID = viewID;
         photonV.ObservedComponents = new List<Component>();
-        var photonTransformView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonTransformView>();
+        var photonTransformView = m_Jack.gameObject.GetComponent<Photon.Pun.MyPhotonTransformView>();
         var ballState = m_Jack.gameObject.GetComponent<BallStateScript>();
         photonTransformView.m_SynchronizePosition = true;
         photonTransformView.m_SynchronizeRotation = true;
