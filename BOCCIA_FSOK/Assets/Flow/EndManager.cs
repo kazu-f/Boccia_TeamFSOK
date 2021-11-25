@@ -101,6 +101,8 @@ public class EndManager : MonoBehaviour
                 }
                 else
                 {
+                    //残りボール数のテキストのαを更新
+                    GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
                     //ジャックボールは用意されているので次に投げるチームを計算
                     if (m_TeamFlow.CalucNextTeam() == true)
                     {
@@ -117,6 +119,8 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.Caluced:
                 //次に投げるボールが計算できた時
+                //次に投げるチームをセット
+                m_TeamFlow.SetNextTeamForClass();
                 m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
                 break;
 
@@ -124,19 +128,13 @@ public class EndManager : MonoBehaviour
                 //投げ終わり
                 //カメラを追従カメラから切り替える
                 GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
-                m_TeamFlow.SetState(TeamFlowState.ChangeTeam);
-                break;
-
-            case TeamFlowState.ChangeTeam:
-                //次に投げるチームをセット
-                m_TeamFlow.SetNextTeamForClass();
-                //タイマースタート
-                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
                 m_TeamFlow.SetState(TeamFlowState.ChangeEnd);
                 break;
 
             case TeamFlowState.ChangeEnd:
                 //チーム変え終わった
+                //タイマースタート
+                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 break;
 

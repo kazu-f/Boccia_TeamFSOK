@@ -13,7 +13,6 @@ public enum TeamFlowState
     Caluc,
     Caluced,
     ThrowEnd,
-    ChangeTeam,
     ChangeEnd,
     End,
     Num,
@@ -420,6 +419,8 @@ public class TeamFlowScript : MonoBehaviour
 
     public void ThrowBall()
     {
+        //残りボール数のテキストを更新
+        GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();
         IsThrow = true;
         //ステートを投げた状態にする
         m_state = TeamFlowState.Throw;

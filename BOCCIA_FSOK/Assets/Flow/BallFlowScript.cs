@@ -25,6 +25,7 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         {
             Debug.LogError("JackBall‚Ínull‚Å‚·");
         }
+        GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
     }
 
     // Update is called once per frame
@@ -81,6 +82,7 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         ballOperate.ResetVar();
 
         m_IsPreparedJack = false;
+        GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
         m_Jack.SetActive(false);
     }
 
