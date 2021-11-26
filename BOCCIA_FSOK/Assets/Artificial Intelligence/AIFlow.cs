@@ -71,7 +71,7 @@ public class AIFlow : IPlayerController
                 if (!GameObject.Find("GameFlow").GetComponent<BallFlowScript>().IsPreparedJack())
                 {
                     Vector2 throwPow = Vector2.zero;
-                    throwPow.y = Random.value;
+                    throwPow.y = Random.Range(0.4f, 0.7f);
                     throwBallControler.SetThrowPow(throwPow);
                     throwBallControler.ThrowBall();
                     m_IsEnable = false;
@@ -82,22 +82,23 @@ public class AIFlow : IPlayerController
                     JackPos = JackBoll.transform.position;
                     //投げたい位置を計算
                     Vector3 TargetPos = JackPos - ThrowTrance.position;
+                    TargetPos.y = 0.0f;
                     //方向を調整
                     {
                         //正規化して投げる方向だけにする
                         Vector3 TargetNorm = TargetPos.normalized;
                         //投げるプレイヤーの前方向
-                        Vector3 ThrowForward = ThrowTrance.forward;
+                        Vector3 ThrowForward = new Vector3(0.0f,0.0f,1.0f);
                         //プレイヤーをジャックボールの方向に向ける
                         ThrowTrance.rotation.SetFromToRotation(ThrowForward, TargetNorm);
-                        float angle = Vector3.Dot(ThrowTrance.forward, ThrowForward);
-                        throwAngleController.SetAngle(0);
+                        float angle = Vector3.Angle(ThrowForward, TargetNorm);
+                        throwAngleController.SetAngle(angle);
                         Debug.LogError("プレイヤーの角度" + angle);
 
                     }
                     //投げる力を調整
                     {
-                        Vector2 throwPow = Vector2.one;
+                        Vector2 throwPow = Vector2.zero;
                         Vector3 dis = TargetPos - ThrowTrance.position;
                         //Debug.LogError("プレイヤーとジャックボールの差分" + dis.magnitude);
                         const float coatSize = 12.5f;
