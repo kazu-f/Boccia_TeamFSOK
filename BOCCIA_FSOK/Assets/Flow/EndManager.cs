@@ -134,7 +134,13 @@ public class EndManager : MonoBehaviour
             case TeamFlowState.ChangeEnd:
                 //チーム変え終わった
                 //タイマースタート
-                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
+                if (m_EndFlow.GetIsEnd() == false)
+                {
+                    //エンドが終わっていないとき
+                    GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
+                }
+                //残りボール数のテキストを更新
+                GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 break;
 
