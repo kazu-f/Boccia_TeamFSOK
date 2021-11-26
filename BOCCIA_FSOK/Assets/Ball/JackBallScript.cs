@@ -8,6 +8,7 @@ public class JackBallScript : IBallScript
     private TeamFlowScript m_TeamFlow = null;
     public Vector3 m_DefaultPos = Vector3.zero;
     private Rigidbody m_rigidbody = null;
+    private Photon.Pun.PhotonView photonView;
     private void Awake()
     {
         //RigidBodyを取得
@@ -32,6 +33,8 @@ public class JackBallScript : IBallScript
                 Debug.LogError("エラー：TeamFlowScriptコンポーネントの取得に失敗しました。");
             }
         }
+        //PhotonViewを取得する。
+        photonView = this.gameObject.GetComponent<Photon.Pun.PhotonView>();
     }
     // Start is called before the first frame update
     void Start()
@@ -65,6 +68,8 @@ public class JackBallScript : IBallScript
 
     private void ResetPos()
     {
+        //ボールの権限が無ければ無視。
+        if (!photonView.IsMine || m_rigidbody.isKinematic) return;
         //速度をゼロにする
         m_rigidbody.velocity = Vector3.zero;
         //クロスに戻す

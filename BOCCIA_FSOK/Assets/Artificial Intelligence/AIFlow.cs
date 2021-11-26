@@ -13,6 +13,7 @@ public class AIFlow : IPlayerController
     private bool m_IsEnable = false;
     private float timer = 0.0f;
     private TeamFlowScript TeamFlow;
+    private SwichActiveGameObjects swichActiveGameObj;
     /// <summary>
     /// プレイヤーリセット
     /// PlayerControllerと一緒
@@ -23,19 +24,21 @@ public class AIFlow : IPlayerController
     }
     public override void SwitchPlayer(bool isEnable)
     {
+        m_IsEnable = isEnable;
         //開始時点のトランスフォームへ移動。
         if (isEnable == true)
         {
             //プレイヤーが切り替わる時にカメラの位置を合わせる。
             throwAngleController.ChangeCamPos();
             timer = 0;
-            m_IsEnable = isEnable;
+            swichActiveGameObj.SwitchGameObject(false);
         }
     }
 
     private void Awake()
     {
         InitPlayerScript();
+        swichActiveGameObj = SwichActiveGameObjects.GetInstance();
     }
     // Start is called before the first frame update
     void Start()
@@ -48,10 +51,15 @@ public class AIFlow : IPlayerController
     // Update is called once per frame
     void Update()
     {
-        if (!m_IsEnable)
+        if (!m_IsEnable || throwBallControler.IsDecision())
         {
             return;
         }
+        else
+        {
+            swichActiveGameObj.SwitchGameObject(false);
+        }
+
         timer += Time.deltaTime;
         if (timer < 2.0f)
         {
