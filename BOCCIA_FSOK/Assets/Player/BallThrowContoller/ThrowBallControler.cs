@@ -209,6 +209,11 @@ namespace BocciaPlayer
             return isDecision;
         }
 
+        public ArmScript GetArmScript()
+        {
+            return armScript;
+        }
+
         private void OnEnable()
         {
             //—LŒø‚É‚·‚éB

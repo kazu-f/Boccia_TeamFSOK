@@ -46,8 +46,7 @@ public class JackBallScript : IBallScript
     // Update is called once per frame
     void Update()
     {
-        //TeamFlowにジャックボールの位置を保存
-        m_TeamFlow.SetJackPos(this.transform.position);
+
     }
 
     /// <summary>

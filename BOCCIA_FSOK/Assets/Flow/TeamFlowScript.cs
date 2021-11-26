@@ -160,6 +160,7 @@ public class TeamFlowScript : MonoBehaviour
             //チームを取得
             Teams[ballnum] = m_balls[ballnum].GetComponent<TeamDivisionScript>().GetTeam();
             //ボールからジャックボールへの距離
+            m_JackPos = m_Jack.transform.position;
             Vector3 Dir = m_balls[ballnum].GetComponent<Rigidbody>().position - m_JackPos;
             float dist = Dir.magnitude;
             //ジャックボールまでの距離を代入
@@ -298,14 +299,6 @@ public class TeamFlowScript : MonoBehaviour
                 m_balls[num].GetComponent<BallOperateScript>().EndThrowing();
             }
         }
-    }
-    /// <summary>
-    /// ジャックボールの位置を保存
-    /// </summary>
-    /// <param name="pos">位置</param>
-    public void SetJackPos(Vector3 pos)
-    {
-        m_JackPos = pos;
     }
 
     /// <summary>
