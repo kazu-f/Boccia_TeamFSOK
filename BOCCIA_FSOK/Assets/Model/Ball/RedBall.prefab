@@ -272,7 +272,6 @@ GameObject:
   - component: {fileID: -3709627144031105444}
   - component: {fileID: 3154304619793962672}
   - component: {fileID: -2036738363497738921}
-  - component: {fileID: 7324876002002402332}
   - component: {fileID: 1464600633136945332}
   m_Layer: 0
   m_Name: RedBall
@@ -460,8 +459,7 @@ MonoBehaviour:
   ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &1464600633136945332
+  isRuntimeInstantiated: 0--- !u!114 &1464600633136945332
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

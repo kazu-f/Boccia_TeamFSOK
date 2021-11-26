@@ -25,6 +25,7 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         {
             Debug.LogError("JackBallÇÕnullÇ≈Ç∑");
         }
+        GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
     }
 
     // Update is called once per frame
@@ -81,6 +82,7 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         ballOperate.ResetVar();
 
         m_IsPreparedJack = false;
+        GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
         m_Jack.SetActive(false);
     }
 
@@ -125,13 +127,12 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
         var photonV = m_Jack.GetComponent<Photon.Pun.PhotonView>();
         photonV.ViewID = viewID;
         photonV.ObservedComponents = new List<Component>();
-        var photonTransformView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonTransformView>();
-        var photonRigidBodyView = m_Jack.gameObject.GetComponent<Photon.Pun.PhotonRigidbodyView>();
+        var photonTransformView = m_Jack.gameObject.GetComponent<Photon.Pun.MyPhotonTransformView>();
+        var ballState = m_Jack.gameObject.GetComponent<BallStateScript>();
         photonTransformView.m_SynchronizePosition = true;
         photonTransformView.m_SynchronizeRotation = true;
-        photonRigidBodyView.m_SynchronizeVelocity = true;
 
-        photonV.ObservedComponents.Add(photonRigidBodyView);
+        photonV.ObservedComponents.Add(ballState);
         photonV.ObservedComponents.Add(photonTransformView);
 
         photonV.OwnershipTransfer = Photon.Pun.OwnershipOption.Request;
@@ -145,14 +146,14 @@ public class BallFlowScript : Photon.Pun.MonoBehaviourPun
             Debug.Log("JackBallÇÃçÏê¨Ç™é∏îsÅB");
         }
 
-        //var RB = m_Jack.GetComponent<Rigidbody>();
-        //if (photonV.IsMine)
-        //{
-        //    RB.isKinematic = false;
-        //}
-        //else
-        //{
-        //    RB.isKinematic = true;
-        //}
+        var RB = m_Jack.GetComponent<Rigidbody>();
+        if (photonV.IsMine)
+        {
+            RB.isKinematic = false;
+        }
+        else
+        {
+            RB.isKinematic = true;
+        }
     }
 }

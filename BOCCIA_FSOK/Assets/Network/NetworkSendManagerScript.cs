@@ -13,8 +13,6 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     private Vector3 m_throwPos = Vector3.zero;
     private Quaternion m_rot = Quaternion.identity;
     private int m_state = 0;                         //åàíËÇ©Ç«Ç§Ç©ÅB
-    private bool m_IsCameraFollow = false;
-    private Team m_NextTeam = Team.Num;
     private PhotonView photonView = null;
 
     public void Awake()
@@ -37,8 +35,6 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                 stream.SendNext(m_throwPos);
                 stream.SendNext(m_rot);
                 stream.SendNext(m_state);
-                stream.SendNext(m_IsCameraFollow);
-                stream.SendNext(m_NextTeam);
                 IsSended = true;
             }
         }
@@ -51,8 +47,6 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
             m_throwPos = (Vector3)stream.ReceiveNext();
             m_rot = (Quaternion)stream.ReceiveNext();
             m_state = (int)stream.ReceiveNext();
-            m_IsCameraFollow = (bool)stream.ReceiveNext();
-            m_NextTeam = (Team)stream.ReceiveNext();
         }
     }
 
@@ -147,20 +141,6 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         RequestOwner();
     }
 
-    public void SendIsCameraFollow(bool flag)
-    {
-        m_IsCameraFollow = flag;
-        IsSended = false;
-        RequestOwner();
-    }
-
-    public void SendNextTeam(Team team)
-    {
-        m_NextTeam = team;
-        IsSended = false;
-        RequestOwner();
-    }
-
     public Vector2 ReceiveThrowPower()
     {
         return m_throwPower;
@@ -191,13 +171,4 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         return m_state;
     }
 
-    public bool ReceiveIsCameraFollow()
-    {
-        return m_IsCameraFollow;
-    }
-
-    public Team ReceiveNextTeam()
-    {
-        return m_NextTeam;
-    }
 }

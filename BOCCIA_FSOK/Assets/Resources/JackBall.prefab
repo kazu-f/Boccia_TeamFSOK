@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-643404578579542275
+--- !u!114 &7102607671637491207
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,13 +9,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 698151124280047581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 2
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 5765618660562384032}
+  - {fileID: -1603710695254849099}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-1603710695254849099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698151124280047581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb4fe5256d229034fb6d09249ec9eee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
 --- !u!1001 &8979431359337893473
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76,9 +98,13 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9115058991686352912, guid: 0c25c50c658a08649b34418521a0001c, type: 3}
+      propertyPath: ObservedComponents.Array.data[0]
+      value: 
+      objectReference: {fileID: 5765618660562384032}
+    - target: {fileID: 9115058991686352912, guid: 0c25c50c658a08649b34418521a0001c, type: 3}
       propertyPath: ObservedComponents.Array.data[1]
       value: 
-      objectReference: {fileID: -643404578579542275}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c25c50c658a08649b34418521a0001c, type: 3}
 --- !u!1 &698151124280047581 stripped
@@ -86,3 +112,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8443419722616601020, guid: 0c25c50c658a08649b34418521a0001c, type: 3}
   m_PrefabInstance: {fileID: 8979431359337893473}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5765618660562384032 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3215234373925845697, guid: 0c25c50c658a08649b34418521a0001c, type: 3}
+  m_PrefabInstance: {fileID: 8979431359337893473}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698151124280047581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 986ce9575f2ac2b40b58dd0535572c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

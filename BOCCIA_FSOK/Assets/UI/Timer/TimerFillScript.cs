@@ -64,6 +64,12 @@ public class TimerFillScript : MonoBehaviour
                 time.color = Color.yellow;
                 return;
             }
+            else
+            {
+                time.color = Color.green;
+                CircleAfterImage.color = Color.green;
+                return;
+            }
         }
     }
 

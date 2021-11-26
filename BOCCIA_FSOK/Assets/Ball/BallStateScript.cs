@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon;
+using Photon.Pun;
+using Photon.Realtime;
 
 public enum BallState
 {
@@ -8,7 +11,7 @@ public enum BallState
     Stop,
     Num,
 }
-public class BallStateScript : MonoBehaviour
+public class BallStateScript : MonoBehaviourPun, IPunObservable
 {
     private BallState m_state = BallState.Num;
     private Rigidbody m_rigidbody;
@@ -34,9 +37,34 @@ public class BallStateScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (IsPhysicsUpdate)
+        if (IsPhysicsUpdate && this.photonView.IsMine)
         {
             CalcState();
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // オーナーの場合
+        if (stream.IsWriting)
+        {
+            stream.SendNext(this.m_state);
+        }
+        // オーナー以外の場合
+        else
+        {
+            this.m_state = (BallState)stream.ReceiveNext();
+        }
+    }
+
+    private void RequestOwner()
+    {
+        if (this.photonView.IsMine == false)
+        {
+            if (this.photonView.OwnershipTransfer != OwnershipOption.Request)
+                Debug.LogError("OwnershipTransferをRequestに変更してください。");
+            else
+                this.photonView.RequestOwnership();
         }
     }
 
@@ -72,7 +100,7 @@ public class BallStateScript : MonoBehaviour
         }
     }
 
-        public BallState GetState()
+    public BallState GetState()
     {
         return m_state;
     }

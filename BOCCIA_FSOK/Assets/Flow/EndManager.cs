@@ -28,25 +28,6 @@ public class EndManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PhotonNetwork.OfflineMode)
-        {
-            if (MyTeamCol != m_TeamFlow.GetNowTeam())
-            {
-                //SendManagerの取得
-                NetworkSendManagerScript manager = GameObject.Find("SendNetWorkObj").GetComponent<NetworkSendManagerScript>();
-                var IsFollow = manager.ReceiveIsCameraFollow();
-                //追従カメラかどうかをマスタークライアントに合わせる
-                GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(IsFollow);
-                var NextTeam = manager.ReceiveNextTeam();
-                //次のチームをマスタークライアントに合わせる
-                if (NextTeam != Team.Num)
-                {
-                    m_TeamFlow.SetNextTeam(NextTeam);
-                    m_TeamFlow.SetNextTeamForClass();
-                }
-                return;
-            }
-        }
         switch (m_TeamFlow.GetState())
         {
             case TeamFlowState.Start:
@@ -96,7 +77,6 @@ public class EndManager : MonoBehaviour
                 //遅延を開始させる
                 m_Delay.DelayStart();
                 m_TeamFlow.SetState(TeamFlowState.Delay);
-                m_TeamFlow.ThrowEnd();
                 break;
 
             case TeamFlowState.Delay:
@@ -105,6 +85,7 @@ public class EndManager : MonoBehaviour
                 {
                     //遅延が終了した
                     m_TeamFlow.SetState(TeamFlowState.Caluc);
+                    m_TeamFlow.ThrowEnd();
                 }
                 break;
 
@@ -120,6 +101,8 @@ public class EndManager : MonoBehaviour
                 }
                 else
                 {
+                    //残りボール数のテキストのαを更新
+                    GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
                     //ジャックボールは用意されているので次に投げるチームを計算
                     if (m_TeamFlow.CalucNextTeam() == true)
                     {
@@ -136,6 +119,8 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.Caluced:
                 //次に投げるボールが計算できた時
+                //次に投げるチームをセット
+                m_TeamFlow.SetNextTeamForClass();
                 m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
                 break;
 
@@ -143,19 +128,13 @@ public class EndManager : MonoBehaviour
                 //投げ終わり
                 //カメラを追従カメラから切り替える
                 GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
-                m_TeamFlow.SetState(TeamFlowState.ChangeTeam);
-                break;
-
-            case TeamFlowState.ChangeTeam:
-                //次に投げるチームをセット
-                m_TeamFlow.SetNextTeamForClass();
-                //タイマースタート
-                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
                 m_TeamFlow.SetState(TeamFlowState.ChangeEnd);
                 break;
 
             case TeamFlowState.ChangeEnd:
                 //チーム変え終わった
+                //タイマースタート
+                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 break;
 

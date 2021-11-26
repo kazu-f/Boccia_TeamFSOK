@@ -31,7 +31,23 @@ public class RemainBallNumScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(m_GameFlow.GetComponent<BallFlowScript>().IsPreparedJack())
+
+    }
+
+    /// <summary>
+    /// 残りのボール数を表示しているテキストを更新する
+    /// </summary>
+    public void UpdateRemainText()
+    {
+        m_Text.text = ("x" + m_GameFlow.GetComponent<TeamFlowScript>().GetRemainBall());
+    }
+
+    /// <summary>
+    /// テキストのαを更新する
+    /// </summary>
+    public void UpdateAlpha()
+    {
+        if (m_GameFlow.GetComponent<BallFlowScript>().IsPreparedJack())
         {
             Color color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
             m_Text.color = color;
@@ -41,6 +57,5 @@ public class RemainBallNumScript : MonoBehaviour
             Color color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
             m_Text.color = color;
         }
-        m_Text.text = ("x" + m_GameFlow.GetComponent<TeamFlowScript>().GetRemainBall());
     }
 }

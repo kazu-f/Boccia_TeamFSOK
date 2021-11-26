@@ -211,45 +211,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5464373906068807290, guid: e14e7ad5b24f5ed41884e23d663ca666, type: 3}
   m_PrefabInstance: {fileID: 888554411164687327}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &33022954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 33022953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 2
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 33022955}
-  sceneViewId: 201
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &33022955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 33022953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
 --- !u!1001 &40626691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1759,50 +1720,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 36613845273365798, guid: e14e7ad5b24f5ed41884e23d663ca666, type: 3}
   m_PrefabInstance: {fileID: 888554411164687327}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1242310788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1242310787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 2
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 1242310790}
-  sceneViewId: 202
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!20 &1242310789 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 36613845273365796, guid: e14e7ad5b24f5ed41884e23d663ca666, type: 3}
   m_PrefabInstance: {fileID: 888554411164687327}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1242310790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1242310787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
 --- !u!65 &1278453303 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 6042206121413869082, guid: 4df82f7401e45cd49b6fc6104f82ccda, type: 3}
