@@ -80,7 +80,7 @@ public class AIFlow : IPlayerController
                     //プレイヤーをジャックボールの方向に向ける
                     ThrowTrance.rotation.SetFromToRotation(ThrowForward, TargetNorm);                    
                     float angle = Vector3.Dot(ThrowTrance.forward, ThrowForward);
-                    throwAngleController.SetAngle(0);
+                    throwAngleController.SetAngle( 0);
                     Debug.LogError("プレイヤーの角度" + angle);
                     
                 }
