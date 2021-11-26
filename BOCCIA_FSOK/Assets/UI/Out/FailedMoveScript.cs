@@ -27,18 +27,17 @@ public class FailedMoveScript : MonoBehaviour
     {
         if (Direct)
         {
+            //Debug.Log("èÍäO");
             FailedOut();
         }
         var n = m_Image.color;
         m_Image.color = new Color(n.r, n.g, n.b, m_Alpha);
-        //Debug.LogError(m_Alpha);
     }
     private void SetAlpha()
     {
         var n = m_Image.color;
         m_Image.color = new Color(n.r, n.g, n.b, m_Alpha);
     }
-
     public void SetDirect()
     {
         Direct = true;
@@ -62,5 +61,6 @@ public class FailedMoveScript : MonoBehaviour
     public void FontAlphaZero()
     {
         m_Alpha = 0.0f;
+        Direct = false ;
     }
 }
