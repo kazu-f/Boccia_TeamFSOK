@@ -41,6 +41,7 @@ public class AIFlow : IPlayerController
         InitPlayerScript();
         swichActiveGameObj = SwichActiveGameObjects.GetInstance();
         armScript = throwBallControler.GetArmScript();
+        throwBallControler.enabled = false;
     }
     // Start is called before the first frame update
     void Start()
@@ -112,7 +113,7 @@ public class AIFlow : IPlayerController
                         throwPow.y = power + scat;
                         //Debug.LogError("•âŠ®Œã" + throwPow.y);
                         throwBallControler.SetThrowPow(throwPow);
-                        throwBallControler.SetThrowPosition(new Vector3( throwPow.x , throwPow.y,0.0f));
+                        throwBallControler.StartThrowBall(new Vector2( throwPow.x , throwPow.y));
                     }
                     if (!throwBallControler.IsDecision())
                     {
