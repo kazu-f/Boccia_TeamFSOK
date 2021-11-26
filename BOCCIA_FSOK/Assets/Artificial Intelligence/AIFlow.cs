@@ -7,6 +7,7 @@ public class AIFlow : IPlayerController
 {
     private TouchInfo info;
     private Transform ThrowTrance;
+    private ArmScript armScript;
     private GameObject JackBoll = null;
     private Vector3 JackPos = Vector3.zero;
     private GameObject CurrentTarn = null;
@@ -39,6 +40,7 @@ public class AIFlow : IPlayerController
     {
         InitPlayerScript();
         swichActiveGameObj = SwichActiveGameObjects.GetInstance();
+        armScript = throwBallControler.GetArmScript();
     }
     // Start is called before the first frame update
     void Start()
@@ -81,7 +83,7 @@ public class AIFlow : IPlayerController
                     //ジャックボールの位置
                     JackPos = JackBoll.transform.position;
                     //投げたい位置を計算
-                    Vector3 TargetPos = JackPos - ThrowTrance.position;
+                    Vector3 TargetPos = JackPos - armScript.GetPosition();
                     TargetPos.y = 0.0f;
                     //方向を調整
                     {
@@ -93,23 +95,24 @@ public class AIFlow : IPlayerController
                         ThrowTrance.rotation.SetFromToRotation(ThrowForward, TargetNorm);
                         float angle = Vector3.Angle(ThrowForward, TargetNorm);
                         throwAngleController.SetAngle(angle);
-                        Debug.LogError("プレイヤーの角度" + angle);
+                        //Debug.LogError("プレイヤーの角度" + angle);
 
                     }
                     //投げる力を調整
                     {
                         Vector2 throwPow = Vector2.zero;
-                        Vector3 dis = TargetPos - ThrowTrance.position;
+                        Vector3 dis = TargetPos - armScript.GetPosition();
                         //Debug.LogError("プレイヤーとジャックボールの差分" + dis.magnitude);
                         const float coatSize = 12.5f;
-                        float ThrowMax = coatSize - ThrowTrance.position.z;
+                        float ThrowMax = coatSize - armScript.GetPosition().z;
                         //Debug.LogError("プレイヤーからコートの最奥まで" + ThrowMax);
                         float power = dis.magnitude / ThrowMax;
                         //Debug.LogError("投げる力。" + power);
                         float scat = Random.Range(-0.1f, 0.1f);
-                        throwPow.y = power /*+ scat*/;
+                        throwPow.y = power + scat;
                         //Debug.LogError("補完後" + throwPow.y);
                         throwBallControler.SetThrowPow(throwPow);
+                        throwBallControler.SetThrowPosition(new Vector3( throwPow.x , throwPow.y,0.0f));
                     }
                     if (!throwBallControler.IsDecision())
                     {

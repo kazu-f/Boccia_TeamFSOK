@@ -32,8 +32,8 @@ public class PlayerBallScript : IBallScript
     {
         GetOutRange = true;
         InArea = false;
-        Failed = GameObject.Find("Failed");
-        Failed.GetComponent<FailedMoveScript>().SetDirect();
+        //Failed = GameObject.Find("Failed");
+        //Failed.GetComponent<FailedMoveScript>().SetDirect();
         //this.gameObject.SetActive(false);
     }
 
