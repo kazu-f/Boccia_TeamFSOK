@@ -7,6 +7,7 @@ public class AIFlow : IPlayerController
 {
     private TouchInfo info;
     private Transform ThrowTrance;
+    private ArmScript armScript;
     private GameObject JackBoll = null;
     private Vector3 JackPos = Vector3.zero;
     private GameObject CurrentTarn = null;
@@ -39,6 +40,7 @@ public class AIFlow : IPlayerController
     {
         InitPlayerScript();
         swichActiveGameObj = SwichActiveGameObjects.GetInstance();
+        armScript = throwBallControler.GetArmScript();
     }
     // Start is called before the first frame update
     void Start()
@@ -71,7 +73,7 @@ public class AIFlow : IPlayerController
                 if (!GameObject.Find("GameFlow").GetComponent<BallFlowScript>().IsPreparedJack())
                 {
                     Vector2 throwPow = Vector2.zero;
-                    throwPow.y = Random.value;
+                    throwPow.y = Random.Range(0.4f, 0.7f);
                     throwBallControler.SetThrowPow(throwPow);
                     throwBallControler.ThrowBall();
                     m_IsEnable = false;
@@ -81,34 +83,36 @@ public class AIFlow : IPlayerController
                     //ジャックボールの位置
                     JackPos = JackBoll.transform.position;
                     //投げたい位置を計算
-                    Vector3 TargetPos = JackPos - ThrowTrance.position;
+                    Vector3 TargetPos = JackPos - armScript.GetPosition();
+                    TargetPos.y = 0.0f;
                     //方向を調整
                     {
                         //正規化して投げる方向だけにする
                         Vector3 TargetNorm = TargetPos.normalized;
                         //投げるプレイヤーの前方向
-                        Vector3 ThrowForward = ThrowTrance.forward;
+                        Vector3 ThrowForward = new Vector3(0.0f,0.0f,1.0f);
                         //プレイヤーをジャックボールの方向に向ける
                         ThrowTrance.rotation.SetFromToRotation(ThrowForward, TargetNorm);
-                        float angle = Vector3.Dot(ThrowTrance.forward, ThrowForward);
-                        throwAngleController.SetAngle(0);
-                        Debug.LogError("プレイヤーの角度" + angle);
+                        float angle = Vector3.Angle(ThrowForward, TargetNorm);
+                        throwAngleController.SetAngle(angle);
+                        //Debug.LogError("プレイヤーの角度" + angle);
 
                     }
                     //投げる力を調整
                     {
-                        Vector2 throwPow = Vector2.one;
-                        Vector3 dis = TargetPos - ThrowTrance.position;
+                        Vector2 throwPow = Vector2.zero;
+                        Vector3 dis = TargetPos - armScript.GetPosition();
                         //Debug.LogError("プレイヤーとジャックボールの差分" + dis.magnitude);
                         const float coatSize = 12.5f;
-                        float ThrowMax = coatSize - ThrowTrance.position.z;
+                        float ThrowMax = coatSize - armScript.GetPosition().z;
                         //Debug.LogError("プレイヤーからコートの最奥まで" + ThrowMax);
                         float power = dis.magnitude / ThrowMax;
                         //Debug.LogError("投げる力。" + power);
                         float scat = Random.Range(-0.1f, 0.1f);
-                        throwPow.y = power /*+ scat*/;
+                        throwPow.y = power + scat;
                         //Debug.LogError("補完後" + throwPow.y);
                         throwBallControler.SetThrowPow(throwPow);
+                        throwBallControler.SetThrowPosition(new Vector3( throwPow.x , throwPow.y,0.0f));
                     }
                     if (!throwBallControler.IsDecision())
                     {
