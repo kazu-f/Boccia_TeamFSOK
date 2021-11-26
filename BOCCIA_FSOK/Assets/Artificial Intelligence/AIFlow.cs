@@ -39,7 +39,7 @@ public class AIFlow : IPlayerController
     // Start is called before the first frame update
     void Start()
     {
-        JackBoll = GameObject.Find("GameFlow").GetComponent<BallFlowScript>().GetJackBall();
+        JackBoll = GameObject.Find("GabmeFlow").GetComponent<BallFlowScript>().GetJackBall();
         ThrowTrance = this.gameObject.transform;
     }
 
@@ -82,13 +82,15 @@ public class AIFlow : IPlayerController
 
                 Vector2 throwPow = Vector2.one;
                 float dis = TargetPos.magnitude - ThrowTrance.position.magnitude;
-                //Debug.Log("プレイヤーとジャックボールの差分" + dis);
+                Debug.Log("プレイヤーとジャックボールの差分" + dis);
+                dis = Mathf.Min(dis, 1.0f);
                 float ThrowMax = 12.5f - ThrowTrance.position.magnitude;
                 //Debug.Log("プレイヤーからコートの最奥まで" + ThrowMax);
                 float power = dis / ThrowMax;
-                //Debug.LogError("投げる力。" + throwPow.y);
-                float scat = Random.Range(-0.3f,0.3f);
-                throwPow.y = power+ scat;
+                //Debug.LogError("投げる力。" + power);
+                float scat = Random.Range(-0.1f,0.1f);
+                throwPow.y = dis/*power + scat*/;
+                //Debug.LogError("補完後" + throwPow.y);
                 throwBallControler.SetThrowPow(throwPow);
                 if (!throwBallControler.IsDecision())
                 {

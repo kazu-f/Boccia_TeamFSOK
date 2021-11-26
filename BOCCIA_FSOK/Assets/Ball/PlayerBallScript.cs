@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PlayerBallScript : IBallScript
 {
+    private GameObject Failed = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +32,8 @@ public class PlayerBallScript : IBallScript
     {
         GetOutRange = true;
         InArea = false;
+        Failed = GameObject.Find("Failed");
+        Failed.GetComponent<FailedMoveScript>().SetDirect();
         //this.gameObject.SetActive(false);
     }
 
