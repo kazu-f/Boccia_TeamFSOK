@@ -39,7 +39,7 @@ public class AIFlow : IPlayerController
     // Start is called before the first frame update
     void Start()
     {
-        JackBoll = GameObject.Find("GabmeFlow").GetComponent<BallFlowScript>().GetJackBall();
+        JackBoll = GameObject.Find("GameFlow").GetComponent<BallFlowScript>().GetJackBall();
         ThrowTrance = this.gameObject.transform;
     }
 
