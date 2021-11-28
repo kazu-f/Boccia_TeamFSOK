@@ -50,6 +50,7 @@ MonoBehaviour:
   - CreateBallRPC
   - CreateList
   - SetCount
+  - DispFailed
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class PlayerBallScript : IBallScript
 {
     private GameObject Failed = null;
+    private Photon.Pun.PhotonView photonView;
     // Start is called before the first frame update
     void Start()
     {
+        photonView = this.GetComponent<Photon.Pun.PhotonView>();
     }
 
     // Update is called once per frame
@@ -32,9 +34,21 @@ public class PlayerBallScript : IBallScript
     {
         GetOutRange = true;
         InArea = false;
-        //Failed = GameObject.Find("Failed");
-        //Failed.GetComponent<FailedMoveScript>().SetDirect();
+        if (IsThrowing)
+        {
+            photonView.RPC(nameof(DispFailed), Photon.Pun.RpcTarget.All);
+        }
         //this.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// 失敗したことを表示する。
+    /// </summary>
+    [Photon.Pun.PunRPC]
+    public void DispFailed()
+    {
+        Failed = GameObject.Find("Failed");
+        Failed.GetComponent<FailedMoveScript>().SetDirect();
     }
 
     /// <summary>
