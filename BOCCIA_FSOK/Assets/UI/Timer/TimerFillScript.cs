@@ -93,14 +93,19 @@ public class TimerFillScript : MonoBehaviour
     }
     public bool IsTimeUp()
     {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (m_SendManager.IsOwner())
         {
-            //マスタークライアントの時
+            //オーナーの時
             m_SendManager.SendIsTimeUp(IsTimeUped);
             return IsTimeUped;
         }
-        //マスタークライアントじゃないとき
+        //オーナーじゃない時
         IsTimeUped = m_SendManager.ReceiveIsTimeUp();
+        //デバッグ用
+        if (IsTimeUped == true)
+        {
+            IsTimeUped = true;
+        }
         return IsTimeUped;
     }
 }

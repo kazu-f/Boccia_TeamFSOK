@@ -185,4 +185,9 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         return m_IsTimeUp;
     }
+
+    public bool IsOwner()
+    {
+        return photonView.IsMine;
+    }
 }
