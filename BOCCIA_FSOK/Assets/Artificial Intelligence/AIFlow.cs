@@ -165,8 +165,9 @@ public class AIFlow : IPlayerController
             //Debug.LogError("プレイヤーからコートの最奥まで" + ThrowMax);
             float power = dis.magnitude / ThrowMax;
             //Debug.LogError("投げる力。" + power);
-            float scat = Random.Range(-0.1f, 0.1f);
+            float scat = Random.Range(-0.2f, 0.0f);
             throwPower.y = power + scat;
+            throwPower.x = Random.Range(-0.1f, 0.1f);
         }
     }
 
