@@ -12,7 +12,7 @@ public class JackPleaseScript : MonoBehaviour
         end
     }
     [SerializeField] private float MoveSpeed = 1.0f;
-    [SerializeField] private float StopTime = 5.0f;
+    [SerializeField] private float StopTime = 2.0f;
     private float NowTime = 0.0f;
     private float late = 0.0f;      //•âŠ®—¦
     private RectTransform rect = null;
@@ -89,12 +89,12 @@ public class JackPleaseScript : MonoBehaviour
         CalucNowAndNextPos();
         if(!IsMove)
         {
-            if (TouchManager.GetInstance().IsTouch())
-            {
-                IsMove = true;
-                NowTime = 0.0f;
-                return;
-            }
+            //if (TouchManager.GetInstance().IsTouch())
+            //{
+            //    IsMove = true;
+            //    NowTime = 0.0f;
+            //    return;
+            //}
             NowTime += Time.deltaTime;
             if(NowTime > StopTime)
             {
