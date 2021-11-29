@@ -2125,6 +2125,7 @@ MonoBehaviour:
   m_EndFlow: {fileID: 1290313186}
   m_Delay: {fileID: 1517177399}
   m_BallFlow: {fileID: 286309645}
+  m_Timer: {fileID: 6441301046769852084}
 --- !u!1001 &1543462198
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2191,6 +2192,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7366385608299862083, guid: 9509650f509ecae43bd01dd2693e4416, type: 3}
   m_PrefabInstance: {fileID: 1543462198}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1543462200 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7366385608299862087, guid: 9509650f509ecae43bd01dd2693e4416, type: 3}
+  m_PrefabInstance: {fileID: 1543462198}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543462199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adda9db84bdaca344b31f73909b270cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1557964041
 GameObject:
   m_ObjectHideFlags: 0
@@ -3931,8 +3943,23 @@ PrefabInstance:
       propertyPath: Limit
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 6441301046801588347, guid: e3b656dbc7f763e4e90d251b6e5365c3, type: 3}
+      propertyPath: m_SendManager
+      value: 
+      objectReference: {fileID: 1543462200}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3b656dbc7f763e4e90d251b6e5365c3, type: 3}
+--- !u!114 &6441301046769852084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6441301046801588347, guid: e3b656dbc7f763e4e90d251b6e5365c3, type: 3}
+  m_PrefabInstance: {fileID: 6441301046769852083}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c378f9463a69ec14892b23a89ec57d5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7440858140120729890
 PrefabInstance:
   m_ObjectHideFlags: 0

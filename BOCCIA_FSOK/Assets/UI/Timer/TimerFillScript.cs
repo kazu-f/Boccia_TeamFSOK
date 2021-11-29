@@ -17,6 +17,8 @@ public class TimerFillScript : MonoBehaviour
     [SerializeField] private Text time = null;
     private bool IsTimeUped = false;
     private ServerTimerScript ServerTimer = null;
+    [SerializeField] private NetworkSendManagerScript m_SendManager = null;
+
     private void Awake()
     {
         CircleBeforeImage = CircleBefore.GetComponent<Image>();
@@ -91,6 +93,19 @@ public class TimerFillScript : MonoBehaviour
     }
     public bool IsTimeUp()
     {
+        if (m_SendManager.IsOwner())
+        {
+            //オーナーの時
+            m_SendManager.SendIsTimeUp(IsTimeUped);
+            return IsTimeUped;
+        }
+        //オーナーじゃない時
+        IsTimeUped = m_SendManager.ReceiveIsTimeUp();
+        //デバッグ用
+        if (IsTimeUped == true)
+        {
+            IsTimeUped = true;
+        }
         return IsTimeUped;
     }
 }

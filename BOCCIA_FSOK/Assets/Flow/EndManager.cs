@@ -9,6 +9,7 @@ public class EndManager : MonoBehaviour
     [SerializeField] private EndFlowScript m_EndFlow = null;
     [SerializeField] private TeamFlowDelayScript m_Delay = null;
     [SerializeField] private BallFlowScript m_BallFlow = null;
+    [SerializeField] private TimerFillScript m_Timer = null;
     private Team MyTeamCol = Team.Num;
 
     private void Awake()
@@ -36,12 +37,12 @@ public class EndManager : MonoBehaviour
                 GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 //タイマーをスタートする
-                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
+                m_Timer.TimerStart();
                 break;
 
             case TeamFlowState.Wait:
                 //プレイヤーが投げるまで
-                if(GameObject.Find("Timer").GetComponent<TimerFillScript>().IsTimeUp())
+                if(m_Timer.IsTimeUp())
                 {
                     if(m_BallFlow.IsPreparedJack())
                     {
@@ -56,7 +57,7 @@ public class EndManager : MonoBehaviour
             case TeamFlowState.Throw:
                 //ボールを投げた時
                 //タイマーを止める
-                GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStop();
+                m_Timer.TimerStop();
                 //ステートをMoveにする
                 m_TeamFlow.SetState(TeamFlowState.Move);
                 break;
@@ -137,7 +138,7 @@ public class EndManager : MonoBehaviour
                 if (m_EndFlow.GetIsEnd() == false)
                 {
                     //エンドが終わっていないとき
-                    GameObject.Find("Timer").GetComponent<TimerFillScript>().TimerStart();
+                    m_Timer.TimerStart();
                 }
                 //残りボール数のテキストを更新
                 GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();

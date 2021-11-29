@@ -10,6 +10,7 @@ namespace BocciaPlayer
         public BallHolderController ballHolder;     //ボール所有者。
         public GameObject armObj;                 //手を表示させるスクリプト。
         public GameObject bocciaPlayer;             //プレイヤーオブジェクト。
+        [SerializeField]private TimerFillScript timerFill;          //タイマー。
         private ArmScript armScript;                 //手を表示させるスクリプト。
         private GameObject throwDummyObj;            //予測線表示オブジェクト。
         private ThrowDummyScript throwDummy;        //予測線表示スクリプト。
@@ -179,11 +180,20 @@ namespace BocciaPlayer
             {
                 yield return 0;
             }
+
+            //タイムアップしているなら中断。
+            if(timerFill.IsTimeUp())
+            {
+                //コルーチンの中断。
+                yield break;
+            }
+
             //現在投げるボールを取得する。
             var obj = ballHolder.GetCurrentBall();
             if (obj == null)
             {
-                yield return null;
+                //コルーチンの中断。
+                yield break;
             }
 
             //ボールの位置を合わせる。
