@@ -11,7 +11,7 @@ public class FailedMoveScript : MonoBehaviour
     private float m_Alpha = 0.0f;
     public float m_SubAlpha;
 
-    [SerializeField]private Image m_Image;
+    [SerializeField] private Image m_Image;
 
     bool Direct = false;
     // Start is called before the first frame update
@@ -61,6 +61,6 @@ public class FailedMoveScript : MonoBehaviour
     public void FontAlphaZero()
     {
         m_Alpha = 0.0f;
-        Direct = false ;
+        Direct = false;
     }
 }
