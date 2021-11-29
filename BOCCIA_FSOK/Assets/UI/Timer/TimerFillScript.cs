@@ -75,8 +75,10 @@ public class TimerFillScript : MonoBehaviour
         }
     }
 
+    [Photon.Pun.PunRPC]
     public void TimerStart()
     {
+        Debug.Log("タイマースタート！");
         ServerTimer.SetCountTimeSecond(Limit);
         NowTime = Limit;
         IsStart = true;
@@ -84,7 +86,11 @@ public class TimerFillScript : MonoBehaviour
         time.color = Color.green;
         CircleAfterImage.color = Color.green;
         IsTimeUped = false;
-        Debug.Log("タイマーを開始する。");
+    }
+
+    public bool IsTimerStart()
+    {
+        return IsStart;
     }
 
     public void TimerStop()
@@ -101,11 +107,20 @@ public class TimerFillScript : MonoBehaviour
         }
         //オーナーじゃない時
         IsTimeUped = m_SendManager.ReceiveIsTimeUp();
-        //デバッグ用
-        if (IsTimeUped == true)
-        {
-            IsTimeUped = true;
-        }
+
         return IsTimeUped;
+    }
+
+    public void SyncStartTimer()
+    {
+        Debug.Log("タイマーをスタートします。");
+        if(!PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            //マスタークライアント以外は呼び出さない。
+            Debug.Log("マスタークライアンではないので呼び出さない。");
+            return;
+        }
+        var photon_view = this.gameObject.GetComponent<PhotonView>();
+        photon_view.RPC(nameof(TimerStart), RpcTarget.All);
     }
 }

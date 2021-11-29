@@ -98,6 +98,7 @@ public class BallOperateScript : MonoBehaviour
         m_ball.ThrowBall();
         if (m_Team.GetTeam() != Team.Jack)
         {
+            Debug.Log("“Š‚°‚½‚Ì‚Åƒ{[ƒ‹‚ğŒ¸‚ç‚µ‚Ü‚·");
             m_TeamFlow.DecreaseBalls();
         }
         //‘¬“x‚ğ‰ÁZ

@@ -37,17 +37,25 @@ public class EndManager : MonoBehaviour
                 GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 //タイマーをスタートする
-                m_Timer.TimerStart();
+                Debug.Log("初めにタイマーをスタートします");
+                m_Timer.SyncStartTimer();
                 break;
 
             case TeamFlowState.Wait:
                 //プレイヤーが投げるまで
+                if(m_Timer.IsTimerStart() == false)
+                {
+                    //タイマーがまだスタートしていない
+                    Debug.Log("タイマーがまだスタートしていません。");
+                    return;
+                }
                 if(m_Timer.IsTimeUp())
                 {
                     if(m_BallFlow.IsPreparedJack())
                     {
                         //ジャックボールが準備されているとき
                         //プレイヤーの持ち球を減らす
+                        Debug.Log("タイムアップしたのでボールを減らします");
                         m_TeamFlow.DecreaseBalls();
                     }
                     m_TeamFlow.SetState(TeamFlowState.Caluc);
@@ -138,7 +146,8 @@ public class EndManager : MonoBehaviour
                 if (m_EndFlow.GetIsEnd() == false)
                 {
                     //エンドが終わっていないとき
-                    m_Timer.TimerStart();
+                    Debug.Log("エンドが終わっていないのでタイマーをスタートします");
+                    m_Timer.SyncStartTimer();
                 }
                 //残りボール数のテキストを更新
                 GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();
