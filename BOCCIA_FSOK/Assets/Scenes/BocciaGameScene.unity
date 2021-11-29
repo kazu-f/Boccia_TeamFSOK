@@ -1286,6 +1286,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6164697163421562104, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
+      propertyPath: timerFill
+      value: 
+      objectReference: {fileID: 6441301046769852084}
+    - target: {fileID: 6164697163421562104, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: ballHolder
       value: 
       objectReference: {fileID: 557423690}
@@ -3109,6 +3113,10 @@ PrefabInstance:
       propertyPath: OwnershipTransfer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6164697163421562104, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
+      propertyPath: timerFill
+      value: 
+      objectReference: {fileID: 6441301046769852084}
     - target: {fileID: 6164697163421562104, guid: 56e4814a557753247ae66489ba1a1e96, type: 3}
       propertyPath: ballHolder
       value: 

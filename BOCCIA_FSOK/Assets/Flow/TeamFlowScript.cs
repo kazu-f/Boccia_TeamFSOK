@@ -306,6 +306,8 @@ public class TeamFlowScript : MonoBehaviour
     /// </summary>
     public void DecreaseBalls()
     {
+        //ボールを減らす
+        Debug.Log("ボールを減らします");
         switch (m_NextTeam)
         {
             case Team.Red:
