@@ -17,6 +17,8 @@ public class TimerFillScript : MonoBehaviour
     [SerializeField] private Text time = null;
     private bool IsTimeUped = false;
     private ServerTimerScript ServerTimer = null;
+    [SerializeField] private NetworkSendManagerScript m_SendManager = null;
+
     private void Awake()
     {
         CircleBeforeImage = CircleBefore.GetComponent<Image>();
@@ -91,6 +93,14 @@ public class TimerFillScript : MonoBehaviour
     }
     public bool IsTimeUp()
     {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            //マスタークライアントの時
+            m_SendManager.SendIsTimeUp(IsTimeUped);
+            return IsTimeUped;
+        }
+        //マスタークライアントじゃないとき
+        IsTimeUped = m_SendManager.ReceiveIsTimeUp();
         return IsTimeUped;
     }
 }
