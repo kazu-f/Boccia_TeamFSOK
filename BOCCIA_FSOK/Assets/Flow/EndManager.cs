@@ -51,6 +51,7 @@ public class EndManager : MonoBehaviour
                 }
                 if(m_Timer.IsTimeUp())
                 {
+                    Debug.Log("タイムアップしているのでステートをCulcに変更");
                     if(m_BallFlow.IsPreparedJack())
                     {
                         //ジャックボールが準備されているとき
