@@ -7,7 +7,7 @@ namespace BocciaPlayer
     public class BallHolderController : Photon.Pun.MonoBehaviourPun
     {
         public GameObject ballObj;      //ボールのプレファブ。
-        public int ballCount = 6;       //チームのボールの数。
+        private int ballCount = 6;       //チームのボールの数。
         GameObject[] teamBalls;         //ボールの配列。
         GameObject gameFlowObj;         //ゲームフローオブジェクト取得。
         BallFlowScript ballFlow;        //ボールフロー。
@@ -161,7 +161,6 @@ namespace BocciaPlayer
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -210,6 +209,48 @@ namespace BocciaPlayer
             }
 
             Debug.Log(ballNo + "個目のボールを作成。");
+        }
+        /// <summary>
+        /// ボールのアクティブをbit単位で記録して返す。
+        /// </summary>
+        /// <returns></returns>
+        public int GetBallsActive()
+        {
+            //ボールが無ければ0を返す。
+            if (!(teamBalls.Length > 0)) return 0;
+            int ret = 0;
+
+            for (int i = 0; i < ballCount; i++) 
+            {
+                if(teamBalls[i].activeSelf)
+                {
+                    //ビットを立てる。
+                    ret |= 1 << i;
+                }
+            }
+
+            return ret;
+        }
+        /// <summary>
+        /// ボールのアクティブをbit単位で記録したものから復元する。
+        /// </summary>
+        /// <param name="actives"></param>
+        public void SetBallsActive(int actives)
+        {
+            //ボールが無ければ戻る。
+            if (!(teamBalls.Length > 0)) return;
+
+            for (int i = 0; i < ballCount; i++)
+            {
+                if ((actives & (1 << i)) == 0)
+                {
+                    teamBalls[i].SetActive(false);
+                }
+                else
+                {
+                    teamBalls[i].SetActive(true);
+                }
+            }
         }
     }
 }
