@@ -6,9 +6,6 @@ public abstract class IBallScript : MonoBehaviour
 {
     protected bool InArea = false;
     protected bool IsThrowing = true;
-    protected bool GetOutRange = false;
-    public float KillTime = 1.0f;
-    private float NowTime = 0.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,16 +15,7 @@ public abstract class IBallScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetOutRange)
-        {
-            //範囲外に出ているとき
-            NowTime += Time.deltaTime;
-            if (NowTime > KillTime)
-            {
-                InKillArea();
-                NowTime = 0.0f;
-            }
-        }
+
     }
 
     /// <summary>
@@ -40,10 +28,6 @@ public abstract class IBallScript : MonoBehaviour
     /// </summary>
     public abstract void OutsideVenue();
 
-    /// <summary>
-    /// キルエリアに入った時の処理
-    /// </summary>
-    public abstract void InKillArea();
 
     /// <summary>
     /// ボールが止まった時の処理
@@ -63,8 +47,6 @@ public abstract class IBallScript : MonoBehaviour
     {
         IsThrowing = true;
         InArea = false;
-        GetOutRange = false;
-        NowTime = 0.0f;
     }
 
     public bool GetIsThrow()
