@@ -67,8 +67,8 @@ public class ActiveTeamController : MonoBehaviour
             BluePlayerCon = BlueTeamPlayer.AddComponent<AIFlow>();
             isUseAI = true;
         }
-        //投げるプレイヤーを切り替え。
-        ChangeActivePlayer();
+        ////投げるプレイヤーを切り替え。
+        //ChangeActivePlayer();
     }
 
     // Update is called once per frame
@@ -93,8 +93,7 @@ public class ActiveTeamController : MonoBehaviour
                 if (TeamFlow.GetState() == TeamFlowState.Wait)
                 {
                     throwState = ThrowTeamState.throwBall;
-                    ChangeActivePlayer();
-                    RequestOwnerShipBall(playerTeamCol == currentTeam);
+                    //ChangeActivePlayer();
                 }
 
                 break;
@@ -139,6 +138,7 @@ public class ActiveTeamController : MonoBehaviour
             RedPlayerCon.SwitchPlayer(false);
             BluePlayerCon.SwitchPlayer(true);
         }
+        RequestOwnerShipBall(playerTeamCol == currentTeam);
     }
     /// <summary>
     /// プレイヤーを止める。
