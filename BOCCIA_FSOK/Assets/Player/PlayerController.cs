@@ -62,10 +62,6 @@ namespace BocciaPlayer
             //座標変化があれば送信。
             if(oldPosition != this.transform.position)
             {
-                if (netSendManager != null)
-                {
-                    netSendManager.SendPlayerPos(this.transform.position);
-                }
                 oldPosition = this.transform.position;
             }
         }
@@ -80,10 +76,6 @@ namespace BocciaPlayer
             {
                 //プレイヤーが切り替わる時にカメラの位置を合わせる。
                 throwAngleController.ChangeCamPos();
-                if (netSendManager != null)
-                {
-                    netSendManager.SendPlayerPos(this.transform.position);
-                }
                 ChangeState(EnPlayerState.enIdle);
             }
             else

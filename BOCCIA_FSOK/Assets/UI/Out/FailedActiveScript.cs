@@ -34,6 +34,16 @@ public class FailedActiveScript : MonoBehaviour
                 return;
             }
 
+            for (int i = 0; i < BallList.Length; i++)
+            {
+                if (BallList[i] == null)
+                {
+                    if (!BallList[i].GetComponent<IBallScript>().GetInArea())
+                    {
+                        moveFailed.SetDirect();
+                    }
+                }
+            }
         }
 
     }
