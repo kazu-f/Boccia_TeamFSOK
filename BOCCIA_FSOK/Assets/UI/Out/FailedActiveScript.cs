@@ -44,7 +44,6 @@ public class FailedActiveScript : MonoBehaviour
                 {
                     if (BallList[i].GetComponent<IBallScript>().GetIsThrow())
                     {
-                        Debug.LogError("èÍäO");
                         moveFailed.SetDirect();
                     }
                 }
