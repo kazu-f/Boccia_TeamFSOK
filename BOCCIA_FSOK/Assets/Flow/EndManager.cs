@@ -228,8 +228,18 @@ public class EndManager : MonoBehaviour
                 /////////ここから下は同期が終わっているときの処理/////////
                 //////////////////////////////////////////////////////////
 
+                bool endflag = false;
                 //どちらとも投げ終えているときエンド終了に移行する
-                if (m_TeamFlow.GetRemainBalls() == Vector2Int.zero)
+                foreach(int i in m_TeamFlow.GetRemainBalls())
+                {
+                    if(i != 0)
+                    {
+                        //まだ球があるので抜ける
+                        endflag = true;
+                        break;
+                    }
+                }
+                if(endflag == true)
                 {
                     //投げ終えているのでステートをEndにする
                     m_TeamFlow.SetState(TeamFlowState.End);

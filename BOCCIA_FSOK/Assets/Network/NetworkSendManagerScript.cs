@@ -12,7 +12,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     private bool[] m_IsTimeUp = new bool[2];
     private int m_state = 0;                         //決定かどうか。
     private bool[] m_SyncFlag = new bool[2];        //同期をとれたかどうか。
-    private Vector2Int m_RemainBalls = Vector2Int.one;      //残りのボール数
+    private int[] m_RemainBalls = new int[2];      //残りのボール数
     private Team m_NextTeam = Team.Num;     //次に投げるチーム
     private PhotonView photonView = null;
     public void Awake()
@@ -51,7 +51,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
             m_state = (int)stream.ReceiveNext();
             m_IsTimeUp = (bool[])stream.ReceiveNext();
             m_SyncFlag = (bool[])stream.ReceiveNext();
-            m_RemainBalls = (Vector2Int)stream.ReceiveNext();
+            m_RemainBalls = (int[])stream.ReceiveNext();
             m_NextTeam = (Team)stream.ReceiveNext();
         }
     }
@@ -160,7 +160,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         RequestOwner();
     }
 
-    public void SendRemainBalls(Vector2Int balls)
+    public void SendRemainBalls(int[] balls)
     {
         m_RemainBalls = balls;
         IsSended = false;
@@ -209,7 +209,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         return m_SyncFlag[0];
     }
 
-    public Vector2Int ReceiveRemainBalls()
+    public int[] ReceiveRemainBalls()
     {
         return m_RemainBalls;
     }
