@@ -13,6 +13,7 @@ public class EndManager : MonoBehaviour
     private Team MyTeamCol = Team.Num;
     private bool[] SyncFlags = new bool[2];     //全員用の同期フラグ
     //private bool SyncFlag = false;      //全員が同期で来た時に立てるフラグ
+    private bool m_IsUseAI = false;
     [SerializeField] private NetworkSendManagerScript m_SendManager = null;
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class EndManager : MonoBehaviour
     void Start()
     {
         MyTeamCol = GameObject.Find("IsNetWorkObj").GetComponent<IsUseNetwork>().GetPlayerCol();
+        m_IsUseAI = GameObject.Find("IsNetWorkObj").GetComponent<IsUseNetwork>().IsUseAI();
         if (MyTeamCol != Team.Red && MyTeamCol != Team.Blue)
         {
             Debug.LogError("チームのカラーが取得できませんでした。ネットワークオブジェが初期化されていない可能性があります");
@@ -54,23 +56,27 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.Wait:
                 //プレイヤーが投げるまで
-                if (m_Timer.IsTimerStart() == false)
+                //if (m_Timer.IsTimerStart() == false)
+                //{
+                //    //タイマーがまだスタートしていない
+                //    Debug.Log("タイマーがまだスタートしていません。");
+                //    return;
+                //}
+
+                if (m_Timer.IsTimeUp() || m_IsUseAI)
                 {
-                    //タイマーがまだスタートしていない
-                    Debug.Log("タイマーがまだスタートしていません。");
-                    return;
-                }
-                if (m_Timer.IsTimeUp())
-                {
-                    Debug.Log("タイムアップしているのでステートをCulcに変更");
-                    if (m_BallFlow.IsPreparedJack())
+                    if (m_Timer.IsTimeUpForAI())
                     {
-                        //ジャックボールが準備されているとき
-                        //プレイヤーの持ち球を減らす
-                        Debug.Log("タイムアップしたのでボールを減らします");
-                        m_TeamFlow.DecreaseBalls();
+                        Debug.Log("タイムアップしているのでステートをCulcに変更");
+                        if (m_BallFlow.IsPreparedJack())
+                        {
+                            //ジャックボールが準備されているとき
+                            //プレイヤーの持ち球を減らす
+                            Debug.Log("タイムアップしたのでボールを減らします");
+                            m_TeamFlow.DecreaseBalls();
+                        }
+                        m_TeamFlow.SetState(TeamFlowState.Caluc);
                     }
-                    m_TeamFlow.SetState(TeamFlowState.Caluc);
                 }
                 break;
 
@@ -111,9 +117,9 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.Caluc:
-                if (m_TeamFlow.GetNowTeam() == MyTeamCol)
+                if (m_TeamFlow.GetNowTeam() == MyTeamCol|| m_IsUseAI)
                 {
-                    //投げたチームのみが計算をする
+                    //投げたチームかAI戦の時のみが計算をする
                     //次に投げるボールを計算する
                     if (m_BallFlow.IsPreparedJack() == false)
                     {
@@ -198,12 +204,16 @@ public class EndManager : MonoBehaviour
             case TeamFlowState.SyncWait:
                 //同期したかどうか調べる
                 SyncFlags = m_SendManager.ReceiveSyncFlag();
-                foreach (bool flag in SyncFlags)
+                if (m_IsUseAI == false)
                 {
-                    if (flag == false)
+                    //AI戦じゃ無いとき
+                    foreach (bool flag in SyncFlags)
                     {
-                        //まだ同期が終わっていない
-                        break;
+                        if (flag == false)
+                        {
+                            //まだ同期が終わっていない
+                            break;
+                        }
                     }
                 }
 
