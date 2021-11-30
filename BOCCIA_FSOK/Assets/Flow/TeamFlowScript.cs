@@ -30,7 +30,7 @@ public class TeamFlowScript : MonoBehaviour
     private GameObject m_Jack = null;
     private BallState m_JackState = BallState.Num;
     private Vector3 m_JackPos = Vector3.zero;
-    private Vector2Int m_RemainBalls = Vector2Int.one;
+    private int[] m_RemainBalls = new int[2];
     public int m_Remain { get; private set; } = 6;
     private EndFlowScript m_GameFlowScript = null;
     private bool m_IsMoving = false;
@@ -56,7 +56,9 @@ public class TeamFlowScript : MonoBehaviour
         //初めに投げるチームを決定
         m_NextTeam = m_firstTeam;
         //ボールの所持数を増やす
-        m_RemainBalls *= m_Remain;
+        m_RemainBalls[0] = 1 * m_Remain;
+        m_RemainBalls[1] = 1 * m_Remain;
+
         ////一番初めなのでジャックプリーズと出す
         //GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
         //ログを流す
@@ -128,13 +130,13 @@ public class TeamFlowScript : MonoBehaviour
         m_balls = GameObject.FindGameObjectsWithTag("Ball");
         if (m_balls.Length == 0)
         {
-            if (m_RemainBalls.x == 0 && m_RemainBalls.y == 0)
+            if (m_RemainBalls[0] == 0 && m_RemainBalls[1] == 0)
             {
                 //ボールがなくなったので次に投げるチームを計算しない
                 return false;
             }
 
-            if (m_RemainBalls.x == m_RemainBalls.y)
+            if (m_RemainBalls[0] == m_RemainBalls[1])
             {
                 m_NextTeam = m_firstTeam;
             }
@@ -210,18 +212,18 @@ public class TeamFlowScript : MonoBehaviour
             }
         }
 
-        if (m_RemainBalls.x == 0 && m_RemainBalls.y == 0)
+        if (m_RemainBalls[0] == 0 && m_RemainBalls[1] == 0)
         {
             //両方投げ終わっているのでゲームエンド
             m_GameFlowScript.GameEnd();
             m_NextBallImage.GetComponent<ChangeBallSprite>().GameEnd();
         }
-        else if(m_RemainBalls.x == 0)
+        else if(m_RemainBalls[0] == 0)
         {
             //赤チームが投げ終わっているので次は青チーム
             m_NextTeam = Team.Blue;
         }
-        else if(m_RemainBalls.y == 0)
+        else if(m_RemainBalls[1] == 0)
         {
             //青チームが投げ終わっているので次は赤チーム
             m_NextTeam = Team.Red;
@@ -316,12 +318,12 @@ public class TeamFlowScript : MonoBehaviour
         {
             case Team.Red:
                 //次のチームが赤の場合xを減らす
-                m_RemainBalls.x--;
+                m_RemainBalls[0]--;
                 break;
 
             case Team.Blue:
                 //次のチームが青の場合yを減らす
-                m_RemainBalls.y--;
+                m_RemainBalls[1]--;
                 break;
 
             default:
@@ -377,12 +379,12 @@ public class TeamFlowScript : MonoBehaviour
             {
                 case Team.Red:
                     Debug.Log("次に赤チームが投げます");
-                    Debug.Log("残り" + m_RemainBalls.x + "球です");
+                    Debug.Log("残り" + m_RemainBalls[0] + "球です");
                     break;
 
                 case Team.Blue:
                     Debug.Log("次に青チームが投げます");
-                    Debug.Log("残り" + m_RemainBalls.y + "球です");
+                    Debug.Log("残り" + m_RemainBalls[1] + "球です");
                     break;
 
                 case Team.Num:
@@ -402,8 +404,8 @@ public class TeamFlowScript : MonoBehaviour
         m_IsMoving = false;
         m_NextBallImage.GetComponent<ChangeBallSprite>().ResetVar();
         //ボールの数を初期化
-        m_RemainBalls = Vector2Int.one;
-        m_RemainBalls *= m_Remain;
+        m_RemainBalls[0] = 1 * m_Remain;
+        m_RemainBalls[1] = 1 * m_Remain;
         m_state = TeamFlowState.Start;
         //ログを流す
         NextTeamLog();
@@ -452,15 +454,15 @@ public class TeamFlowScript : MonoBehaviour
     {
         if(m_NextTeam == Team.Red)
         {
-            return m_RemainBalls.x;
+            return m_RemainBalls[0];
         }
         else
         {
-            return m_RemainBalls.y;
+            return m_RemainBalls[1];
         }
     }
 
-    public Vector2Int GetRemainBalls()
+    public int[] GetRemainBalls()
     {
         return m_RemainBalls;
     }
@@ -468,7 +470,7 @@ public class TeamFlowScript : MonoBehaviour
     /// ネットワーク同期用
     /// </summary>
     /// <param name="balls">残りのボール数</param>
-    public void SetRemainBalls(Vector2Int balls)
+    public void SetRemainBalls(int[] balls)
     {
         m_RemainBalls = balls;
     }
