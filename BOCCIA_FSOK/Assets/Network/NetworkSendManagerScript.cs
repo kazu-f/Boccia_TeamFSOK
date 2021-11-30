@@ -6,14 +6,29 @@ using Photon.Realtime;
 
 public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable,IPunOwnershipCallbacks
 {
+    enum DataType { 
+        None,
+        ThrowData,
+        GameData,    
+    }
+
     bool IsSended = false;
+    int sendDataType = (int)DataType.None;      //送信するデータの種類を判別する変数。
+    int receiveDataType = (int)DataType.None;      //受信するデータの種類を判別する変数。
+
+    #region ThrowData
     private Vector2 m_throwPower = Vector2.zero;
     private Vector2 m_throwGaugePosition = Vector2.zero;
-    private bool[] m_IsTimeUp = new bool[2];
     private int m_state = 0;                         //決定かどうか。
+    #endregion
+
+    #region GameData
+    private bool[] m_IsTimeUp = new bool[2];
     private bool[] m_SyncFlag = new bool[2];        //同期をとれたかどうか。
     private int[] m_RemainBalls = new int[2];      //残りのボール数
     private int m_NextTeam = -1;     //次に投げるチーム
+    #endregion
+
     private PhotonView photonView = null;
     public void Awake()
     {
@@ -29,30 +44,73 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (stream.IsWriting)
         {
+            //まだデータを送っていないとき
+            //データを他のプレイヤーに送る
             if (!IsSended)
             {
-                //まだデータを送っていないとき
-                //データを他のプレイヤーに送る
-                stream.SendNext(m_throwPower);
-                stream.SendNext(m_throwGaugePosition);
-                stream.SendNext(m_state);
-                stream.SendNext(m_IsTimeUp);
-                stream.SendNext(m_SyncFlag);
-                stream.SendNext(m_RemainBalls);
-                stream.SendNext(m_NextTeam);
+                //データタイプを送信。
+                stream.SendNext(sendDataType);
+                //種類ごとに分かれる。
+                switch (sendDataType)
+                {
+                    case (int)DataType.None:
+
+                        Debug.Log("SendData:None");
+                        break;
+                    case (int)DataType.ThrowData:
+                        //ボールを投げる時に使うデータ。
+                        stream.SendNext(m_throwPower);
+                        stream.SendNext(m_throwGaugePosition);
+                        stream.SendNext(m_state);
+
+                        Debug.Log("SendData:ThrowData");
+                        break;
+                    case (int)DataType.GameData:
+                        //ゲーム進行に使うデータ。
+                        stream.SendNext(m_IsTimeUp);
+                        stream.SendNext(m_SyncFlag);
+                        stream.SendNext(m_RemainBalls);
+                        stream.SendNext(m_NextTeam);
+
+                        Debug.Log("SendData:GameData");
+                        break;                
+                }
+
                 IsSended = true;
+
+                ////必要かどうか微妙？
+                //SendDataType = (int)DataType.None;
             }
         }
         else
         {
             //データを受け取る
-            m_throwPower = (Vector2)stream.ReceiveNext();
-            m_throwGaugePosition = (Vector2)stream.ReceiveNext();
-            m_state = (int)stream.ReceiveNext();
-            m_IsTimeUp = (bool[])stream.ReceiveNext();
-            m_SyncFlag = (bool[])stream.ReceiveNext();
-            m_RemainBalls = (int[])stream.ReceiveNext();
-            m_NextTeam = (int)stream.ReceiveNext();
+            receiveDataType = (int)stream.ReceiveNext();
+            //種類ごとに分かれる。
+            switch (receiveDataType)
+            {
+                case (int)DataType.None:
+
+                    Debug.Log("ReceiveData:None");
+                    break;
+                case (int)DataType.ThrowData:
+                    //ボールを投げる時に使うデータ。
+                    m_throwPower = (Vector2)stream.ReceiveNext();
+                    m_throwGaugePosition = (Vector2)stream.ReceiveNext();
+                    m_state = (int)stream.ReceiveNext();
+
+                    Debug.Log("ReceiveData:ThrowData");
+                    break;
+                case (int)DataType.GameData:
+                    //ゲーム進行に使うデータ。
+                    m_IsTimeUp = (bool[])stream.ReceiveNext();
+                    m_SyncFlag = (bool[])stream.ReceiveNext();
+                    m_RemainBalls = (int[])stream.ReceiveNext();
+                    m_NextTeam = (int)stream.ReceiveNext();
+
+                    Debug.Log("ReceiveData:GameData");
+                    break;
+            }
         }
     }
 
@@ -108,6 +166,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendThrowPow(Vector2 vec2)
     {
         m_throwPower = vec2;
+        sendDataType = (int)DataType.ThrowData;     //ボールを投げる時に使うデータ。
         IsSended = false;
         RequestOwner();
     }
@@ -115,6 +174,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendThrowGaugePosition(Vector2 vec2)
     {
         m_throwGaugePosition = vec2;
+        sendDataType = (int)DataType.ThrowData;     //ボールを投げる時に使うデータ。
         IsSended = false;
         RequestOwner();
     }
@@ -122,6 +182,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendState(int state)
     {
         m_state = state;
+        sendDataType = (int)DataType.ThrowData;     //ボールを投げる時に使うデータ。
         IsSended = false;
         RequestOwner();
     }
@@ -129,6 +190,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendMasterIsTimeUp(bool flag)
     {
         m_IsTimeUp[0] = flag;
+        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
         IsSended = false;
         RequestOwner();
     }
@@ -136,6 +198,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendClientIsTimeUp(bool flag)
     {
         m_IsTimeUp[1] = flag;
+        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
         IsSended = false;
         RequestOwner();
     }
@@ -143,6 +206,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendSyncFlag(bool[] flag)
     {
         m_SyncFlag = flag;
+        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
         IsSended = false;
         RequestOwner();
     }
@@ -150,12 +214,14 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendMasterSyncFlag(bool flag)
     {
         m_SyncFlag[0] = flag;
+        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
         IsSended = false;
         RequestOwner();
     }
     public void SendClientSyncFlag(bool flag)
     {
         m_SyncFlag[1] = flag;
+        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
         IsSended = false;
         RequestOwner();
     }
@@ -177,6 +243,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         {
             m_RemainBalls[i] = balls[i];
         }
+        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
         IsSended = false;
         RequestOwner();
     }
@@ -184,6 +251,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendNextTeam(int team)
     {
         m_NextTeam = team;
+        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
         IsSended = false;
         RequestOwner();
     }
