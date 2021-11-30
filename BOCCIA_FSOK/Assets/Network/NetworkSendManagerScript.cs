@@ -9,13 +9,12 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     bool IsSended = false;
     private Vector2 m_throwPower = Vector2.zero;
     private Vector2 m_throwGaugePosition = Vector2.zero;
-    private Vector3 m_playerPos = Vector3.zero;
-    private Vector3 m_throwPos = Vector3.zero;
-    private Quaternion m_rot = Quaternion.identity;
     private bool[] m_IsTimeUp = new bool[2];
     private int m_state = 0;                         //決定かどうか。
+    private bool[] m_SyncFlag = new bool[2];        //同期をとれたかどうか。
+    private Vector2Int m_RemainBalls = Vector2Int.one;      //残りのボール数
+    private Team m_NextTeam = Team.Num;     //次に投げるチーム
     private PhotonView photonView = null;
-
     public void Awake()
     {
         photonView = this.gameObject.GetComponent<PhotonView>();
@@ -36,11 +35,11 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                 //データを他のプレイヤーに送る
                 stream.SendNext(m_throwPower);
                 stream.SendNext(m_throwGaugePosition);
-                stream.SendNext(m_playerPos);
-                stream.SendNext(m_throwPos);
-                stream.SendNext(m_rot);
                 stream.SendNext(m_state);
                 stream.SendNext(m_IsTimeUp);
+                stream.SendNext(m_SyncFlag);
+                stream.SendNext(m_RemainBalls);
+                stream.SendNext(m_NextTeam);
                 IsSended = true;
             }
         }
@@ -49,11 +48,11 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
             //データを受け取る
             m_throwPower = (Vector2)stream.ReceiveNext();
             m_throwGaugePosition = (Vector2)stream.ReceiveNext();
-            m_playerPos = (Vector3)stream.ReceiveNext();
-            m_throwPos = (Vector3)stream.ReceiveNext();
-            m_rot = (Quaternion)stream.ReceiveNext();
             m_state = (int)stream.ReceiveNext();
             m_IsTimeUp = (bool[])stream.ReceiveNext();
+            m_SyncFlag = (bool[])stream.ReceiveNext();
+            m_RemainBalls = (Vector2Int)stream.ReceiveNext();
+            m_NextTeam = (Team)stream.ReceiveNext();
         }
     }
 
@@ -120,27 +119,6 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         RequestOwner();
     }
 
-    public void SendPlayerPos(Vector3 vec)
-    {
-        m_playerPos = vec;
-        IsSended = false;
-        RequestOwner();
-    }
-
-    public void SendThrowPos(Vector3 vec)
-    {
-        m_throwPos = vec;
-        IsSended = false;
-        RequestOwner();
-    }
-
-    public void SendQuaternion(Quaternion rot)
-    {
-        m_rot = rot;
-        IsSended = false;
-        RequestOwner();
-    }
-
     public void SendState(int state)
     {
         m_state = state;
@@ -151,11 +129,47 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendMasterIsTimeUp(bool flag)
     {
         m_IsTimeUp[0] = flag;
+        IsSended = false;
+        RequestOwner();
     }
 
     public void SendClientIsTimeUp(bool flag)
     {
         m_IsTimeUp[1] = flag;
+        IsSended = false;
+        RequestOwner();
+    }
+
+    public void SendSyncFlag(bool[] flag)
+    {
+        m_SyncFlag = flag;
+        IsSended = false;
+        RequestOwner();
+    }
+
+    public void SendMasterSyncFlag(bool flag)
+    {
+        m_SyncFlag[0] = flag;
+        IsSended = false;
+        RequestOwner();
+    }
+    public void SendClientSyncFlag(bool flag)
+    {
+        m_SyncFlag[1] = flag;
+        IsSended = false;
+        RequestOwner();
+    }
+
+    public void SendRemainBalls(Vector2Int balls)
+    {
+        m_RemainBalls = balls;
+        IsSended = false;
+        RequestOwner();
+    }
+
+    public void SendNextTeam(Team team)
+    {
+        m_NextTeam = team;
         IsSended = false;
         RequestOwner();
     }
@@ -168,21 +182,6 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public Vector2 ReceiveThrowGaugePos()
     {
         return m_throwGaugePosition;
-    }
-
-    public Vector3 ReceivePlayerPos()
-    {
-        return m_playerPos;
-    }
-
-    public Vector3 ReceiveThrowPos()
-    {
-        return m_throwPos;
-    }
-
-    public Quaternion ReveiveQuaternion()
-    {
-        return m_rot;
     }
 
     public int ReceiveState()
@@ -199,6 +198,28 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         return m_IsTimeUp[1];
     }
+    
+    public bool[] ReceiveSyncFlag()
+    {
+        return m_SyncFlag;
+    }
+
+    public bool ReceiveMasterSyncFlag()
+    {
+        return m_SyncFlag[0];
+    }
+
+    public Vector2Int ReceiveRemainBalls()
+    {
+        return m_RemainBalls;
+    }
+
+    public Team ReceiveNextTeam()
+    {
+        return m_NextTeam;
+    }
+
+
     public bool IsOwner()
     {
         return photonView.IsMine;
