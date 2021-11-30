@@ -48,6 +48,8 @@ public class TimerFillScript : MonoBehaviour
             {
                 //タイムアップ
                 Debug.Log("タイムアップ");
+                Debug.Log("タイムアップしたのでタイマーを止める");
+                IsStart = false;
                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                 {
                     //マスタークライアントの時
@@ -88,11 +90,11 @@ public class TimerFillScript : MonoBehaviour
 
     public void LateUpdate()
     {
-        if (late <= 0.0f)
-        {
-            Debug.Log("タイムアップしたのでタイマーを止める");
-            IsStart = false;
-        }
+        //if (late <= 0.0f)
+        //{
+        //    Debug.Log("タイムアップしたのでタイマーを止める");
+        //    IsStart = false;
+        //}
     }
 
     [Photon.Pun.PunRPC]
@@ -106,6 +108,12 @@ public class TimerFillScript : MonoBehaviour
         time.color = Color.green;
         CircleAfterImage.color = Color.green;
         IsTimeUped = false;
+        for(int i = 0;i<TimedUp.Length;i++)
+        {
+            //タイムアップフラグをリセット
+            TimedUp[i] = false;
+        }
+
     }
 
     public bool IsTimerStart()
@@ -118,6 +126,12 @@ public class TimerFillScript : MonoBehaviour
         //投げたので止める
         Debug.Log("ボールを投げたのでタイマーを止める");
         IsStart = false;
+    }
+
+    //AI戦用のタイムアップ下かどうかの関数
+    public bool IsTimeUpForAI()
+    {
+        return TimedUp[0];
     }
     public bool IsTimeUp()
     {

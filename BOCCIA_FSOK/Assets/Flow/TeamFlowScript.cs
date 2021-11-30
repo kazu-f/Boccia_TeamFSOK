@@ -5,15 +5,19 @@ using UnityEngine;
 public enum TeamFlowState
 {
     Start,
+    ThrowStart,
     Wait,
     Throw,
     Move,
     Stop,
     Delay,
     Caluc,
-    Caluced,
-    ThrowEnd,
-    ChangeEnd,
+    //Caluced,
+    //ThrowEnd,
+    SendInfo,
+    Sync,
+    SyncWait,
+    //ChangeEnd,
     End,
     Num,
 }
@@ -456,6 +460,19 @@ public class TeamFlowScript : MonoBehaviour
         }
     }
 
+    public Vector2Int GetRemainBalls()
+    {
+        return m_RemainBalls;
+    }
+    /// <summary>
+    /// ネットワーク同期用
+    /// </summary>
+    /// <param name="balls">残りのボール数</param>
+    public void SetRemainBalls(Vector2Int balls)
+    {
+        m_RemainBalls = balls;
+    }
+
     public TeamFlowState GetState()
     {
         return m_state;
@@ -466,6 +483,10 @@ public class TeamFlowScript : MonoBehaviour
         m_state = state;
     }
 
+    /// <summary>
+    /// 次のチームをセットする
+    /// </summary>
+    /// <param name="team">次のチーム</param>
     public void SetNextTeam(Team team)
     {
         m_NextTeam = team;
