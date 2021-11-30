@@ -94,16 +94,4 @@ public class JackBallScript : IBallScript
             }
         }
     }
-
-    /// <summary>
-    /// ジャックボールを投げるチームを変更
-    /// </summary>
-
-    public override void InKillArea()
-    {
-        //速度をゼロにする
-        m_rigidbody.velocity = Vector3.zero;
-        this.gameObject.SetActive(false);
-        m_TeamFlow.ChangeJackThrowTeam();
-    }
 }

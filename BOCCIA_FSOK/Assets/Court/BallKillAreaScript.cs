@@ -29,7 +29,7 @@ public class BallKillAreaScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        other.GetComponent<IBallScript>().InKillArea();
+        //other.GetComponent<IBallScript>().InKillArea();
     }
 
 }
