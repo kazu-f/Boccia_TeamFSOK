@@ -41,7 +41,6 @@ public class FailedMoveScript : MonoBehaviour
     }
     public void SetDirect()
     {
-        Debug.LogError("èÍäO");
         Direct = true;
     }
     public void FailedOut()
@@ -62,7 +61,6 @@ public class FailedMoveScript : MonoBehaviour
 
     public void FontAlphaZero()
     {
-        Debug.LogError("è¡ÇµÇΩ");
         m_Pos = m_DefaultPos;
         m_Alpha = 0.0f;
         Direct = false;
