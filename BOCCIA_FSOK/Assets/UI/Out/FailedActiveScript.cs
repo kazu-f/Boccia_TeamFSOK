@@ -38,8 +38,13 @@ public class FailedActiveScript : MonoBehaviour
             {
                 if (BallList[i] == null)
                 {
-                    if (!BallList[i].GetComponent<IBallScript>().GetInArea())
+                    return;
+                }
+                if (!BallList[i].GetComponent<IBallScript>().GetInArea())
+                {
+                    if (BallList[i].GetComponent<IBallScript>().GetIsThrow())
                     {
+                        Debug.LogError("èÍäO");
                         moveFailed.SetDirect();
                     }
                 }
