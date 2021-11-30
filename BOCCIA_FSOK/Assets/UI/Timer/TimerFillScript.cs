@@ -140,12 +140,22 @@ public class TimerFillScript : MonoBehaviour
             //マスタークライアントの時
             //クライアントがタイムアップしたかどうかを取得
             TimedUp[1] = m_SendManager.ReceiveClientIsTimeUp();
+            if(late <= 0.0f)
+            {
+                m_SendManager.SendMasterIsTimeUp(true);
+                TimedUp[0] = true;
+            }
         }
         else
         {
             //クライアントの時
             //マスタークライアントがタイムアップしたかどうかを取得
             TimedUp[0] = m_SendManager.ReceiveMasterIsTimeUp();
+            if (late <= 0.0f)
+            {
+                m_SendManager.SendMasterIsTimeUp(true);
+                TimedUp[1] = true;
+            }
         }
 
         for (int i = 0;i < TimedUp.Length; i++)

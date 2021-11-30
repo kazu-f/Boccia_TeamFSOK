@@ -13,7 +13,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     private int m_state = 0;                         //決定かどうか。
     private bool[] m_SyncFlag = new bool[2];        //同期をとれたかどうか。
     private int[] m_RemainBalls = new int[2];      //残りのボール数
-    private Team m_NextTeam = Team.Num;     //次に投げるチーム
+    private int m_NextTeam = -1;     //次に投げるチーム
     private PhotonView photonView = null;
     public void Awake()
     {
@@ -52,7 +52,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
             m_IsTimeUp = (bool[])stream.ReceiveNext();
             m_SyncFlag = (bool[])stream.ReceiveNext();
             m_RemainBalls = (int[])stream.ReceiveNext();
-            m_NextTeam = (Team)stream.ReceiveNext();
+            m_NextTeam = (int)stream.ReceiveNext();
         }
     }
 
@@ -146,7 +146,18 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         IsSended = false;
         RequestOwner();
     }
-
+    public void SendMasterSyncFlag(bool[] flag)
+    {
+        m_SyncFlag = flag;
+        IsSended = false;
+        RequestOwner();
+    }
+    public void SendClientSyncFlag(bool[] flag)
+    {
+        m_SyncFlag = flag;
+        IsSended = false;
+        RequestOwner();
+    }
     public void SendMasterSyncFlag(bool flag)
     {
         m_SyncFlag[0] = flag;
@@ -163,16 +174,21 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     public void SendRemainBalls(int[] balls)
     {
         m_RemainBalls = balls;
+        for(int i = 0;i < balls.Length;i++)
+        {
+            m_RemainBalls[i] = balls[i];
+        }
         IsSended = false;
         RequestOwner();
     }
 
-    public void SendNextTeam(Team team)
+    public void SendNextTeam(int team)
     {
         m_NextTeam = team;
         IsSended = false;
         RequestOwner();
     }
+
 
     public Vector2 ReceiveThrowPower()
     {
@@ -208,17 +224,21 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         return m_SyncFlag[0];
     }
+    public bool ReceiveClientSyncFlag()
+    {
+        return m_SyncFlag[1];
+    }
+
 
     public int[] ReceiveRemainBalls()
     {
         return m_RemainBalls;
     }
 
-    public Team ReceiveNextTeam()
+    public int ReceiveNextTeam()
     {
         return m_NextTeam;
     }
-
 
     public bool IsOwner()
     {

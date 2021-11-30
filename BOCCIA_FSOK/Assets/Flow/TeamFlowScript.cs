@@ -17,6 +17,7 @@ public enum TeamFlowState
     SendInfo,
     Sync,
     SyncWait,
+    SyncEnd,
     //ChangeEnd,
     End,
     Num,
@@ -119,6 +120,21 @@ public class TeamFlowScript : MonoBehaviour
         return m_NextTeam;
     }
 
+    public int GetNowTeamForSync()
+    {
+        if(m_NextTeam == Team.Red)
+        {
+            return 0;
+        }
+        else if(m_NextTeam == Team.Blue)
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
     /// <summary>
     /// 次に投げるチームを計算する
     /// </summary>
@@ -489,9 +505,23 @@ public class TeamFlowScript : MonoBehaviour
     /// 次のチームをセットする
     /// </summary>
     /// <param name="team">次のチーム</param>
-    public void SetNextTeam(Team team)
+    public void SetNextTeam(int team)
     {
-        m_NextTeam = team;
+        if(team == 0)
+        {
+            Debug.Log("次は赤です");
+            m_NextTeam = Team.Red;
+        }
+        else if(team == 1)
+        {
+            Debug.Log("次は青です");
+            m_NextTeam = Team.Blue;
+        }
+        else
+        {
+            Debug.LogError("同期がうまくいっていません。次に投げるチームを取れませんでした。");
+            m_NextTeam = Team.Num;
+        }
     }
     /// <summary>
     /// 次に投げるチームを情報が必要なクラスにセットする
