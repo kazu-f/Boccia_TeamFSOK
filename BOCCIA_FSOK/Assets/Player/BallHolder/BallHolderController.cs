@@ -214,18 +214,18 @@ namespace BocciaPlayer
         /// ボールのアクティブをbit単位で記録して返す。
         /// </summary>
         /// <returns></returns>
-        public int GetBallsActive()
+        public short GetBallsActive()
         {
             //ボールが無ければ0を返す。
             if (!(teamBalls.Length > 0)) return 0;
-            int ret = 0;
+            short ret = 0;
 
             for (int i = 0; i < ballCount; i++) 
             {
                 if(teamBalls[i].activeSelf)
                 {
                     //ビットを立てる。
-                    ret |= 1 << i;
+                    ret |= (short)(1 << i);
                 }
             }
 
@@ -235,7 +235,7 @@ namespace BocciaPlayer
         /// ボールのアクティブをbit単位で記録したものから復元する。
         /// </summary>
         /// <param name="actives"></param>
-        public void SetBallsActive(int actives)
+        public void SetBallsActive(short actives)
         {
             //ボールが無ければ戻る。
             if (!(teamBalls.Length > 0)) return;
