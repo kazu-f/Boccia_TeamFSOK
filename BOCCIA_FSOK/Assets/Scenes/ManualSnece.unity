@@ -661,7 +661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5f1146b540725ea48b851ce8ad2083f1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1967ac0dd1dff4d42b1f7ccf009237d3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -711,9 +711,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HideSprite:
-  - {fileID: 21300000, guid: 5f1146b540725ea48b851ce8ad2083f1, type: 3}
-  - {fileID: 21300000, guid: 987cd8e8cefe8e848924c86367ec1e81, type: 3}
-  - {fileID: 21300000, guid: 422fde2cee74a624f934d99104598d65, type: 3}
+  - {fileID: 21300000, guid: 1967ac0dd1dff4d42b1f7ccf009237d3, type: 3}
+  - {fileID: 21300000, guid: 5da883ecd46af3f4b9cbd3ebd1e07966, type: 3}
+  - {fileID: 21300000, guid: 66501a5ea46f2a4458314623819a7efb, type: 3}
   rightArrow: {fileID: 815358259}
   leftArrow: {fileID: 1830733542}
 --- !u!114 &848506734
