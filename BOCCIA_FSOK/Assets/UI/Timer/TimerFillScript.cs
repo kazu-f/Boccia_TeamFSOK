@@ -49,7 +49,8 @@ public class TimerFillScript : MonoBehaviour
                 //タイムアップ
                 Debug.Log("タイムアップ");
                 Debug.Log("タイムアップしたのでタイマーを止める");
-                IsStart = false;
+                IsTimeUped = true;
+                //IsStart = false;
                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                 {
                     //マスタークライアントの時
@@ -90,11 +91,11 @@ public class TimerFillScript : MonoBehaviour
 
     public void LateUpdate()
     {
-        //if (late <= 0.0f)
-        //{
-        //    Debug.Log("タイムアップしたのでタイマーを止める");
-        //    IsStart = false;
-        //}
+        if (late <= 0.0f)
+        {
+            Debug.Log("タイムアップしたのでタイマーを止める");
+            IsStart = false;
+        }
     }
 
     [Photon.Pun.PunRPC]
@@ -129,45 +130,35 @@ public class TimerFillScript : MonoBehaviour
     }
 
     //AI戦用のタイムアップ下かどうかの関数
-    public bool IsTimeUpForAI()
-    {
-        return TimedUp[0];
-    }
+    //public bool IsTimeUpForAI()
+    //{
+    //    return TimedUp[0];
+    //}
     public bool IsTimeUp()
     {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
-        {
-            //マスタークライアントの時
-            //クライアントがタイムアップしたかどうかを取得
-            TimedUp[1] = m_SendManager.ReceiveClientIsTimeUp();
-            if(late <= 0.0f)
-            {
-                m_SendManager.SendMasterIsTimeUp(true);
-                TimedUp[0] = true;
-            }
-        }
-        else
-        {
-            //クライアントの時
-            //マスタークライアントがタイムアップしたかどうかを取得
-            TimedUp[0] = m_SendManager.ReceiveMasterIsTimeUp();
-            if (late <= 0.0f)
-            {
-                m_SendManager.SendMasterIsTimeUp(true);
-                TimedUp[1] = true;
-            }
-        }
+        //if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        //{
+        //    //マスタークライアントの時
+        //    //クライアントがタイムアップしたかどうかを取得
+        //    TimedUp[1] = m_SendManager.ReceiveClientIsTimeUp();
+        //}
+        //else
+        //{
+        //    //クライアントの時
+        //    //マスタークライアントがタイムアップしたかどうかを取得
+        //    TimedUp[0] = m_SendManager.ReceiveMasterIsTimeUp();
+        //}
 
-        for (int i = 0;i < TimedUp.Length; i++)
-        {
-            if(TimedUp[i] == false)
-            {
-                //マスターとクライアントで終わっていないとき
-                IsTimeUped = false;
-                return IsTimeUped;
-            }
-        }
-        IsTimeUped = true;
+        //for (int i = 0;i < TimedUp.Length; i++)
+        //{
+        //    if(TimedUp[i] == false)
+        //    {
+        //        //マスターとクライアントで終わっていないとき
+        //        IsTimeUped = false;
+        //        return IsTimeUped;
+        //    }
+        //}
+        //IsTimeUped = true;
         return IsTimeUped;
     }
 

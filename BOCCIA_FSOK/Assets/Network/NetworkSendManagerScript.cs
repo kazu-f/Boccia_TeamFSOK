@@ -146,18 +146,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         IsSended = false;
         RequestOwner();
     }
-    public void SendMasterSyncFlag(bool[] flag)
-    {
-        m_SyncFlag = flag;
-        IsSended = false;
-        RequestOwner();
-    }
-    public void SendClientSyncFlag(bool[] flag)
-    {
-        m_SyncFlag = flag;
-        IsSended = false;
-        RequestOwner();
-    }
+
     public void SendMasterSyncFlag(bool flag)
     {
         m_SyncFlag[0] = flag;
@@ -169,6 +158,16 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         m_SyncFlag[1] = flag;
         IsSended = false;
         RequestOwner();
+    }
+
+    public bool ResetSyncFlag()
+    {
+        if (IsSended)
+        {
+            m_SyncFlag[0] = false;
+            m_SyncFlag[1] = false;
+        }
+        return IsSended;
     }
 
     public void SendRemainBalls(int[] balls)
