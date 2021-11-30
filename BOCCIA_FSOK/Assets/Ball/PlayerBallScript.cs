@@ -47,8 +47,8 @@ public class PlayerBallScript : IBallScript
     [Photon.Pun.PunRPC]
     public void DispFailed()
     {
-        Failed = GameObject.Find("Failed");
-        Failed.GetComponent<FailedMoveScript>().SetDirect();
+        //Failed = GameObject.Find("Failed");
+        //Failed.GetComponent<FailedMoveScript>().SetDirect();
     }
 
     /// <summary>
