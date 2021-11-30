@@ -15,6 +15,8 @@ public class EndManager : MonoBehaviour
     //private bool SyncFlag = false;      //全員が同期で来た時に立てるフラグ
     private bool m_IsUseAI = false;
     [SerializeField] private NetworkSendManagerScript m_SendManager = null;
+
+    private GameObject Failed = null;   //場外のオブジェクト
     private void Awake()
     {
 
@@ -110,6 +112,8 @@ public class EndManager : MonoBehaviour
                 //遅延中                
                 if (!m_Delay.IsDelay())
                 {
+                    Failed = GameObject.Find("Failed");
+                    Failed.GetComponent<FailedMoveScript>().FontAlphaZero();
                     //遅延が終了した
                     m_TeamFlow.SetState(TeamFlowState.Caluc);
                     m_TeamFlow.ThrowEnd();

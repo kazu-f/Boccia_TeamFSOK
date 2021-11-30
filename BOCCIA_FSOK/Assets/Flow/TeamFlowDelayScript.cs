@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TeamFlowDelayScript : MonoBehaviour
 {
-    private GameObject Failed = null;
     [SerializeField] private float AfterEndTime = 3.0f;
     private float AfterNowTime = 0.0f;
     private bool IsStart = false;
@@ -39,8 +38,6 @@ public class TeamFlowDelayScript : MonoBehaviour
         }
         else
         {
-            Failed = GameObject.Find("Failed");
-            Failed.GetComponent<FailedMoveScript>().FontAlphaZero();
             //íxâÑèIóπ
             AfterNowTime = 0.0f;
             return true;
