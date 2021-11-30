@@ -12,13 +12,17 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     private Vector3 m_playerPos = Vector3.zero;
     private Vector3 m_throwPos = Vector3.zero;
     private Quaternion m_rot = Quaternion.identity;
-    private bool m_IsTimeUp = false;
+    private bool[] m_IsTimeUp = new bool[2];
     private int m_state = 0;                         //åàíËÇ©Ç«Ç§Ç©ÅB
     private PhotonView photonView = null;
 
     public void Awake()
     {
         photonView = this.gameObject.GetComponent<PhotonView>();
+        for(int i = 0;i < m_IsTimeUp.Length;i++)
+        {
+            m_IsTimeUp[i] = false;
+        }
     }
 
     #region IPunObservable implementation
@@ -49,7 +53,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
             m_throwPos = (Vector3)stream.ReceiveNext();
             m_rot = (Quaternion)stream.ReceiveNext();
             m_state = (int)stream.ReceiveNext();
-            m_IsTimeUp = (bool)stream.ReceiveNext();
+            m_IsTimeUp = (bool[])stream.ReceiveNext();
         }
     }
 
@@ -144,9 +148,14 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         RequestOwner();
     }
 
-    public void SendIsTimeUp(bool flag)
+    public void SendMasterIsTimeUp(bool flag)
     {
-        m_IsTimeUp = flag;
+        m_IsTimeUp[0] = flag;
+    }
+
+    public void SendClientIsTimeUp(bool flag)
+    {
+        m_IsTimeUp[1] = flag;
         IsSended = false;
         RequestOwner();
     }
@@ -181,11 +190,15 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         return m_state;
     }
 
-    public bool ReceiveIsTimeUp()
+    public bool ReceiveMasterIsTimeUp()
     {
-        return m_IsTimeUp;
+        return m_IsTimeUp[0];
     }
 
+    public bool ReceiveClientIsTimeUp()
+    {
+        return m_IsTimeUp[1];
+    }
     public bool IsOwner()
     {
         return photonView.IsMine;
