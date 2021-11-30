@@ -27,6 +27,7 @@ public class ActiveTeamController : MonoBehaviour
     Team playerTeamCol;                             //プレイヤーのチームカラー。
     ThrowTeamState throwState = ThrowTeamState.waitStopBall;
     bool isUseAI = false;
+    bool isActive = true;
 
     private void Awake()
     {
@@ -150,15 +151,17 @@ public class ActiveTeamController : MonoBehaviour
 
     public void SwichActiveThrow()
     {
-        if (this.gameObject.activeSelf)
+        if (isActive)
         {
             StopThrow();
-            this.gameObject.SetActive(false);
+            isActive = false;
+            //this.gameObject.SetActive(false);
         }
         else
         {
             ChangeActivePlayer();
-            this.gameObject.SetActive(true);
+            isActive = true;
+            //this.gameObject.SetActive(true);
         }
     }
 
