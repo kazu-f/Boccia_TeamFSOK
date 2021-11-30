@@ -16,7 +16,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     #endregion
 
     #region Private Fields
-    string gameVersion = "1.5";       // ゲームのバージョン
+    string gameVersion = "1.6";       // ゲームのバージョン
     bool isConnecting;
     bool IsJoinedRoom = false;
     bool IsGameSceneLoaded = false;

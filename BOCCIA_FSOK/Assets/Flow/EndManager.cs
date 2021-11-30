@@ -162,6 +162,9 @@ public class EndManager : MonoBehaviour
                 SyncFlags[1] = false;
 
                 //情報を送る
+                m_SendManager.SendRemainBalls(m_TeamFlow.GetRemainBalls());
+                m_SendManager.SendNextTeam(m_TeamFlow.GetNowTeam());
+
                 m_SendManager.SendSyncFlag(SyncFlags);
                 //同期ステートに移行
                 m_TeamFlow.SetState(TeamFlowState.SyncWait);

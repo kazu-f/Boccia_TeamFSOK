@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class FailedMoveScript : MonoBehaviour
 {
     private Vector3 m_Pos = new Vector3(0.0f, 60.0f, 0.0f);
+    private Vector3 m_DefaultPos ;
     private RectTransform m_Rect = null;
 
     private float m_Alpha = 0.0f;
@@ -17,6 +18,7 @@ public class FailedMoveScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_DefaultPos = m_Pos;
         FontAlphaZero();
         m_Rect = this.gameObject.GetComponent<RectTransform>();
     }
@@ -27,7 +29,6 @@ public class FailedMoveScript : MonoBehaviour
     {
         if (Direct)
         {
-            //Debug.Log("èÍäO");
             FailedOut();
         }
         var n = m_Image.color;
@@ -60,6 +61,7 @@ public class FailedMoveScript : MonoBehaviour
 
     public void FontAlphaZero()
     {
+        m_Pos = m_DefaultPos;
         m_Alpha = 0.0f;
         Direct = false;
     }
