@@ -15,7 +15,7 @@ public class EndManager : MonoBehaviour
     //private bool SyncFlag = false;      //全員が同期で来た時に立てるフラグ
     private bool m_IsUseAI = false;
     [SerializeField] private NetworkSendManagerScript m_SendManager = null;
-
+    private bool Client = false;
     private GameObject Failed = null;   //場外のオブジェクト
     private void Awake()
     {
@@ -48,10 +48,26 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.ThrowStart:
+                Client = false;
+                if (m_BallFlow.IsPreparedJack() == true)
+                {
+                    Debug.Log("各種情報をセットします。");
+                    //残りボール数のテキストのαを更新
+                    GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
+                    //カメラを追従カメラから切り替える
+                    GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
+                    //次に投げるチームをセット
+                    m_TeamFlow.SetNextTeamForClass();
+                    //残りボール数のテキストを更新
+                    GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();
+                }
+
                 //投げ始める。
                 Debug.Log("エンドが終わっていないのでタイマーをスタートします");
                 m_Timer.SyncStartTimer();
-
+                //同期フラグをfalseにする
+                SyncFlags[0] = false;
+                SyncFlags[1] = false;
                 //Waitに移行
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 break;
@@ -121,6 +137,7 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.Caluc:
+                Debug.Log("計算開始");
                 if (m_TeamFlow.GetNowTeam() == MyTeamCol|| m_IsUseAI)
                 {
                     //投げたチームかAI戦の時のみが計算をする
@@ -136,7 +153,7 @@ public class EndManager : MonoBehaviour
                     else
                     {
                         //残りボール数のテキストのαを更新
-                        GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
+                        //GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
                         //ジャックボールは用意されているので次に投げるチームを計算
                         m_TeamFlow.CalucNextTeam();
                         //if (m_TeamFlow.CalucNextTeam() == true)
@@ -161,23 +178,28 @@ public class EndManager : MonoBehaviour
             //    break;
 
             case TeamFlowState.SendInfo:
-                //情報を送る側なので0番目はtrue、1番目はfalse
+                Debug.Log("情報を送ります。");
+                //情報を送る側なので0番目はtrue
                 SyncFlags[0] = true;
-                SyncFlags[1] = false;
 
                 //情報を送る
                 m_SendManager.SendRemainBalls(m_TeamFlow.GetRemainBalls());
-                m_SendManager.SendNextTeam(m_TeamFlow.GetNowTeam());
+                m_SendManager.SendNextTeam((int)m_TeamFlow.GetNowTeam());
 
-                m_SendManager.SendSyncFlag(SyncFlags);
+                //m_SendManager.SendSyncFlag(SyncFlags);
+                m_SendManager.SendMasterSyncFlag(SyncFlags[0]);
+
                 //同期ステートに移行
                 m_TeamFlow.SetState(TeamFlowState.SyncWait);
                 break;
 
             case TeamFlowState.Sync:
+                Client = true;
+
                 //if (SyncFlag == false)
                 //{
-                SyncFlags = m_SendManager.ReceiveSyncFlag();
+                //SyncFlags = m_SendManager.ReceiveSyncFlag();
+                SyncFlags[0] = m_SendManager.ReceiveMasterSyncFlag();
                 //まだ同期がとれていないとき
                 //まず前に投げた人の情報が送られているかどうかを調べる
                 if (SyncFlags[0] == false)
@@ -188,6 +210,8 @@ public class EndManager : MonoBehaviour
                 //////////////////////////////////////////////////////////
                 ////////////ここから下は情報が送られているとき////////////
                 //////////////////////////////////////////////////////////
+                
+                Debug.Log("同期開始");
 
                 //自分が次に投げるとき前の情報を同期させる。
                 //同期させる情報
@@ -198,9 +222,11 @@ public class EndManager : MonoBehaviour
                 SyncFlags[1] = true;
 
                 //同期が終わったことを知らせる。
-                m_SendManager.SendSyncFlag(SyncFlags);
+                //m_SendManager.SendSyncFlag(SyncFlags);
+                m_SendManager.SendClientSyncFlag(SyncFlags[1]);
 
                 //同期が終わったのでSyncWaitステートに移行する
+                Debug.Log("SyncWaitステートに移行");
                 m_TeamFlow.SetState(TeamFlowState.SyncWait);
 
                 //    SyncFlag = true;
@@ -210,7 +236,16 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.SyncWait:
                 //同期したかどうか調べる
-                SyncFlags = m_SendManager.ReceiveSyncFlag();
+                //SyncFlags = m_SendManager.ReceiveSyncFlag();
+                if (Client)
+                {
+                    SyncFlags[0] = m_SendManager.ReceiveMasterSyncFlag();
+                }
+                else
+                {
+                    SyncFlags[1] = m_SendManager.ReceiveClientSyncFlag();
+                }
+
                 if (m_IsUseAI == false)
                 {
                     //AI戦じゃ無いとき
@@ -219,7 +254,8 @@ public class EndManager : MonoBehaviour
                         if (flag == false)
                         {
                             //まだ同期が終わっていない
-                            break;
+                            Debug.Log("まだ同期が終わっていません");
+                            return;
                         }
                     }
                 }
@@ -228,20 +264,22 @@ public class EndManager : MonoBehaviour
                 /////////ここから下は同期が終わっているときの処理/////////
                 //////////////////////////////////////////////////////////
 
-                bool endflag = false;
+                bool endflag = true;
                 //どちらとも投げ終えているときエンド終了に移行する
                 foreach(int i in m_TeamFlow.GetRemainBalls())
                 {
                     if(i != 0)
                     {
                         //まだ球があるので抜ける
-                        endflag = true;
+                        Debug.Log("まだ球があるのでゲームを続けます。");
+                        endflag = false;
                         break;
                     }
                 }
                 if(endflag == true)
                 {
                     //投げ終えているのでステートをEndにする
+                    Debug.Log("もうボールがないんドでエンドを終了します");
                     m_TeamFlow.SetState(TeamFlowState.End);
                     break;
                 }
@@ -250,17 +288,57 @@ public class EndManager : MonoBehaviour
                 //////////ここから下はまだ投げ終わっていないとき//////////
                 //////////////////////////////////////////////////////////
 
-                //カメラを追従カメラから切り替える
-                GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
-                //次に投げるチームをセット
-                m_TeamFlow.SetNextTeamForClass();
-                //残りボール数のテキストを更新
-                GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();
+                //SyncEndにステートをセットする
+                m_TeamFlow.SetState(TeamFlowState.SyncEnd);
 
+                break;
+
+            case TeamFlowState.SyncEnd:
+                //同期が完了しているフラグをリセットする
+                if (Client == false)
+                {
+                    if (m_IsUseAI == false)
+                    {
+                        if (m_SendManager.ReceiveClientSyncFlag())
+                        {
+                            //クライアントの同期が終わっている
+                            Debug.Log("ホストだよ！");
+                            Debug.Log("同期フラグ送ったよ！");
+                            SyncFlags[0] = false;
+                            SyncFlags[1] = false;
+                            m_SendManager.SendMasterSyncFlag(SyncFlags[0]);
+                            m_SendManager.SendClientSyncFlag(SyncFlags[1]);
+                        }
+                        else
+                        {
+                            //クライアントの同期が終わっていない
+                            return;
+                        }
+                    }
+                }
+                SyncFlags[0] = m_SendManager.ReceiveMasterSyncFlag();
+                SyncFlags[1] = m_SendManager.ReceiveClientSyncFlag();
+
+                if (m_IsUseAI == false)
+                {
+                    //AI戦じゃ無いとき
+                    foreach (bool flag in SyncFlags)
+                    {
+                        if (flag == true)
+                        {
+                            //まだ同期が終わっていない
+                            Debug.Log("まだ同期が終わっていません");
+                            return;
+                        }
+                    }
+                }
+
+                //フラグリセットが完了したのを確認したので
                 //ThrowStartにステートをセットする
                 m_TeamFlow.SetState(TeamFlowState.ThrowStart);
 
                 break;
+
             //case TeamFlowState.ThrowEnd:
             //    //投げ終わり
             //    //カメラを追従カメラから切り替える
