@@ -32,11 +32,10 @@ public class TeamFlowScript : MonoBehaviour
     private BallState m_JackState = BallState.Num;
     private Vector3 m_JackPos = Vector3.zero;
     private int[] m_RemainBalls = new int[2];
-    public int m_Remain { get; private set; } = 6;
+    public int m_Remain { get; private set; } = 1;
     private EndFlowScript m_GameFlowScript = null;
     private bool m_IsMoving = false;
-    private bool IsThrow = false;
-    private int m_Frame = 0;
+    
     private GameObject m_NextBallImage = null;
 
     private void Awake()
@@ -118,6 +117,11 @@ public class TeamFlowScript : MonoBehaviour
     public Team GetNowTeam()
     {
         return m_NextTeam;
+    }
+
+    public Team GetFirstTeam()
+    {
+        return m_firstTeam;
     }
 
     public int GetNowTeamForSync()
@@ -231,7 +235,7 @@ public class TeamFlowScript : MonoBehaviour
         if (m_RemainBalls[0] == 0 && m_RemainBalls[1] == 0)
         {
             //両方投げ終わっているのでゲームエンド
-            m_GameFlowScript.GameEnd();
+            //m_GameFlowScript.GameEnd();
             m_NextBallImage.GetComponent<ChangeBallSprite>().GameEnd();
         }
         else if(m_RemainBalls[0] == 0)
@@ -438,7 +442,6 @@ public class TeamFlowScript : MonoBehaviour
     {
         //残りボール数のテキストを更新
         GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();
-        IsThrow = true;
         //ステートを投げた状態にする
         m_state = TeamFlowState.Throw;
     }
@@ -454,13 +457,12 @@ public class TeamFlowScript : MonoBehaviour
         ChangeNextTeam();
         ChangeFirstTeam();
         //投げ終わり
-        IsThrow = false;
         //カメラ変更
         GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
-        m_Frame = 0;
         m_IsMoving = false;
         NextTeamLog();
     }
+
 
     /// <summary>
     /// 次に投げるチームの残りの球数
@@ -500,7 +502,7 @@ public class TeamFlowScript : MonoBehaviour
     {
         m_state = state;
     }
-
+    
     /// <summary>
     /// 次のチームをセットする
     /// </summary>
@@ -521,6 +523,25 @@ public class TeamFlowScript : MonoBehaviour
         {
             Debug.LogError("同期がうまくいっていません。次に投げるチームを取れませんでした。");
             m_NextTeam = Team.Num;
+        }
+    }
+
+    public void SetFirstTeam(int team)
+    {
+        if (team == 0)
+        {
+            Debug.Log("最初に投げるのは赤です");
+            m_firstTeam = Team.Red;
+        }
+        else if (team == 1)
+        {
+            Debug.Log("最初に投げるのは青です");
+            m_firstTeam = Team.Blue;
+        }
+        else
+        {
+            Debug.LogError("同期がうまくいっていません。最初に投げるチームを取れませんでした。");
+            m_firstTeam = Team.Num;
         }
     }
     /// <summary>

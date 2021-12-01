@@ -27,6 +27,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     private bool[] m_SyncFlag = new bool[2];        //同期をとれたかどうか。
     private int[] m_RemainBalls = new int[2];      //残りのボール数
     private int m_NextTeam = -1;     //次に投げるチーム
+    private int m_FirstTeam = -1;
     #endregion
 
     private PhotonView photonView = null;
@@ -71,6 +72,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                         stream.SendNext(m_SyncFlag);
                         stream.SendNext(m_RemainBalls);
                         stream.SendNext(m_NextTeam);
+                        stream.SendNext(m_FirstTeam);
 
                         Debug.Log("SendData:GameData");
                         break;                
@@ -107,7 +109,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                     m_SyncFlag = (bool[])stream.ReceiveNext();
                     m_RemainBalls = (int[])stream.ReceiveNext();
                     m_NextTeam = (int)stream.ReceiveNext();
-
+                    m_FirstTeam = (int)stream.ReceiveNext();
                     Debug.Log("ReceiveData:GameData");
                     break;
             }
@@ -256,6 +258,13 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         RequestOwner();
     }
 
+    public void SendFirstTeam(int team)
+    {
+        m_FirstTeam = team;
+        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
+        IsSended = false;
+        RequestOwner();
+    }
 
     public Vector2 ReceiveThrowPower()
     {
@@ -307,6 +316,10 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         return m_NextTeam;
     }
 
+    public int ReceiveFirstTeam()
+    {
+        return m_FirstTeam;
+    }
     public bool IsOwner()
     {
         return photonView.IsMine;
