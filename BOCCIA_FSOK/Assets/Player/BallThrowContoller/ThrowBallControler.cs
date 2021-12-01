@@ -178,14 +178,14 @@ namespace BocciaPlayer
             //カウントが終わっているか？
             while(!serverTimer.IsCountEnd())
             {
+                //タイムアップしているなら中断。
+                if (timerFill.IsTimeUp())
+                {
+                    //コルーチンの中断。
+                    isDecision = false;
+                    yield break;
+                }
                 yield return 0;
-            }
-
-            //タイムアップしているなら中断。
-            if(timerFill.IsTimeUp())
-            {
-                //コルーチンの中断。
-                yield break;
             }
 
             //現在投げるボールを取得する。
@@ -193,6 +193,7 @@ namespace BocciaPlayer
             if (obj == null)
             {
                 //コルーチンの中断。
+                isDecision = false;
                 yield break;
             }
 
