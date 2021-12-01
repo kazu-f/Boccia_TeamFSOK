@@ -44,12 +44,12 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (stream.IsWriting)
         {
+            //データタイプを送信。
+            stream.SendNext(sendDataType);
             //まだデータを送っていないとき
             //データを他のプレイヤーに送る
             if (!IsSended)
             {
-                //データタイプを送信。
-                stream.SendNext(sendDataType);
                 //種類ごとに分かれる。
                 switch (sendDataType)
                 {
@@ -78,8 +78,8 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
 
                 IsSended = true;
 
-                ////必要かどうか微妙？
-                //SendDataType = (int)DataType.None;
+                //必要かどうか微妙？
+                sendDataType = (int)DataType.None;
             }
         }
         else
