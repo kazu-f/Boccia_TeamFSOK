@@ -10,7 +10,10 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         None,
         ThrowData,
         GameData,    
+        SendSyncDataToClient,           // クライアントに同期データを送る。
+        SendRecievedSyncDataToMaster,   // マスターに同期データを受け取ったことを通知する。
     }
+
 
     bool IsSended = false;
     int sendDataType = (int)DataType.None;      //送信するデータの種類を判別する変数。
@@ -24,7 +27,9 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
 
     #region GameData
     private bool[] m_IsTimeUp = new bool[2];
-    private bool[] m_SyncFlag = new bool[2];        //同期をとれたかどうか。
+    public bool IsRecieved_SyncDataFromMaster { get;set; }
+    public bool IsRecieved_NotifyRecievedSyncDataFromClient { get; set; }
+
     private int[] m_RemainBalls = new int[2];      //残りのボール数
     private int m_NextTeam = -1;     //次に投げるチーム
     private int m_FirstTeam = -1;
@@ -45,12 +50,12 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (stream.IsWriting)
         {
-            //データタイプを送信。
-            stream.SendNext(sendDataType);
             //まだデータを送っていないとき
             //データを他のプレイヤーに送る
             if (!IsSended)
             {
+                //データタイプを送信。
+                stream.SendNext(sendDataType);
                 //種類ごとに分かれる。
                 switch (sendDataType)
                 {
@@ -69,13 +74,23 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                     case (int)DataType.GameData:
                         //ゲーム進行に使うデータ。
                         stream.SendNext(m_IsTimeUp);
-                        stream.SendNext(m_SyncFlag);
                         stream.SendNext(m_RemainBalls);
                         stream.SendNext(m_NextTeam);
                         stream.SendNext(m_FirstTeam);
 
                         Debug.Log("SendData:GameData");
-                        break;                
+                        break;
+                    case (int)DataType.SendSyncDataToClient:
+                        stream.SendNext(m_IsTimeUp);
+                        stream.SendNext(m_RemainBalls);
+                        stream.SendNext(m_NextTeam);
+                        stream.SendNext(m_FirstTeam);
+                        Debug.Log("SendData:SendSyncDataToClient");
+                        break;
+                    case (int)DataType.SendRecievedSyncDataToMaster:
+                        Debug.Log("SendData:SendRecievedSyncDataToMaster");
+                        break;
+
                 }
 
                 IsSended = true;
@@ -106,11 +121,24 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                 case (int)DataType.GameData:
                     //ゲーム進行に使うデータ。
                     m_IsTimeUp = (bool[])stream.ReceiveNext();
-                    m_SyncFlag = (bool[])stream.ReceiveNext();
                     m_RemainBalls = (int[])stream.ReceiveNext();
                     m_NextTeam = (int)stream.ReceiveNext();
                     m_FirstTeam = (int)stream.ReceiveNext();
-                    Debug.Log("ReceiveData:GameData");
+                    
+                    break;
+                case (int)DataType.SendSyncDataToClient:
+                    // 同期データを受信した。
+                    m_IsTimeUp = (bool[])stream.ReceiveNext();
+                    m_RemainBalls = (int[])stream.ReceiveNext();
+                    m_NextTeam = (int)stream.ReceiveNext();
+                    m_FirstTeam = (int)stream.ReceiveNext();
+                    IsRecieved_SyncDataFromMaster = true;
+                    Debug.Log("ReceiveData:SendSyncDataToClient");
+                    break;
+                case (int)DataType.SendRecievedSyncDataToMaster:
+                    // クライアントから同期データを受け取ったことが通知された。
+                    IsRecieved_NotifyRecievedSyncDataFromClient = true;
+                    Debug.Log("ReceiveData:RecievedSyncDataToMaster");
                     break;
             }
         }
@@ -164,7 +192,12 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         Debug.LogError("オーナー権限の移行に失敗しました");
     }
-
+    public void SendRecievedSyncDataToMaster()
+    {
+        sendDataType = (int)DataType.SendRecievedSyncDataToMaster;
+        IsSended = false;
+        RequestOwner();
+    }
     public void SendThrowPow(Vector2 vec2)
     {
         m_throwPower = vec2;
@@ -204,66 +237,43 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         IsSended = false;
         RequestOwner();
     }
-
-    public void SendSyncFlag(bool[] flag)
+    /// <summary>
+    /// 同期データをクライアントに送る。
+    /// </summary>
+    /// <param name="teamFlowScript"></param>
+    public void SendSyncDataToClient(TeamFlowScript teamFlowScript)
     {
-        m_SyncFlag = flag;
-        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
+        SendRemainBalls(teamFlowScript.GetRemainBalls());
+        m_NextTeam = (int)teamFlowScript.GetNowTeam();
+        m_FirstTeam = (int)teamFlowScript.GetFirstTeam();
+        sendDataType = (int)DataType.SendSyncDataToClient;     //ゲーム進行に使うデータ。
         IsSended = false;
         RequestOwner();
     }
-
-    public void SendMasterSyncFlag(bool flag)
+    /// <summary>
+    /// マスターからの同期データを受け取る。
+    /// </summary>
+    /// <param name=""></param>
+    public bool RecieveSyncDataFromMaster(TeamFlowScript teamFlowScript)
     {
-        m_SyncFlag[0] = flag;
-        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
-        IsSended = false;
-        RequestOwner();
-    }
-    public void SendClientSyncFlag(bool flag)
-    {
-        m_SyncFlag[1] = flag;
-        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
-        IsSended = false;
-        RequestOwner();
-    }
-
-    public bool ResetSyncFlag()
-    {
-        if (IsSended)
+        if (IsRecieved_SyncDataFromMaster == false)
         {
-            m_SyncFlag[0] = false;
-            m_SyncFlag[1] = false;
+            return false;
         }
-        return IsSended;
+        teamFlowScript.SetRemainBalls(ReceiveRemainBalls());
+        teamFlowScript.SetNextTeam(ReceiveNextTeam());
+        teamFlowScript.SetFirstTeam(ReceiveFirstTeam());
+        // 受信したので、受信フラグをオフにする。
+        IsRecieved_SyncDataFromMaster = false;
+        return true;
     }
-
-    public void SendRemainBalls(int[] balls)
+    void SendRemainBalls(int[] balls)
     {
         m_RemainBalls = balls;
         for(int i = 0;i < balls.Length;i++)
         {
             m_RemainBalls[i] = balls[i];
         }
-        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
-        IsSended = false;
-        RequestOwner();
-    }
-
-    public void SendNextTeam(int team)
-    {
-        m_NextTeam = team;
-        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
-        IsSended = false;
-        RequestOwner();
-    }
-
-    public void SendFirstTeam(int team)
-    {
-        m_FirstTeam = team;
-        sendDataType = (int)DataType.GameData;     //ゲーム進行に使うデータ。
-        IsSended = false;
-        RequestOwner();
     }
 
     public Vector2 ReceiveThrowPower()
@@ -291,20 +301,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         return m_IsTimeUp[1];
     }
     
-    public bool[] ReceiveSyncFlag()
-    {
-        return m_SyncFlag;
-    }
-
-    public bool ReceiveMasterSyncFlag()
-    {
-        return m_SyncFlag[0];
-    }
-    public bool ReceiveClientSyncFlag()
-    {
-        return m_SyncFlag[1];
-    }
-
+   
 
     public int[] ReceiveRemainBalls()
     {

@@ -11,7 +11,7 @@ public class EndManager : MonoBehaviour
     [SerializeField] private BallFlowScript m_BallFlow = null;
     [SerializeField] private TimerFillScript m_Timer = null;
     private Team MyTeamCol = Team.Num;
-    private bool[] SyncFlags = new bool[2];     //全員用の同期フラグ
+    
     //private bool SyncFlag = false;      //全員が同期で来た時に立てるフラグ
     private bool m_IsUseAI = false;
     [SerializeField] private NetworkSendManagerScript m_SendManager = null;
@@ -19,6 +19,7 @@ public class EndManager : MonoBehaviour
     private GameObject Failed = null;   //場外のオブジェクト
     private float Limit = 5.0f;
     private float time = 0.0f;
+    int m_turnNo = 0;
     private void Awake()
     {
 
@@ -52,6 +53,7 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.ThrowStart:
+
                 Debug.Log("TeamFlowState.ThrowStart");
                 Client = false;
                 if (m_BallFlow.IsPreparedJack() == true)
@@ -67,22 +69,24 @@ public class EndManager : MonoBehaviour
                     GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();
                 }
 
-                //同期フラグをfalseにする
-                SyncFlags[0] = false;
-                SyncFlags[1] = false;
+
                 //Waitに移行
-                if (m_SendManager.ResetSyncFlag())
-                {
-                    //Debug.Log("同期フラグがリセットできました");
-                    //投げ始める。
-                    //Debug.Log("エンドが終わっていないのでタイマーをスタートします");
-                    m_Timer.SyncStartTimer();
-                    m_TeamFlow.SetState(TeamFlowState.Wait);
-                }
+                //投げ始める。
+                //Debug.Log("エンドが終わっていないのでタイマーをスタートします");
+                m_Timer.SyncStartTimer();
+                m_TeamFlow.SetState(TeamFlowState.Wait);
+                
                 break;
 
             case TeamFlowState.Wait:
                 Debug.Log("TeamFlowState.Wait");
+
+                
+                
+                // 一定間隔で
+                time += Time.deltaTime;
+                // ここで長らく止まっている場合、相手に
+                
                 //プレイヤーが投げるまで
                 if (m_Timer.IsTimerStart() == false)
                 {
@@ -93,18 +97,15 @@ public class EndManager : MonoBehaviour
 
                 if (m_Timer.IsTimeUp()/* || m_IsUseAI*/)
                 {
-                    //if (m_Timer.IsTimeUpForAI())
-                    //{
-                        //Debug.Log("タイムアップしているのでステートをCulcに変更");
-                        if (m_BallFlow.IsPreparedJack())
-                        {
-                            //ジャックボールが準備されているとき
-                            //プレイヤーの持ち球を減らす
-                            //Debug.Log("タイムアップしたのでボールを減らします");
-                            m_TeamFlow.DecreaseBalls();
-                        }
-                        m_TeamFlow.SetState(TeamFlowState.Caluc);
-                    //}
+                    //Debug.Log("タイムアップしているのでステートをCulcに変更");
+                    if (m_BallFlow.IsPreparedJack())
+                    {
+                        //ジャックボールが準備されているとき
+                        //プレイヤーの持ち球を減らす
+                        //Debug.Log("タイムアップしたのでボールを減らします");
+                        m_TeamFlow.DecreaseBalls();
+                    }
+                    m_TeamFlow.SetState(TeamFlowState.Caluc);
                 }
                 break;
 
@@ -171,154 +172,58 @@ public class EndManager : MonoBehaviour
                         //GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateAlpha();
                         //ジャックボールは用意されているので次に投げるチームを計算
                         m_TeamFlow.CalucNextTeam();
-                        //if (m_TeamFlow.CalucNextTeam() == true)
-                        //{
-                        ////計算ができたのでステートをCalucedにする
-                        //m_TeamFlow.SetState(TeamFlowState.Caluced);
-                        //}
+                        
                     }
-                    //投げたチームは次に投げるチームを計算で来たのでSendInfoに移行する
-                    m_TeamFlow.SetState(TeamFlowState.SendInfo);
+                    //投げたチームは同期データ送信に移行
+                    m_TeamFlow.SetState(TeamFlowState.SendSyncDataToClient);
                     break;
                 }
-                //投げていないチームはSyncに移行
-                m_TeamFlow.SetState(TeamFlowState.Sync);
+                //投げていないチームはマスターからの同期データ受信待ちに移行
+                m_TeamFlow.SetState(TeamFlowState.WaitRecievedSyncDataFromMaster);
                 break;
 
-            //case TeamFlowState.Caluced:
-            //    //次に投げるボールが計算できた時
-            //    //次に投げるチームをセット
-            //    //m_TeamFlow.SetNextTeamForClass();
-            //    //m_TeamFlow.SetState(TeamFlowState.ThrowEnd);
-            //    break;
-
-            case TeamFlowState.SendInfo:
+            case TeamFlowState.SendSyncDataToClient:
                 Debug.Log("TeamFlowState.SendInfo");
-                //Debug.Log("情報を送ります。");
-                //情報を送る側なので0番目はtrue
-                SyncFlags[0] = true;
-
-                //情報を送る
-                m_SendManager.SendRemainBalls(m_TeamFlow.GetRemainBalls());
-                m_SendManager.SendNextTeam((int)m_TeamFlow.GetNowTeam());
-                m_SendManager.SendFirstTeam((int)m_TeamFlow.GetFirstTeam());
-
-                //m_SendManager.SendSyncFlag(SyncFlags);
-                m_SendManager.SendMasterSyncFlag(SyncFlags[0]);
-
-                //同期ステートに移行
-                m_TeamFlow.SetState(TeamFlowState.SyncWait);
+                // 同期データをクライアントに送る
+                m_SendManager.SendSyncDataToClient(m_TeamFlow);                
+                // クライアントからのデータ受信メッセージ受け取り待ちに遷移
+                m_TeamFlow.SetState(TeamFlowState.WaitNotifyRecievedSyncDataFromClient);
                 time = 0.0f;
                 break;
-
-            case TeamFlowState.Sync:
+            // 
+            case TeamFlowState.WaitRecievedSyncDataFromMaster:
                 Debug.Log("TeamFlowState.Sync");
                 Client = true;
 
-                //if (SyncFlag == false)
-                //{
-                //SyncFlags = m_SendManager.ReceiveSyncFlag();
-                SyncFlags[0] = m_SendManager.ReceiveMasterSyncFlag();
-                //まだ同期がとれていないとき
-                //まず前に投げた人の情報が送られているかどうかを調べる
-                if (SyncFlags[0] == false)
+                if (m_SendManager.RecieveSyncDataFromMaster(m_TeamFlow) == false)
                 {
-                    //まだ送られていない。
+                    // 同期データがマスターからまだ送られてきていないので、受信できなかった
                     break;
                 }
-                //////////////////////////////////////////////////////////
-                ////////////ここから下は情報が送られているとき////////////
-                //////////////////////////////////////////////////////////
-                
-                //Debug.Log("同期開始");
+               
+                // 同期データを受信したことをマスターに通知する。
+                m_SendManager.SendRecievedSyncDataToMaster();
 
-                //自分が次に投げるとき前の情報を同期させる。
-                //同期させる情報
-                //｛残りのボールの個数、次に投げるチーム、｝
-                m_TeamFlow.SetRemainBalls(m_SendManager.ReceiveRemainBalls());
-                m_TeamFlow.SetNextTeam(m_SendManager.ReceiveNextTeam());
-                m_TeamFlow.SetFirstTeam(m_SendManager.ReceiveFirstTeam());
                 if (m_BallFlow.IsPreparedJack() == false)
                 {
                     GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
                 }
                 GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
-                //同期したのでフラグをセットする
-                SyncFlags[1] = true;
-
-                //同期が終わったことを知らせる。
-                //m_SendManager.SendSyncFlag(SyncFlags);
-                m_SendManager.SendClientSyncFlag(SyncFlags[1]);
+                
 
                 //同期が終わったのでSyncWaitステートに移行する
                 //Debug.Log("SyncWaitステートに移行");
                 m_TeamFlow.SetState(TeamFlowState.SyncEnd);
 
-                //    SyncFlag = true;
-                //}
-
                 break;
 
-            case TeamFlowState.SyncWait:
-                Debug.Log("TeamFlowState.SyncWait");
-                //Debug.Log("SyncWaitにはいりました");
-                time += Time.deltaTime;
-                if(time > Limit)
+            case TeamFlowState.WaitNotifyRecievedSyncDataFromClient:
+                if (!m_SendManager.IsRecieved_NotifyRecievedSyncDataFromClient)
                 {
-                    //Debug.Log("パケロス対策");
-                    //情報を送る
-                    m_SendManager.SendRemainBalls(m_TeamFlow.GetRemainBalls());
-                    m_SendManager.SendNextTeam((int)m_TeamFlow.GetNowTeam());
-                    m_SendManager.SendFirstTeam((int)m_TeamFlow.GetFirstTeam());
-
-                    //m_SendManager.SendSyncFlag(SyncFlags);
-                    m_SendManager.SendMasterSyncFlag(SyncFlags[0]);
-                    time = 0.0f;
+                    // まだクライアントからメッセージを受けった通知が来ていない。
+                    break;
                 }
-                //同期したかどうか調べる
-                //SyncFlags = m_SendManager.ReceiveSyncFlag();
-                if (Client)
-                {
-                    SyncFlags[0] = m_SendManager.ReceiveMasterSyncFlag();
-                }
-                else
-                {
-                    SyncFlags[1] = m_SendManager.ReceiveClientSyncFlag();
-                }
-
-                if (m_IsUseAI == false)
-                {
-                    int i = 0;
-                    //AI戦じゃ無いとき
-                    foreach (bool flag in SyncFlags)
-                    {
-                        i++;
-                        if (flag == false)
-                        {
-                            if(i == 1)
-                            {
-                                //Debug.Log("ますたーのせい");
-                            }
-                            else if( i == 2)
-                            {
-                                //Debug.Log("くらいあんとのせい");
-                            }
-                            //まだ同期が終わっていない
-                            //Debug.Log("まだ同期が終わっていません");
-                            return;
-                        }
-                    }
-                }
-
-                //////////////////////////////////////////////////////////
-                /////////ここから下は同期が終わっているときの処理/////////
-                //////////////////////////////////////////////////////////
-
-
-                //////////////////////////////////////////////////////////
-                //////////ここから下はまだ投げ終わっていないとき//////////
-                //////////////////////////////////////////////////////////
-
+                m_SendManager.IsRecieved_NotifyRecievedSyncDataFromClient = false;
                 //SyncEndにステートをセットする
                 m_TeamFlow.SetState(TeamFlowState.SyncEnd);
 
@@ -326,45 +231,7 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.SyncEnd:
                 Debug.Log("TeamFlowState.SyncEnd");
-                ////同期が完了しているフラグをリセットする
-                //if (Client == false)
-                //{
-                //    if (m_IsUseAI == false)
-                //    {
-                //        if (m_SendManager.ReceiveClientSyncFlag())
-                //        {
-                //            //クライアントの同期が終わっている
-                //            Debug.Log("ホストだよ！");
-                //            Debug.Log("同期フラグ送ったよ！");
-                //            SyncFlags[0] = false;
-                //            SyncFlags[1] = false;
-                //            m_SendManager.SendMasterSyncFlag(SyncFlags[0]);
-                //            m_SendManager.SendClientSyncFlag(SyncFlags[1]);
-                //        }
-                //        else
-                //        {
-                //            //クライアントの同期が終わっていない
-                //            return;
-                //        }
-                //    }
-                //}
-                //SyncFlags[0] = m_SendManager.ReceiveMasterSyncFlag();
-                //SyncFlags[1] = m_SendManager.ReceiveClientSyncFlag();
-
-                //if (m_IsUseAI == false)
-                //{
-                //    //AI戦じゃ無いとき
-                //    foreach (bool flag in SyncFlags)
-                //    {
-                //        if (flag == true)
-                //        {
-                //            //まだ同期が終わっていない
-                //            Debug.Log("まだ同期が終わっていません");
-                //            return;
-                //        }
-                //    }
-                //}
-
+             
                 bool endflag = true;
                 //どちらとも投げ終えているときエンド終了に移行する
                 foreach (int i in m_TeamFlow.GetRemainBalls())
@@ -390,20 +257,6 @@ public class EndManager : MonoBehaviour
                 m_TeamFlow.SetState(TeamFlowState.ThrowStart);
 
                 break;
-
-            //case TeamFlowState.ThrowEnd:
-            //    //投げ終わり
-            //    //カメラを追従カメラから切り替える
-            //    GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
-            //    m_TeamFlow.SetState(TeamFlowState.ChangeEnd);
-            //    break;
-
-            //case TeamFlowState.ChangeEnd:
-            //    //チーム変え終わった
-            //    //残りボール数のテキストを更新
-            //    GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();
-
-            //    break;
 
             case TeamFlowState.End:
                 Debug.Log("TeamFlowState.End");

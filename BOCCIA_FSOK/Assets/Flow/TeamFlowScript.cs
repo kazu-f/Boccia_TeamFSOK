@@ -12,27 +12,24 @@ public enum TeamFlowState
     Stop,
     Delay,
     Caluc,
-    //Caluced,
-    //ThrowEnd,
-    SendInfo,
-    Sync,
-    SyncWait,
+    SendSyncDataToClient,           // クライアントに同期データを送る。(マスター側)
+    WaitRecievedSyncDataFromMaster,  // マスターからの同期データ受信待ち。(クライアント側)
+    WaitNotifyRecievedSyncDataFromClient,   // クライアントから同データを受け取った通知待ち。(マスター側)
     SyncEnd,
-    //ChangeEnd,
     End,
     Num,
 }
 public class TeamFlowScript : MonoBehaviour
 {
     public TeamFlowState m_state;
-    public Team m_NextTeam = Team.Num;
+    private Team m_NextTeam = Team.Num;
     private Team m_firstTeam = Team.Red;
     private BallFlowScript m_BallFlow = null;
     private GameObject m_Jack = null;
     private BallState m_JackState = BallState.Num;
     private Vector3 m_JackPos = Vector3.zero;
     private int[] m_RemainBalls = new int[2];
-    public int m_Remain { get; private set; } = 1;
+    public int m_Remain { get; private set; } =6;
     private EndFlowScript m_GameFlowScript = null;
     private bool m_IsMoving = false;
     
