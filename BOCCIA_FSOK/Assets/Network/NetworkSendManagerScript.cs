@@ -13,8 +13,13 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         SendSyncDataToClient,           // クライアントに同期データを送る。
         SendRecievedSyncDataToMaster,   // マスターに同期データを受け取ったことを通知する。
     }
-
-
+    /// <summary>
+    /// クライアントからのデータ受信通知メッセージ
+    /// </summary>
+    struct NotifyRecievedSyndDataFromClient
+    {
+        public int m_turnNo;
+    };
     bool IsSended = false;
     int sendDataType = (int)DataType.None;      //送信するデータの種類を判別する変数。
     int receiveDataType = (int)DataType.None;      //受信するデータの種類を判別する変数。
@@ -28,14 +33,23 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     #region GameData
     private bool[] m_IsTimeUp = new bool[2];
     public bool IsRecieved_SyncDataFromMaster { get;set; }
-    public bool IsRecieved_NotifyRecievedSyncDataFromClient { get; set; }
+    public bool IsRecieved_NotifyRecievedSyncDataFromClient( int turnNo )
+    {
+        return m_IsRecieved_NotifyRecievedSyncDataFromClient.Exists(
+            n => n == turnNo
+        );
+    }
 
     private int[] m_RemainBalls = new int[2];      //残りのボール数
     private int m_NextTeam = -1;     //次に投げるチーム
     private int m_FirstTeam = -1;
     #endregion
 
+    List<NotifyRecievedSyndDataFromClient> m_notifyRecievedSyndDataFromClientList = new List<NotifyRecievedSyndDataFromClient>();
+    public List<int> m_IsRecieved_NotifyRecievedSyncDataFromClient { get; set; }
+
     private PhotonView photonView = null;
+    
     public void Awake()
     {
         photonView = this.gameObject.GetComponent<PhotonView>();
@@ -43,6 +57,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
         {
             m_IsTimeUp[i] = false;
         }
+        m_IsRecieved_NotifyRecievedSyncDataFromClient = new List<int>();
     }
 
     #region IPunObservable implementation
@@ -50,6 +65,14 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (stream.IsWriting)
         {
+            
+            foreach( var d in m_notifyRecievedSyndDataFromClientList)
+            {
+                stream.SendNext((int)DataType.SendRecievedSyncDataToMaster);
+                stream.SendNext(d.m_turnNo);
+            }
+            m_notifyRecievedSyndDataFromClientList.Clear();
+
             //まだデータを送っていないとき
             //データを他のプレイヤーに送る
             if (!IsSended)
@@ -86,9 +109,6 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                         stream.SendNext(m_NextTeam);
                         stream.SendNext(m_FirstTeam);
                         Debug.Log("SendData:SendSyncDataToClient");
-                        break;
-                    case (int)DataType.SendRecievedSyncDataToMaster:
-                        Debug.Log("SendData:SendRecievedSyncDataToMaster");
                         break;
 
                 }
@@ -137,7 +157,12 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                     break;
                 case (int)DataType.SendRecievedSyncDataToMaster:
                     // クライアントから同期データを受け取ったことが通知された。
-                    IsRecieved_NotifyRecievedSyncDataFromClient = true;
+                    if(m_IsRecieved_NotifyRecievedSyncDataFromClient.Count == 100)
+                    {
+                        // 古いデータを削除していく。
+                        m_IsRecieved_NotifyRecievedSyncDataFromClient.RemoveAt(0);
+                    }
+                    m_IsRecieved_NotifyRecievedSyncDataFromClient.Add((int)stream.ReceiveNext());
                     Debug.Log("ReceiveData:RecievedSyncDataToMaster");
                     break;
             }
@@ -192,10 +217,11 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     {
         Debug.LogError("オーナー権限の移行に失敗しました");
     }
-    public void SendRecievedSyncDataToMaster()
+    public void SendRecievedSyncDataToMaster(int turnNo)
     {
-        sendDataType = (int)DataType.SendRecievedSyncDataToMaster;
-        IsSended = false;
+        var newData = new NotifyRecievedSyndDataFromClient();
+        newData.m_turnNo = turnNo;
+        m_notifyRecievedSyndDataFromClientList.Add(newData);   
         RequestOwner();
     }
     public void SendThrowPow(Vector2 vec2)

@@ -19,6 +19,7 @@ public class EndManager : MonoBehaviour
     private GameObject Failed = null;   //場外のオブジェクト
     private float Limit = 5.0f;
     private float time = 0.0f;
+    private float time2 = 0.0f;
     int m_turnNo = 0;
     private void Awake()
     {
@@ -81,12 +82,15 @@ public class EndManager : MonoBehaviour
             case TeamFlowState.Wait:
                 Debug.Log("TeamFlowState.Wait");
 
-                
-                
                 // 一定間隔で
                 time += Time.deltaTime;
-                // ここで長らく止まっている場合、相手に
-                
+                // ここで長らく止まっている場合
+                if (m_turnNo > 0 && time > 0.5f)
+                {
+                    m_SendManager.SendRecievedSyncDataToMaster(m_turnNo);
+                    time = 0.0f;
+                }
+
                 //プレイヤーが投げるまで
                 if (m_Timer.IsTimerStart() == false)
                 {
@@ -152,6 +156,8 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.Caluc:
+                // 次のターンへ。
+                m_turnNo++;
                 Debug.Log("TeamFlowState.Caluc");
                 //Debug.Log("計算開始");
                 if (m_TeamFlow.GetNowTeam() == MyTeamCol|| m_IsUseAI)
@@ -201,9 +207,6 @@ public class EndManager : MonoBehaviour
                     break;
                 }
                
-                // 同期データを受信したことをマスターに通知する。
-                m_SendManager.SendRecievedSyncDataToMaster();
-
                 if (m_BallFlow.IsPreparedJack() == false)
                 {
                     GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
@@ -218,12 +221,12 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.WaitNotifyRecievedSyncDataFromClient:
-                if (!m_SendManager.IsRecieved_NotifyRecievedSyncDataFromClient)
+                if (!m_SendManager.IsRecieved_NotifyRecievedSyncDataFromClient(m_turnNo))
                 {
-                    // まだクライアントからメッセージを受けった通知が来ていない。
+                    // まだクライアントからこのターンのメッセージを受けった通知が来ていない。
                     break;
                 }
-                m_SendManager.IsRecieved_NotifyRecievedSyncDataFromClient = false;
+
                 //SyncEndにステートをセットする
                 m_TeamFlow.SetState(TeamFlowState.SyncEnd);
 
@@ -231,7 +234,7 @@ public class EndManager : MonoBehaviour
 
             case TeamFlowState.SyncEnd:
                 Debug.Log("TeamFlowState.SyncEnd");
-             
+                
                 bool endflag = true;
                 //どちらとも投げ終えているときエンド終了に移行する
                 foreach (int i in m_TeamFlow.GetRemainBalls())
@@ -244,8 +247,22 @@ public class EndManager : MonoBehaviour
                         break;
                     }
                 }
+               
                 if (endflag == true)
                 {
+                    // 一定間隔で
+                    time += Time.deltaTime;
+                    time2 += Time.deltaTime;
+                    if (time2 < 2.0f)
+                    {
+                        if (time > 0.5f)
+                        {
+                            m_SendManager.SendRecievedSyncDataToMaster(m_turnNo);
+                            time = 0.0f;
+                        }
+                        break;
+                    }
+                    time2 = 0.0f;
                     //投げ終えているのでステートをEndにする
                     //Debug.Log("もうボールがないんでエンドを終了します");
                     m_TeamFlow.SetState(TeamFlowState.End);
