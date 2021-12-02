@@ -45,6 +45,7 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
     private int m_FirstTeam = -1;
     #endregion
 
+
     List<NotifyRecievedSyndDataFromClient> m_notifyRecievedSyndDataFromClientList = new List<NotifyRecievedSyndDataFromClient>();
     public List<int> m_IsRecieved_NotifyRecievedSyncDataFromClient { get; set; }
 

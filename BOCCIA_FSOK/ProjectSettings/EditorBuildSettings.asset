@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ConnectNetScene.unity
     guid: e000c956a6e898148a1e7fd7e93268b2
+  - enabled: 1
+    path: Assets/Scenes/AIBocciaGameScene.unity
+    guid: f8f22a6987736fb49b2b16e0885fc2d5
   m_configObjects: {}
