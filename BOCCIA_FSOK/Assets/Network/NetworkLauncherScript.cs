@@ -16,7 +16,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
     #endregion
 
     #region Private Fields
-    string gameVersion = "1.6";       // ゲームのバージョン
+    string gameVersion = "1.7";       // ゲームのバージョン
     bool isConnecting;
     bool IsJoinedRoom = false;
     bool IsGameSceneLoaded = false;
@@ -213,7 +213,7 @@ public class NetworkLauncherScript : MonoBehaviourPunCallbacks
                     PhotonNetwork.JoinRandomRoom();
                     //部屋の人数が最大だとゲームシーンに移行
                     Debug.Log("ゲームシーンをロードします");
-                    SceneManager.LoadScene("BocciaGameScene");
+                    SceneManager.LoadScene("AIBocciaGameScene");
                     IsGameSceneLoaded = true;
                 }
             }
