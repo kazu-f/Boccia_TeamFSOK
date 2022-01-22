@@ -89,6 +89,7 @@ namespace BocciaPlayer
                 throwAngleController.ChangeCamPos();
                 swichActiveGameObj.SwitchGameObject(false);
             }
+            playerMoveScript.SetIsMove(false);
         }
 
         /// <summary>

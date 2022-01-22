@@ -20,7 +20,11 @@ namespace BocciaPlayer
         private void Update()
         {
             //“®‚¢‚Ä‚¢‚é‚¾‚¯ƒJƒƒ‰‚ğ“®‚©‚·B
-            if(isMove) mainCamera.transform.position = this.gameObject.transform.position;
+            if (isMove)
+            {
+                mainCamera.transform.position = this.gameObject.transform.position;
+                //isMove = false;
+            }
         }
 
         public void PlayerMove(Vector3 moveSpeed)
