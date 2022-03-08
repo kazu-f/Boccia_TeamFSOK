@@ -42,7 +42,7 @@ public class AIEndManager : MonoBehaviour
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 //タイマーをスタートする
                 Debug.Log("初めにタイマーをスタートします");
-                m_Timer.SyncStartTimer();
+                m_Timer.SyncStartTimer(true);
                 break;
 
             case TeamFlowState.ThrowStart:
@@ -60,7 +60,7 @@ public class AIEndManager : MonoBehaviour
                 GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
 
                 Debug.Log("エンドが終わっていないのでタイマーをスタートします");
-                m_Timer.SyncStartTimer();
+                m_Timer.SyncStartTimer(true);
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 break;
 
