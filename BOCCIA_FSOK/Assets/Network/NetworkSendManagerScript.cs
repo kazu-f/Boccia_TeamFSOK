@@ -144,7 +144,8 @@ public class NetworkSendManagerScript : MonoBehaviourPunCallbacks,IPunObservable
                     m_RemainBalls = (int[])stream.ReceiveNext();
                     m_NextTeam = (int)stream.ReceiveNext();
                     m_FirstTeam = (int)stream.ReceiveNext();
-                    
+
+                    Debug.Log("ReceiveData:GameData");
                     break;
                 case (int)DataType.SendSyncDataToClient:
                     // 同期データを受信した。

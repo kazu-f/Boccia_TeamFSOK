@@ -211,7 +211,6 @@ public class EndManager : MonoBehaviour
                 {
                     GameObject.Find("JackPlease").GetComponent<JackPleaseScript>().StartSlide();
                 }
-                GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
                 
 
                 //同期が終わったのでSyncWaitステートに移行する
@@ -235,6 +234,7 @@ public class EndManager : MonoBehaviour
             case TeamFlowState.SyncEnd:
                 Debug.Log("TeamFlowState.SyncEnd");
                 
+                GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
                 bool endflag = true;
                 //どちらとも投げ終えているときエンド終了に移行する
                 foreach (int i in m_TeamFlow.GetRemainBalls())
