@@ -37,6 +37,7 @@ namespace BocciaPlayer
             moveSpeed = Vector3.zero;
             if(moveButton.IsPressAnyButton() && moveButton.IsActive())
             {
+                playerMove.SetIsMove(true);
                 Vector3 zMoveSpeed = Vector3.zero;
                 Vector3 xMoveSpeed = Vector3.zero;
                 if(moveButton.IsPressForward())
