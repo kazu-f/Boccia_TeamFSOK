@@ -206,6 +206,7 @@ namespace BocciaPlayer
             //ボールに投げる力を加える。
             var ballOperate = obj.GetComponent<BallOperateScript>();
 
+            Debug.Log("ボールを投げる。");
             ballOperate.Throw(force); //ボールを投げる。
 
             throwSE.Play();     //投げるときのSE。
