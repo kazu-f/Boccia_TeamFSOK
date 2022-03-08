@@ -46,10 +46,15 @@ public class TimerFillScript : MonoBehaviour
             CircleBeforeImage.fillAmount = late;
             if (late <= 0.0f)
             {
-                //タイムアップ
-                Debug.Log("タイムアップ");
-                Debug.Log("タイムアップしたのでタイマーを止める");
-                IsTimeUped = true;
+                var photon_view = this.gameObject.GetComponent<PhotonView>();
+                if (photon_view.IsMine)
+                {
+                    photon_view.RPC(nameof(TimerUpRPC), RpcTarget.All);
+                }
+                ////タイムアップ
+                //Debug.Log("タイムアップ");
+                //Debug.Log("タイムアップしたのでタイマーを止める");
+                //IsTimeUped = true;
                 //IsStart = false;
 
                 ////このフラグもう使って無くね？
@@ -93,11 +98,21 @@ public class TimerFillScript : MonoBehaviour
 
     public void LateUpdate()
     {
-        if (late <= 0.0f)
-        {
-            Debug.Log("タイムアップしたのでタイマーを止める");
-            IsStart = false;
-        }
+        //if (late <= 0.0f)
+        //{
+        //    Debug.Log("タイムアップしたのでタイマーを止める");
+        //    IsStart = false;
+        //}
+    }
+
+    [Photon.Pun.PunRPC]
+    public void TimerUpRPC()
+    {
+        //タイムアップ
+        Debug.Log("タイムアップ");
+        Debug.Log("タイムアップしたのでタイマーを止める");
+        IsTimeUped = true;
+        IsStart = false;
     }
 
     [Photon.Pun.PunRPC]
