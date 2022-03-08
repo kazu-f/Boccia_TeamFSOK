@@ -48,6 +48,7 @@ public class ServerTimerScript : MonoBehaviourPun
     {
         if (!photonView.IsMine && PhotonNetwork.LocalPlayer.IsMasterClient)
         {
+            Debug.Log("サーバータイマーの権限をリクエスト。");
             photonView.RequestOwnership();
         }
         int end = PhotonNetwork.ServerTimestamp + count;
@@ -61,6 +62,7 @@ public class ServerTimerScript : MonoBehaviourPun
     {
         if (!photonView.IsMine && PhotonNetwork.LocalPlayer.IsMasterClient)
         {
+            Debug.Log("サーバータイマーの権限をリクエスト。");
             photonView.RequestOwnership();
         }
         int end = PhotonNetwork.ServerTimestamp + (int)(count * 1000.0f);
