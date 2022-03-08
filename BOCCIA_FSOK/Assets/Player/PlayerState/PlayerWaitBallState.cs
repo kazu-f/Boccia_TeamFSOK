@@ -38,11 +38,11 @@ namespace BocciaPlayer
             if (!teamFlow.GetIsMoving())
             {
                 isStop = false;
-                //ステートを元に戻す。
-                if (netSendManager != null)
-                {
-                    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
-                }
+                ////ステートを元に戻す。
+                //if (netSendManager != null)
+                //{
+                //    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
+                //}
             }
 
         }
