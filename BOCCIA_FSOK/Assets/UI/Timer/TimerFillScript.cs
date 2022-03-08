@@ -182,7 +182,7 @@ public class TimerFillScript : MonoBehaviour
     public void SyncStartTimer(bool isMyTeam)
     {
         Debug.Log("タイマーをスタートします。");
-        if(isMyTeam)
+        if(!isMyTeam)
         {
             //マスタークライアント以外は呼び出さない。
             Debug.Log("マスタークライアンではないので呼び出さない。");
