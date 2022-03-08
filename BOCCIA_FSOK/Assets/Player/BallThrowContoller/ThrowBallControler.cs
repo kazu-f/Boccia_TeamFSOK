@@ -213,7 +213,12 @@ namespace BocciaPlayer
                 }
                 yield return 0;
             }
-
+            if (isMyTeam)
+            {
+                this.photonView.RPC(nameof(ThrowBallRPC),
+                    Photon.Pun.RpcTarget.All,
+                    force, throwPos, throwRot, timerFill.IsTimeUp());
+            }
         }
 
         [Photon.Pun.PunRPC]
