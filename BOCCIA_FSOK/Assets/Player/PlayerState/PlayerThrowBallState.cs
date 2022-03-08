@@ -39,7 +39,7 @@ namespace BocciaPlayer
             m_throwPow.x = 0.0f;
             m_throwPow.y = 0.0f;
             throwBall.StartThrowBall(m_touchStartPos);
-            throwBall.enabled = true;
+            throwBall.SetEnableFlag(true);
 
             //if (netSendManager != null)
             //{
@@ -49,11 +49,12 @@ namespace BocciaPlayer
         }
         override public void Leave()
         {
-            throwBall.enabled = false;
-            if (netSendManager != null)
-            {
-                netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
-            }
+            throwBall.SetEnableFlag(false);
+
+            //if (netSendManager != null)
+            //{
+            //    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_None);
+            //}
         }
         override public void Execute()
         {
