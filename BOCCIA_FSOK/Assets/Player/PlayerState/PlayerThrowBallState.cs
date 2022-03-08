@@ -38,8 +38,8 @@ namespace BocciaPlayer
             m_touchEndPos = touchManager.GetTouchPosInScreen();
             m_throwPow.x = 0.0f;
             m_throwPow.y = 0.0f;
-            throwBall.StartThrowBall(m_touchStartPos);
             throwBall.SetEnableFlag(true);
+            throwBall.StartThrowBall(m_touchStartPos);
 
             //if (netSendManager != null)
             //{
