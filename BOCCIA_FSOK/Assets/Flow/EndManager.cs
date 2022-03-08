@@ -71,7 +71,8 @@ public class EndManager : MonoBehaviour
                     //残りボール数のテキストを更新
                     GameObject.Find("RemainBallText").GetComponent<RemainBallNumScript>().UpdateRemainText();
                 }
-
+                //俯瞰カメラから確実に戻す。
+                m_changeViewSwitch.ResetFixedCamera();
 
                 //Waitに移行
                 //投げ始める。
