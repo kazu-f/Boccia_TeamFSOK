@@ -3844,7 +3844,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6441301046801588347, guid: e3b656dbc7f763e4e90d251b6e5365c3, type: 3}
       propertyPath: Limit
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6441301046801588347, guid: e3b656dbc7f763e4e90d251b6e5365c3, type: 3}
       propertyPath: m_SendManager
