@@ -178,12 +178,12 @@ namespace BocciaPlayer
             //カウントする。
             serverTimer.RequestOwnerShip();
             serverTimer.SetCountTimeSecond(THROW_DELAY);
-            this.photonView.RPC(nameof(ThrowBallRPC), Photon.Pun.RpcTarget.All, param);
+            this.photonView.RPC(nameof(ThrowBallCoroutineRPC), Photon.Pun.RpcTarget.All, param);
         }
 
         //ボールを投げるコルーチン開始。
         [Photon.Pun.PunRPC]
-        void ThrowBallRPC(Vector3 force, Vector3 throwPos, Quaternion throwRot)
+        void ThrowBallCoroutineRPC(Vector3 force, Vector3 throwPos, Quaternion throwRot)
         {
             //コルーチンを開始。
             StartCoroutine(ThrowCoroutine(force, throwPos, throwRot));
@@ -203,10 +203,26 @@ namespace BocciaPlayer
                 {
                     Debug.Log("タイムアップしているためThrowコルーチンを中断。");
                     //コルーチンの中断。
-                    isDecision = false;
+                    if (isMyTeam)
+                    {
+                        this.photonView.RPC(nameof(ThrowBallRPC),
+                            Photon.Pun.RpcTarget.All,
+                            force, throwPos, throwRot, timerFill.IsTimeUp());
+                    }
                     yield break;
                 }
                 yield return 0;
+            }
+
+        }
+
+        [Photon.Pun.PunRPC]
+        void ThrowBallRPC(Vector3 force, Vector3 throwPos, Quaternion throwRot,bool isTimeUp)
+        {
+            if(isTimeUp)
+            {
+                isDecision = false;
+                return;
             }
 
             //現在投げるボールを取得する。
@@ -215,7 +231,7 @@ namespace BocciaPlayer
             {
                 //コルーチンの中断。
                 isDecision = false;
-                yield break;
+                return;
             }
 
             //ボールの位置を合わせる。

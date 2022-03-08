@@ -46,16 +46,16 @@ public class TimerFillScript : MonoBehaviour
             CircleBeforeImage.fillAmount = late;
             if (late <= 0.0f)
             {
-                //var photon_view = this.gameObject.GetComponent<PhotonView>();
-                //if (photon_view.IsMine)
-                //{
-                //    photon_view.RPC(nameof(TimerUpRPC), RpcTarget.All);
-                //}
+                var photon_view = this.gameObject.GetComponent<PhotonView>();
+                if (photon_view.IsMine)
+                {
+                    photon_view.RPC(nameof(TimerUpRPC), RpcTarget.All);
+                }
 
-                //タイムアップ
-                Debug.Log("タイムアップ");
-                Debug.Log("タイムアップしたのでタイマーを止める");
-                IsTimeUped = true;
+                ////タイムアップ
+                //Debug.Log("タイムアップ");
+                //Debug.Log("タイムアップしたのでタイマーを止める");
+                //IsTimeUped = true;
 
                 //IsStart = false;
 
@@ -100,16 +100,16 @@ public class TimerFillScript : MonoBehaviour
 
     public void LateUpdate()
     {
-        if (late <= 0.0f)
-        {
-            Debug.Log("タイムアップしたのでタイマーを止める");
-            IsStart = false;
-        }
-        //if (IsTimeUped)
+        //if (late <= 0.0f)
         //{
         //    Debug.Log("タイムアップしたのでタイマーを止める");
         //    IsStart = false;
         //}
+        if (IsTimeUped)
+        {
+            Debug.Log("タイムアップしたのでタイマーを止める");
+            IsStart = false;
+        }
     }
 
     [Photon.Pun.PunRPC]

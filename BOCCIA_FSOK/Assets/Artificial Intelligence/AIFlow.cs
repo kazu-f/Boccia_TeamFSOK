@@ -63,6 +63,7 @@ public class AIFlow : IPlayerController
         swichActiveGameObj = SwichActiveGameObjects.GetInstance();
         armScript = throwBallControler.GetArmScript();
         throwBallControler.enabled = false;
+        throwBallControler.isMyTeam = true;
     }
     // Start is called before the first frame update
     void Start()
