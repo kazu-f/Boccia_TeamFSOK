@@ -51,18 +51,20 @@ public class TimerFillScript : MonoBehaviour
                 Debug.Log("タイムアップしたのでタイマーを止める");
                 IsTimeUped = true;
                 //IsStart = false;
-                if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                {
-                    //マスタークライアントの時
-                    m_SendManager.SendMasterIsTimeUp(true);
-                    TimedUp[0] = true;
-                }
-                else
-                {
-                    //クライアントの時
-                    m_SendManager.SendClientIsTimeUp(true);
-                    TimedUp[1] = true;
-                }
+
+                ////このフラグもう使って無くね？
+                //if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                //{
+                //    //マスタークライアントの時
+                //    m_SendManager.SendMasterIsTimeUp(true);
+                //    TimedUp[0] = true;
+                //}
+                //else
+                //{
+                //    //クライアントの時
+                //    m_SendManager.SendClientIsTimeUp(true);
+                //    TimedUp[1] = true;
+                //}
             }
 
             //切り上げ
