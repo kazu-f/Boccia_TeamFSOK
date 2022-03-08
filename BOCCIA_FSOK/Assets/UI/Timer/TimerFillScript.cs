@@ -28,7 +28,7 @@ public class TimerFillScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ServerTimer.SetCountTimeSecond(Limit);
+       //ServerTimer.SetCountTimeSecond(Limit);
     }
 
     // Update is called once per frame
