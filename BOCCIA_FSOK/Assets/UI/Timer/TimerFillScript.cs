@@ -103,6 +103,11 @@ public class TimerFillScript : MonoBehaviour
         //    Debug.Log("タイムアップしたのでタイマーを止める");
         //    IsStart = false;
         //}
+        if (IsTimeUped)
+        {
+            Debug.Log("タイムアップしたのでタイマーを止める");
+            IsStart = false;
+        }
     }
 
     [Photon.Pun.PunRPC]
@@ -112,7 +117,6 @@ public class TimerFillScript : MonoBehaviour
         Debug.Log("タイムアップ");
         Debug.Log("タイムアップしたのでタイマーを止める");
         IsTimeUped = true;
-        IsStart = false;
     }
 
     [Photon.Pun.PunRPC]
