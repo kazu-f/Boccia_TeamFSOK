@@ -65,17 +65,17 @@ namespace BocciaPlayer
                 playerMoveScript.SetIsMove(false);
             }
 
-            //âÊñ ÇêGÇ¡ÇƒÇ¢ÇÈÅB
-            if(netSendManager.ReceiveState() == (int)EnPlayerDataState.enPlayerData_Gauge)
-            {
-                throwBallControler.enabled = true;
-                throwBallControler.StartThrowBall(netSendManager.ReceiveThrowGaugePos());
-                throwBallControler.SetThrowPow(netSendManager.ReceiveThrowPower());
-            }
-            else
-            {
-                throwBallControler.enabled = false;
-            }
+            ////âÊñ ÇêGÇ¡ÇƒÇ¢ÇÈÅB
+            //if(netSendManager.ReceiveState() == (int)EnPlayerDataState.enPlayerData_Gauge)
+            //{
+            //    throwBallControler.enabled = true;
+            //    throwBallControler.StartThrowBall(netSendManager.ReceiveThrowGaugePos());
+            //    throwBallControler.SetThrowPow(netSendManager.ReceiveThrowPower());
+            //}
+            //else
+            //{
+            //    throwBallControler.enabled = false;
+            //}
 
         }
 

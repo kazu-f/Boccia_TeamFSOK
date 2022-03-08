@@ -75,6 +75,15 @@ namespace BocciaPlayer
         /// <param name="screenPos">ゲージのスクリーン空間上の座標。xy = 0.0～1.0</param>
         public void StartThrowBall(Vector2 screenPos)
         {
+            this.photonView.RPC(nameof(StartThrowBallRPC), Photon.Pun.RpcTarget.All, screenPos);
+        }
+        /// <summary>
+        /// ボールを投げるための処理を開始。
+        /// </summary>
+        /// <param name="screenPos">ゲージのスクリーン空間上の座標。xy = 0.0～1.0</param>
+        [Photon.Pun.PunRPC]
+        public void StartThrowBallRPC(Vector2 screenPos)
+        {
             throwGauge.SetPosition(screenPos);
             SetThrowHeight(screenPos.y);
             //ボールを投げる座標を計算。
@@ -95,6 +104,15 @@ namespace BocciaPlayer
         /// </summary>
         /// <param name="throwPow">x = -1.0～1.0 , y = 0.0～1.0</param>
         public void SetThrowPow(Vector2 throwPow)
+        {
+            this.photonView.RPC(nameof(SetThrowPowRPC), Photon.Pun.RpcTarget.All, throwPow);
+        }
+        /// <summary>
+        /// 投げる力をセットする。
+        /// </summary>
+        /// <param name="throwPow">x = -1.0～1.0 , y = 0.0～1.0</param>
+        [Photon.Pun.PunRPC]
+        public void SetThrowPowRPC(Vector2 throwPow)
         {
             m_throwPow = throwPow;
             throwGauge.SetThrowPow(m_throwPow.y);   //ゲージの位置を設定。
@@ -226,6 +244,17 @@ namespace BocciaPlayer
         public ArmScript GetArmScript()
         {
             return armScript;
+        }
+
+        public void SetEnableFlag(bool flag)
+        {
+            this.photonView.RPC(nameof(SetEnableFlagRPC), Photon.Pun.RpcTarget.All, flag);
+        }
+
+        [Photon.Pun.PunRPC]
+        public void SetEnableFlagRPC(bool flag)
+        {
+            this.enabled = flag;
         }
 
         private void OnEnable()

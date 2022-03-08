@@ -40,11 +40,12 @@ namespace BocciaPlayer
             m_throwPow.y = 0.0f;
             throwBall.StartThrowBall(m_touchStartPos);
             throwBall.enabled = true;
-            if (netSendManager != null)
-            {
-                netSendManager.SendThrowGaugePosition(m_touchStartPos);
-                netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
-            }
+
+            //if (netSendManager != null)
+            //{
+            //    netSendManager.SendThrowGaugePosition(m_touchStartPos);
+            //    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
+            //}
         }
         override public void Leave()
         {
@@ -76,11 +77,11 @@ namespace BocciaPlayer
 
                     //投げる力をセット。
                     throwBall.SetThrowPow(m_throwPow);
-                    if(netSendManager != null)
-                    {
-                        netSendManager.SendThrowPow(m_throwPow);
-                        netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
-                    }
+                    //if(netSendManager != null)
+                    //{
+                    //    netSendManager.SendThrowPow(m_throwPow);
+                    //    netSendManager.SendState((int)EnPlayerDataState.enPlayerData_Gauge);
+                    //}
                 }
                 else if (touchManager.GetPhase() == TouchInfo.Ended)
                 {

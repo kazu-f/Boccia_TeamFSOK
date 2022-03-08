@@ -23,7 +23,7 @@ namespace BocciaPlayer
             if (isMove)
             {
                 mainCamera.transform.position = this.gameObject.transform.position;
-                //isMove = false;
+                isMove = false;
             }
         }
 
