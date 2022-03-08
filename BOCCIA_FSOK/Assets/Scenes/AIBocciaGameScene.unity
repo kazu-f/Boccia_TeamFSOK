@@ -3677,6 +3677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9f93a6f26946d4b92f387a570381d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_changeViewSwitch: {fileID: 137283091}
   m_TeamFlow: {fileID: 2006205701}
   m_EndFlow: {fileID: 1290313186}
   m_Delay: {fileID: 4406879032380287454}

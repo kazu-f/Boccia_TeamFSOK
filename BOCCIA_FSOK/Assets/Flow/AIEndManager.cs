@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class AIEndManager : MonoBehaviour
 {
+    [SerializeField] private ChangeViewSwitchActive m_changeViewSwitch = null;
     [SerializeField] private TeamFlowScript m_TeamFlow = null;
     [SerializeField] private EndFlowScript m_EndFlow = null;
     [SerializeField] private TeamFlowDelayScript m_Delay = null;
@@ -75,6 +76,7 @@ public class AIEndManager : MonoBehaviour
 
                 if (m_Timer.IsTimeUp()/* || m_IsUseAI*/)
                 {
+                    m_changeViewSwitch.ResetFixedCamera();
                     //if (m_Timer.IsTimeUpForAI())
                     //{
                     Debug.Log("タイムアップしているのでステートをCulcに変更");

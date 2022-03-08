@@ -3638,6 +3638,14 @@ PrefabInstance:
       propertyPath: m_SendManager
       value: 
       objectReference: {fileID: 1543462200}
+    - target: {fileID: 4406879033087402980, guid: 3acb969482543194fa159f32fe176bec, type: 3}
+      propertyPath: changeViewSwitch
+      value: 
+      objectReference: {fileID: 137283091}
+    - target: {fileID: 4406879033087402980, guid: 3acb969482543194fa159f32fe176bec, type: 3}
+      propertyPath: m_changeViewSwitch
+      value: 
+      objectReference: {fileID: 137283091}
     - target: {fileID: 4783681315875900032, guid: 3acb969482543194fa159f32fe176bec, type: 3}
       propertyPath: m_ScoreResult
       value: 

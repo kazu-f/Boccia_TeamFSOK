@@ -7,6 +7,7 @@ public class ChangeViewSwitchActive : MonoBehaviour
     [SerializeField] private SwitchActive[] switcheObjs;      //ボタンを押すことで切り替わるゲームオブジェクトの配列。
     [SerializeField] private ActiveTeamController activeTeam = null;      //ボタンを押すことで切り替わるゲームオブジェクトの配列。
     private CameraChangeSprite changeSprite = null;
+    private bool isFixedCamera = false;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class ChangeViewSwitchActive : MonoBehaviour
 
     public void SwitchChangeView()
     {
+        isFixedCamera = !isFixedCamera;
         //オブジェクトの配列のアクティブを切り替える。
         if (switcheObjs.Length > 0)
         {
@@ -36,5 +38,15 @@ public class ChangeViewSwitchActive : MonoBehaviour
         }
         activeTeam.SwichActiveThrow();
         changeSprite.ChangeSprite();
+    }
+
+    /// <summary>
+    /// 俯瞰カメラで見ているのをリセットする。
+    /// </summary>
+    public void ResetFixedCamera()
+    {
+        if (!isFixedCamera) return;
+
+        SwitchChangeView();
     }
 }
