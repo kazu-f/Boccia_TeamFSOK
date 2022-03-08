@@ -178,9 +178,11 @@ namespace BocciaPlayer
             //カウントが終わっているか？
             while(!serverTimer.IsCountEnd())
             {
+                Debug.Log("Throwコルーチンを実行中。");
                 //タイムアップしているなら中断。
                 if (timerFill.IsTimeUp())
                 {
+                    Debug.Log("タイムアップしているためThrowコルーチンを中断。");
                     //コルーチンの中断。
                     isDecision = false;
                     yield break;
