@@ -21,6 +21,7 @@ public class EndManager : MonoBehaviour
     private float Limit = 5.0f;
     private float time = 0.0f;
     private float time2 = 0.0f;
+    private float timeSendMasterData = 0.0f;        //マスターデータを送信してからの経過時間。
     int m_turnNo = 0;
     private void Awake()
     {
@@ -226,8 +227,17 @@ public class EndManager : MonoBehaviour
                 if (!m_SendManager.IsRecieved_NotifyRecievedSyncDataFromClient(m_turnNo))
                 {
                     // まだクライアントからこのターンのメッセージを受けった通知が来ていない。
+                    timeSendMasterData += Time.deltaTime;
+                    if (timeSendMasterData > 5.0f)
+                    {
+                        Debug.Log("時間が掛かっているため、再度マスターデータを送信します。");
+                        //パケットロストの可能性があるため同期データ送信に再度移行
+                        m_TeamFlow.SetState(TeamFlowState.SendSyncDataToClient);
+                        timeSendMasterData = 0.0f;
+                    }
                     break;
                 }
+                timeSendMasterData = 0.0f;
 
                 //SyncEndにステートをセットする
                 m_TeamFlow.SetState(TeamFlowState.SyncEnd);
