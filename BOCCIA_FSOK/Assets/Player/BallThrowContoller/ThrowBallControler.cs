@@ -176,6 +176,7 @@ namespace BocciaPlayer
             };
 
             //カウントする。
+            serverTimer.RequestOwnerShip();
             serverTimer.SetCountTimeSecond(THROW_DELAY);
             this.photonView.RPC(nameof(ThrowBallRPC), Photon.Pun.RpcTarget.All, param);
         }

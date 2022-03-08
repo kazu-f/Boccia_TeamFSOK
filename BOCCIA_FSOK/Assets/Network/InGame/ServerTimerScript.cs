@@ -48,8 +48,7 @@ public class ServerTimerScript : MonoBehaviourPun
     {
         if (!photonView.IsMine)
         {
-            Debug.Log("サーバータイマーの権限をリクエスト。");
-            photonView.RequestOwnership();
+            return;
         }
         int end = PhotonNetwork.ServerTimestamp + count;
         photonView.RPC(nameof(SetCount), RpcTarget.All, end);
@@ -62,11 +61,20 @@ public class ServerTimerScript : MonoBehaviourPun
     {
         if (!photonView.IsMine)
         {
-            Debug.Log("サーバータイマーの権限をリクエスト。");
-            photonView.RequestOwnership();
+            return;
         }
         int end = PhotonNetwork.ServerTimestamp + (int)(count * 1000.0f);
         photonView.RPC(nameof(SetCount), RpcTarget.All, end);
+    }
+    /// <summary>
+    /// 権限をリクエストする。
+    /// </summary>
+    public void RequestOwnerShip()
+    {
+        if (!photonView.IsMine)
+        {
+            photonView.RequestOwnership();
+        }
     }
     /// <summary>
     /// カウントが経過したかどうか。
