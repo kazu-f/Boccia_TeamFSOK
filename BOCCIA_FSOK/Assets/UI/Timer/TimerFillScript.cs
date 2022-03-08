@@ -162,16 +162,20 @@ public class TimerFillScript : MonoBehaviour
         return IsTimeUped;
     }
 
-    public void SyncStartTimer()
+    public void SyncStartTimer(bool isMyTeam)
     {
         Debug.Log("タイマーをスタートします。");
-        if(!PhotonNetwork.LocalPlayer.IsMasterClient)
+        if(!isMyTeam)
         {
             //マスタークライアント以外は呼び出さない。
             Debug.Log("マスタークライアンではないので呼び出さない。");
             return;
         }
         var photon_view = this.gameObject.GetComponent<PhotonView>();
+        if (!photon_view.IsMine)
+        {
+            photon_view.RequestOwnership();
+        }
         photon_view.RPC(nameof(TimerStart), RpcTarget.All);
     }
 }

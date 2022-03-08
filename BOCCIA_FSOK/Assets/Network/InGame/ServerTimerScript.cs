@@ -46,7 +46,7 @@ public class ServerTimerScript : MonoBehaviourPun
     /// <param name="count"></param>
     public void SetCountTime(int count)
     {
-        if (!photonView.IsMine && PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (!photonView.IsMine)
         {
             Debug.Log("サーバータイマーの権限をリクエスト。");
             photonView.RequestOwnership();
@@ -60,7 +60,7 @@ public class ServerTimerScript : MonoBehaviourPun
     /// <param name="count"></param>
     public void SetCountTimeSecond(float count)
     {
-        if (!photonView.IsMine && PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (!photonView.IsMine)
         {
             Debug.Log("サーバータイマーの権限をリクエスト。");
             photonView.RequestOwnership();

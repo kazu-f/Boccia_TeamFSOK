@@ -50,7 +50,7 @@ public class EndManager : MonoBehaviour
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 //タイマーをスタートする
              //   Debug.Log("初めにタイマーをスタートします");
-                m_Timer.SyncStartTimer();
+                m_Timer.SyncStartTimer(m_TeamFlow.GetNowTeam() == MyTeamCol);
                 break;
 
             case TeamFlowState.ThrowStart:
@@ -74,7 +74,7 @@ public class EndManager : MonoBehaviour
                 //Waitに移行
                 //投げ始める。
                 //Debug.Log("エンドが終わっていないのでタイマーをスタートします");
-                m_Timer.SyncStartTimer();
+                m_Timer.SyncStartTimer(m_TeamFlow.GetNowTeam() == MyTeamCol);
                 m_TeamFlow.SetState(TeamFlowState.Wait);
                 
                 break;
