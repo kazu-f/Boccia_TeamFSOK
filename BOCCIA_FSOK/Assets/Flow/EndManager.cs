@@ -220,6 +220,7 @@ public class EndManager : MonoBehaviour
                 break;
 
             case TeamFlowState.WaitNotifyRecievedSyncDataFromClient:
+                Debug.Log("TeamFlowState.WaitSyncDataFromClient");
                 if (!m_SendManager.IsRecieved_NotifyRecievedSyncDataFromClient(m_turnNo))
                 {
                     // まだクライアントからこのターンのメッセージを受けった通知が来ていない。
