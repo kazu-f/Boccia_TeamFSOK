@@ -31,6 +31,7 @@ namespace BocciaPlayer
         override public void Leave()
         {
             playerMove.SetIsMove(false);
+            playerMove.PlayerMove(Vector3.zero);
         }
         override public void Execute()
         {

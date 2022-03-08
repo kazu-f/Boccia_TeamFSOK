@@ -100,5 +100,16 @@ namespace BocciaPlayer
         {
             isLeft = false;
         }
+        public void ResetButton()
+        {
+            isForward = false;
+            isBack = false;
+            isLeft = false;
+            isRight = false;
+        }
+        private void OnDisable()
+        {
+            ResetButton();
+        }
     }
 }
