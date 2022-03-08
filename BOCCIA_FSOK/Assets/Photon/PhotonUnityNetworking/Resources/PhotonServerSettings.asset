@@ -52,6 +52,11 @@ MonoBehaviour:
   - SetCount
   - DispFailed
   - TimerStart
+  - SetEnableFlagRPC
+  - SetThrowPowRPC
+  - StartThrowBallRPC
+  - ThrowBallCoroutineRPC
+  - TimerUpRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
