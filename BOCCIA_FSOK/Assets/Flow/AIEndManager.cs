@@ -59,6 +59,7 @@ public class AIEndManager : MonoBehaviour
                 }
                 //カメラを追従カメラから切り替える
                 GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
+                m_changeViewSwitch.ResetFixedCamera();
 
                 Debug.Log("エンドが終わっていないのでタイマーをスタートします");
                 m_Timer.SyncStartTimer(true);
@@ -148,11 +149,12 @@ public class AIEndManager : MonoBehaviour
                     m_TeamFlow.CalucNextTeam();
 
                 }
-                //投げたチームは次に投げるチームを計算で来たのでSendInfoに移行する
                 m_TeamFlow.SetState(TeamFlowState.SyncEnd);
                 break;
 
             case TeamFlowState.SyncEnd:
+                //カメラを追従カメラから切り替える
+                GameObject.Find("GameCamera").GetComponent<GameCameraScript>().SetIfFollow(false);
 
                 bool endflag = true;
                 //どちらとも投げ終えているときエンド終了に移行する
